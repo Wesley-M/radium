@@ -1,0 +1,1 @@
+export type PlayerControls = Record<string, (...args: any[]) => any>
