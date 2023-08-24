@@ -1,62 +1,91 @@
-import { RefObject, useEffect, useState } from "react"
-import { Station } from "../../types/radio-browser-api.types"
-import { Controls } from "./controls"
-import { NativeAudio } from "./native-audio"
-import { PlayerControls } from "../../types/player.types"
-import { Skeleton, Stack } from "@mui/material"
-import { Container } from "./index.styles"
-import { StationProfile } from "./station-profile"
 import { useDominantColor } from "../../context/dominant-color-context"
+import { usePlayer } from "../../hooks/usePlayer"
+import { StationProfile } from "./station-profile"
+import { Controls } from "./controls"
+import { FullContainer, PreviewContainer, getBackground } from "./index.styles"
+import { Slide } from "@mui/material"
+import { useIsMobile } from "../../hooks/useIsMobile"
 
-interface PlayerProps {
-    station?: Station
-    audioRef: RefObject<HTMLAudioElement>
-    controls: PlayerControls
-}
-
-export const Player = (props: PlayerProps) => {
-    const { 
-        station, 
-        audioRef, 
-        controls 
-    } = props
-    
+export const Player = () => {
     const { dominantColor } = useDominantColor()
-    
-    const [loading, setLoading] = useState(true);
-    
-    /**
-     * Load while changing stations
-    */
-    useEffect(() => {
-        setLoading(!Boolean(station))
-    }, [JSON.stringify(station)])
-    
-    if (loading) return <LoadingState/>
+    const isMobile = useIsMobile()
+    const player = usePlayer()
 
-    return (
-        <Container gap={4} sx={{ background: dominantColor ? `linear-gradient(${dominantColor}88, #33373d88)` : "#33373d88" }}>
-            <StationProfile station={station} />
-            <Controls controls={controls}/>
-            <NativeAudio 
-                src={station?.urlResolved} 
-                reference={audioRef}
+    const content = (
+        <>
+            <StationProfile />
+            <Controls />
+            <audio 
+                src={player?.station?.urlResolved} 
+                ref={player?.audioRef}
+                onLoadedData={player?.controls.onAudioLoad}
+                onPause={player?.controls.onPause}
+                onPlay={player?.controls.onPlay}
             />
-        </Container>   
+        </>
+    )
+
+    // Preview version
+    if (player?.isPreview) {
+        return (
+            <PreviewContainer 
+                onLoad={player?.controls.resetAudio} 
+                sx={{ background: getBackground(dominantColor, player?.isFull) }}
+            >
+                {content}
+            </PreviewContainer>
+        )
+    }
+
+    // Mobile version
+    if (isMobile) {
+        return (
+            <Slide 
+                onLoad={player?.controls.resetAudio} 
+                direction="up" 
+                in={true} 
+                mountOnEnter 
+                unmountOnExit
+            >
+                <FullContainer 
+                    isMobile={isMobile} 
+                    sx={{ background: getBackground(dominantColor, player?.isFull) }}
+                >
+                    {content}
+                </FullContainer>
+            </Slide>
+        )
+    }
+
+    // Desktop version
+    return (
+        <FullContainer 
+            isMobile={false} 
+            sx={{ background: getBackground(dominantColor, player?.isFull) }}
+        >
+            {content}
+        </FullContainer>         
     )
 }
 
-const LoadingState = () => {
-    return (
-        <Container gap={4} sx={{ background: "#33373d66" }}>
-            <Stack direction="column" alignItems="center" gap={2}>
-                <Skeleton variant="rounded" width={200} height={200}/>
-                <Stack alignItems="center" gap={1}>
-                    <Skeleton variant="rounded" width={180} height={30}/>
-                    <Skeleton variant="rounded" width={140} height={20}/>
-                </Stack>
-            </Stack>
-            <Controls/>
-        </Container>
-    )
-}
+// const LoadingState = () => {
+//     const player = usePlayer()
+//     const isMobile = useIsMobile()
+    
+//     return (
+//         <>
+//             {player?.isFull && (
+//                 <FullContainer isMobile={isMobile} gap={4} sx={{ background: "#33373d66" }}>
+//                     <Stack direction="column" alignItems="center" gap={2}>
+//                         <Skeleton variant="rounded" width={200} height={200}/>
+//                         <Stack alignItems="center" gap={1}>
+//                             <Skeleton variant="rounded" width={180} height={30}/>
+//                             <Skeleton variant="rounded" width={140} height={20}/>
+//                         </Stack>
+//                     </Stack>
+//                     <Controls/>
+//                 </FullContainer>
+//             )}
+//         </>
+//     )
+// }

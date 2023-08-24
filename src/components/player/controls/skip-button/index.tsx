@@ -22,7 +22,7 @@ export const SkipButton = (props: SkipButtonProps) => {
     } = props
 
     const Icon = isNext ? SkipNextRoundedIcon : SkipPreviousRoundedIcon
-    
+
     return (
         <IconButton 
             onClick={onClick} 

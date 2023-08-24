@@ -1,67 +1,68 @@
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useState } from "react";
 import RadioRoundedIcon from '@mui/icons-material/RadioRounded';
-import { DefaultThumbnail } from "./index.styles";
-import { getURLWithCorsEnabled } from "../../../../utils/cors";
 import { useDominantColor } from "../../../../context/dominant-color-context";
-import { Skeleton } from "@mui/material";
+import { usePlayer } from "../../../../hooks/usePlayer";
+import { useIsMobile } from "../../../../hooks/useIsMobile";
+import { Image } from "../../../image"
+import { Stack } from "@mui/material";
 
-interface ThumbnailProps {
-    url?: string,
+const getSize = (isPreview?: boolean, isMobile?: boolean) => {
+    if (isPreview) {
+        return "50px"
+    }
+    return isMobile ? "90vw" : "200px"
 }
 
-export const Thumbnail = (props: ThumbnailProps) => {
-    const { url } = props
-    
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
+export const Thumbnail = () => {        
+    const player = usePlayer()
+    const [imageRef, setImageRef] = useState<RefObject<HTMLImageElement> | null>(null)
+    const [loaded, setLoaded] = useState(false)
+    const isMobile = useIsMobile()
 
-    const imageRef = useRef<HTMLImageElement>(null)
+    const size = getSize(player?.isPreview, isMobile)
+    const { resetDominantColor } = useDominantColor(imageRef ?? undefined, loaded)
 
-    const handleImageLoad = () => {
-        setLoading(false)
-        setError(false)
-    }
-
-    const handleImageError = () => {
-        setLoading(false)
-        setError(true)
-    }
-
-    // Update dominant color
-    const { resetDominantColor } = useDominantColor(imageRef, !loading && !error)
-
-    // Reset default thumbnail status to false
-    useEffect(() => {
-        setLoading(true) 
-        setError(false)
+    const handleSrcChange = (ref: RefObject<HTMLImageElement>) => {
         resetDominantColor()
-    }, [url])
-
-    if (error) {
-        return (
-            <DefaultThumbnail>
-                <RadioRoundedIcon/>
-            </DefaultThumbnail>
-        )
+        setImageRef(ref)
+        setLoaded(false)
     }
 
     return (
-        <>
-            {loading && (
-                <Skeleton sx={{ borderRadius: "10px" }} variant="rounded" width={200} height={200} />
-            )}
+        <Image
+            src={player?.station?.favicon}
+            width={size}
+            maxWidth={400}
+            alt={`Thumbnail from the following station: ${player?.station?.name}`} 
+            fallback={<DefaultThumbnail/>}
+            onLoad={() => setLoaded(true)}
+            onSrcChange={handleSrcChange}
+            useProxy
+        />    
+    )
+}
 
-            <img 
-                src={getURLWithCorsEnabled(url)}
-                alt="The radio station thumbnail" 
-                crossOrigin="anonymous"
-                ref={imageRef} 
-                width={200}
-                height={200}
-                style={{ display: (error || loading) ? 'none' : 'block', borderRadius: "10px" }}
-                onError={handleImageError}
-                onLoad={handleImageLoad}
-            />
-        </>
+const DefaultThumbnail = () => {
+    const player = usePlayer()
+    const isMobile = useIsMobile()
+
+    return (
+        <Stack 
+            sx={{ 
+                background: "#F1F1F1AA",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "10px",
+                width: "100%",
+                height: "100%",
+                "& .MuiSvgIcon-root": {
+                    width: player?.isPreview ? 25 : (isMobile ? 100 : 60),
+                    height: player?.isPreview ? 25 : (isMobile ? 100 : 60),
+                    color: "#F1F1F1"
+                } 
+            }}
+        >
+            <RadioRoundedIcon/>
+        </Stack>
     )
 }

@@ -1,34 +1,54 @@
 import { Typography, keyframes } from "@mui/material"
+import { useEffect, useRef, useState } from "react"
+import { Size } from "../../../../utils/size";
 
 interface MarqueeProps {
     text?: string
+    width: string | number,
+    size?: string,
 }
 
-const scroll = keyframes`
-    from {transform: translateX(100%);}
-    to {transform: translateX(-100%);}
-`
-
 export const Marquee = (props: MarqueeProps) => {
-    const { text } = props
+    const { text, width, size = "1.2em" } = props
+
+    const paragraphRef = useRef<HTMLParagraphElement>(null);
+    const [hiddenTextWidth, setHiddenTextWidth] = useState(0);
+
+    const marqueeKeyframes = keyframes`
+        0% {transform: translateX(${hiddenTextWidth/2}px);}
+        45% {transform: translateX(${-hiddenTextWidth/2}px);}
+        50% {transform: translateX(${-hiddenTextWidth/2}px);}
+        95% {transform: translateX(${hiddenTextWidth/2}px);}
+        100% {transform: translateX(${hiddenTextWidth/2}px);}
+    `
+
+    // Re-calculate the width of the text not in the screen
+    useEffect(() => {
+        if (!paragraphRef.current) return
+        const paragraphElement = paragraphRef.current;
+        const paragraphWidth = paragraphElement.clientWidth;
+        const hiddenWidth = paragraphWidth - (Size.build(width).toPx() || 0);
+        setHiddenTextWidth(hiddenWidth);
+    }, [text]);
 
     const getAnimation = () => {
-        const widthProxy = (text?.length || 0) * 4
-        const hasAnimation = widthProxy > 100
-        return hasAnimation ? `${scroll} ${widthProxy / 20}s infinite linear` : "none"
+        const hasAnimation = hiddenTextWidth > 0
+        return hasAnimation ? `${marqueeKeyframes} ${(text?.length || 0) / 5}s infinite ease-in-out` : "none"
     }
 
     return (
         <Typography 
             sx={{ 
+                width: "fit-content",
                 color: "#F1F1F1DD",
-                fontSize: "1.2em",
+                fontSize: size,
                 fontWeight: "bold",
                 animation: getAnimation(),
                 "&:hover": {
                     animationPlayState: "paused"
                 }, 
             }}
+            ref={paragraphRef}
             noWrap
         >
             {text}

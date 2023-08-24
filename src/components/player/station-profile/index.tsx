@@ -1,23 +1,43 @@
-import { Stack } from "@mui/material"
+import { Stack, styled } from "@mui/material"
 import { Thumbnail } from "./thumbnail"
 import { Marquee } from "./marquee"
-import { Station } from "../../../types/radio-browser-api.types"
-import { Container } from "./index.styles"
 import { TagList } from "./tag-list"
+import { usePlayer } from "../../../hooks/usePlayer"
+import { useIsMobile } from "../../../hooks/useIsMobile"
 
-interface StationProfileProps {
-    station?: Station
-}
+export const Container = styled(Stack)`
+    overflow: hidden;
+    align-items: center;
+    gap: 16px;
+`
 
-export const StationProfile = (props: StationProfileProps) => {
-    const { station } = props
+export const StationProfile = () => {
+    const player = usePlayer()
+    const isMobile = useIsMobile()
+
+    const width = isMobile ? "90vw" : 200
 
     return (
-        <Container>
-            <Thumbnail url={station?.favicon} />
-            <Stack alignItems="center" gap={1}>
-                <Marquee text={station?.name}/>
-                <TagList list={station?.tags}/>
+        <Container 
+            width={width}
+            direction={player?.isPreview ? "row" : "column"}
+        >
+            <Thumbnail />
+            <Stack 
+                sx={{ marginTop: player?.isPreview ? 0 : "2em" }} 
+                alignItems={player?.isPreview ? "left" : "center"}
+                gap={player?.isPreview ? 0 : 1}
+            >
+                <Marquee 
+                    text={player?.station?.name} 
+                    width={width}
+                    size={player?.isPreview ? "0.9em" : (isMobile ? "1.6em" : "1.3em") }
+                />
+                <TagList 
+                    list={player?.station?.tags}
+                    size={player?.isPreview ? "0.6em" : (isMobile ? "0.9em" : "0.7em")}
+                    thresholdInLetters={player?.isPreview ? 15 : 25}
+                />
             </Stack>
         </Container>
     )

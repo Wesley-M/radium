@@ -13,12 +13,13 @@ export const Volume = (props: VolumeProps) => {
     const { dominantColor } = useDominantColor()
 
     return (
-        <Stack spacing={2} direction="row" sx={{ mb: 1, px: 1 }} alignItems="center">
+        <Stack spacing={2} direction="row" sx={{ mb: 1, px: 1, width: "100%" }} alignItems="center">
           <VolumeDownRounded htmlColor="#F1F1F180" />
           <Slider
             onChange={(_e, v) => setVolume?.(v as number)}
+            value={value}
             aria-label="Volume"
-            defaultValue={value}
+            defaultValue={60}
             sx={{
               color: dominantColor ? `${dominantColor}AA` : '#F1F1F1',
               '& .MuiSlider-track': {

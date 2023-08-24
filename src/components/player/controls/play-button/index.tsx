@@ -1,6 +1,7 @@
-import { IconButton } from "@mui/material"
+import { CircularProgress, IconButton, Stack } from "@mui/material"
 import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded';
 import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded';
+import { usePlayer } from "../../../../hooks/usePlayer";
 
 type PlayButtonProps = {
     onClick?: ((...args: any[]) => any),
@@ -19,6 +20,8 @@ export const PlayButton = (props: PlayButtonProps) => {
         isPlaying = false
     } = props
     
+    const player = usePlayer()
+    
     const getStyle = () => {
         return { 
             color: `${color}EE`, 
@@ -32,13 +35,24 @@ export const PlayButton = (props: PlayButtonProps) => {
         }
     }
 
+    const getIcon = () => {
+        if (isPlaying) {
+            if (player?.controls.isLoadingAudio()) {
+                return (
+                    <Stack sx={{ width, height, justifyContent: "center", alignItems: "center" }}>
+                        <CircularProgress size={45} sx={{ color: `${color}EE` }} />
+                    </Stack>
+                )
+            }
+            return <PauseCircleFilledRoundedIcon sx={getStyle()} /> 
+        } else {
+            return <PlayCircleFilledRoundedIcon sx={getStyle()} /> 
+        }
+    }
+
     return (
         <IconButton onClick={onClick}>
-            { isPlaying ? ( 
-                <PauseCircleFilledRoundedIcon sx={getStyle()} /> 
-            ) : ( 
-                <PlayCircleFilledRoundedIcon sx={getStyle()} /> 
-            )}
+            {getIcon()}
         </IconButton>
     )
 }

@@ -1,26 +1,27 @@
 import { Typography } from "@mui/material";
 
 interface TagListProps {
-    list?: string[] 
+    list?: string[]
+    size?: string
+    thresholdInLetters: number
 }
 
 export const TagList = (props: TagListProps) => {
-    const { list } = props
+    const { list, size = "0.7em", thresholdInLetters = 20 } = props
     
-    const truncateString = (text?: string, maxLength = 25) =>
+    const truncateString = (text?: string, maxLength = 20) =>
         (text?.length || 0) > maxLength ? `${text?.slice(0, maxLength)}...` : text;
 
     const tags = list?.join(", ")
-    const truncatedTags = truncateString(tags)
+    const truncatedTags = truncateString(tags, thresholdInLetters)
     
     return (
         <Typography 
             sx={{ 
                 textTransform: "uppercase", 
-                fontSize: "0.7em", 
+                fontSize: size, 
                 fontWeight: "bold",   
-                textAlign: "center", 
-                width: 200, 
+                width: "fit-content", 
                 color: "#F1F1F1"
             }}
             title={tags}

@@ -53,7 +53,7 @@ export const useDominantColor = (imageRef?: RefObject<HTMLImageElement>, isLoade
     const {dominantColor, updateDominantColor, resetDominantColor} = context
     
     useEffect(() => {
-        if (imageRef?.current && isLoaded) {
+        if (imageRef?.current && imageRef.current.width !== 0 && isLoaded) {
             updateDominantColor(imageRef)
         } else {
             resetDominantColor()
