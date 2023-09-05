@@ -1,6 +1,6 @@
 import { Typography, keyframes } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
-import { Size } from "../../../../utils/size";
+import { CssSize } from "@design-system/utils";
 
 interface MarqueeProps {
     text?: string
@@ -27,7 +27,7 @@ export const Marquee = (props: MarqueeProps) => {
         if (!paragraphRef.current) return
         const paragraphElement = paragraphRef.current;
         const paragraphWidth = paragraphElement.clientWidth;
-        const hiddenWidth = paragraphWidth - (Size.build(width).toPx() || 0);
+        const hiddenWidth = paragraphWidth - (CssSize.build(width).toPx() || 0);
         setHiddenTextWidth(hiddenWidth);
     }, [text]);
 

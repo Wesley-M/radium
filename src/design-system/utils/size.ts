@@ -2,7 +2,7 @@
 /**
  * @class Parses a CSS size value and converts it to pixels.
  */
-export class Size {
+export class CssSize {
     size: string | number
 
     constructor(size: string | number) {
@@ -10,7 +10,7 @@ export class Size {
     }
 
     static build(size: string | number) {
-        return new Size(size)
+        return new CssSize(size)
     }
 
     toPx() {

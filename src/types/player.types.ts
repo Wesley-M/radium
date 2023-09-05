@@ -10,11 +10,7 @@ export type PlayerControls = {
     canSkipPrevious: () => boolean,
     skipNext: () => void,
     canSkipNext: () => boolean,
-    onAudioLoad: () => void,
-    onPlay: () => void,
-    onPause: () => void,
-    isLoadingAudio: () => boolean,
-    resetAudio: () => void
+    isLoading: () => boolean,
 }
 
 export type PlayerMode = "full" | "preview"

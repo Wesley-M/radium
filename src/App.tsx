@@ -1,17 +1,8 @@
-import { Player } from "./components/player"
-import { PlayerProvider } from "./context/player-context"
-import { useStations } from "./hooks/useStations"
-import { Box } from "@mui/material"
+import { Card } from "@design-system/components/card"
 
-function App() {
-  const stations = useStations()
-  
+function App() {    
   return (
-    <PlayerProvider playlist={stations}>
-      <Box style={{ width: '100%', height: '100vh' }}>
-        <Player/>
-      </Box>
-    </PlayerProvider>
+    <>Hello</>
   )
 }
   

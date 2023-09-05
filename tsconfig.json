@@ -19,8 +19,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+
+    /* Aliases */
+    "baseUrl": "src",
+    "types": ["node"],
+    "paths": {
+      "@design-system/*": ["./design-system/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

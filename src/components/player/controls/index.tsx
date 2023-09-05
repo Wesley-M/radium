@@ -4,7 +4,8 @@ import { PlayButton } from "./play-button";
 import { Volume } from "./volume";
 import { usePlayer } from "../../../hooks/usePlayer";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useIsMobile } from "../../../hooks/useIsMobile";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useIsMobile } from "../../../design-system/hooks/use-is-mobile";
 
 export const Controls = () => {
     const player = usePlayer()
@@ -13,6 +14,21 @@ export const Controls = () => {
         <>
             {player?.isPreview ? <PreviewControls/> : <FullControls/>}
         </>
+    )
+}
+
+export const MobileTopControls = () => {
+    const player = usePlayer()
+    const isMobile = useIsMobile()
+
+    if (!player?.isFull || !isMobile) return
+
+    return (
+        <Stack sx={{ marginRight: "1em", marginTop: "1em" }} direction="row" justifyContent="flex-end" width="100%">
+            <IconButton sx={{ color: "#F1F1F1", "& .MuiSvgIcon-root": { width: 40, height: 40 } }} onClick={player?.controls.toggleMode}>
+                <KeyboardArrowDownIcon/>
+            </IconButton>
+        </Stack>
     )
 }
 

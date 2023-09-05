@@ -2,15 +2,15 @@ import { RefObject, useState } from "react";
 import RadioRoundedIcon from '@mui/icons-material/RadioRounded';
 import { useDominantColor } from "../../../../context/dominant-color-context";
 import { usePlayer } from "../../../../hooks/usePlayer";
-import { useIsMobile } from "../../../../hooks/useIsMobile";
-import { Image } from "../../../image"
+import { useIsMobile } from "../../../../design-system/hooks/use-is-mobile";
+import { Image } from "../../../../design-system/components/image"
 import { Stack } from "@mui/material";
 
 const getSize = (isPreview?: boolean, isMobile?: boolean) => {
     if (isPreview) {
         return "50px"
     }
-    return isMobile ? "90vw" : "200px"
+    return isMobile ? "80vw" : "200px"
 }
 
 export const Thumbnail = () => {        
@@ -32,7 +32,7 @@ export const Thumbnail = () => {
         <Image
             src={player?.station?.favicon}
             width={size}
-            maxWidth={400}
+            maxWidth={300}
             alt={`Thumbnail from the following station: ${player?.station?.name}`} 
             fallback={<DefaultThumbnail/>}
             onLoad={() => setLoaded(true)}

@@ -36,14 +36,15 @@ export const PlayButton = (props: PlayButtonProps) => {
     }
 
     const getIcon = () => {
+        if (player?.controls.isLoading()) {
+            return (
+                <Stack sx={{ width, height, justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress size={45} sx={{ color: `${color}EE` }} />
+                </Stack>
+            )
+        }
+        
         if (isPlaying) {
-            if (player?.controls.isLoadingAudio()) {
-                return (
-                    <Stack sx={{ width, height, justifyContent: "center", alignItems: "center" }}>
-                        <CircularProgress size={45} sx={{ color: `${color}EE` }} />
-                    </Stack>
-                )
-            }
             return <PauseCircleFilledRoundedIcon sx={getStyle()} /> 
         } else {
             return <PlayCircleFilledRoundedIcon sx={getStyle()} /> 

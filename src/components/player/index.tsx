@@ -1,10 +1,10 @@
 import { useDominantColor } from "../../context/dominant-color-context"
 import { usePlayer } from "../../hooks/usePlayer"
 import { StationProfile } from "./station-profile"
-import { Controls } from "./controls"
+import { Controls, MobileTopControls } from "./controls"
 import { FullContainer, PreviewContainer, getBackground } from "./index.styles"
 import { Slide } from "@mui/material"
-import { useIsMobile } from "../../hooks/useIsMobile"
+import { useIsMobile } from "../../design-system/hooks/use-is-mobile"
 
 export const Player = () => {
     const { dominantColor } = useDominantColor()
@@ -13,25 +13,16 @@ export const Player = () => {
 
     const content = (
         <>
+            <MobileTopControls/>
             <StationProfile />
             <Controls />
-            <audio 
-                src={player?.station?.urlResolved} 
-                ref={player?.audioRef}
-                onLoadedData={player?.controls.onAudioLoad}
-                onPause={player?.controls.onPause}
-                onPlay={player?.controls.onPlay}
-            />
         </>
     )
 
     // Preview version
     if (player?.isPreview) {
         return (
-            <PreviewContainer 
-                onLoad={player?.controls.resetAudio} 
-                sx={{ background: getBackground(dominantColor, player?.isFull) }}
-            >
+            <PreviewContainer sx={{ background: getBackground(dominantColor, player?.isFull) }}>
                 {content}
             </PreviewContainer>
         )
@@ -41,7 +32,6 @@ export const Player = () => {
     if (isMobile) {
         return (
             <Slide 
-                onLoad={player?.controls.resetAudio} 
                 direction="up" 
                 in={true} 
                 mountOnEnter 
@@ -49,7 +39,10 @@ export const Player = () => {
             >
                 <FullContainer 
                     isMobile={isMobile} 
-                    sx={{ background: getBackground(dominantColor, player?.isFull) }}
+                    sx={{ 
+                        background: getBackground(dominantColor, player?.isFull),
+                        justifyContent: "space-around"
+                    }}
                 >
                     {content}
                 </FullContainer>
