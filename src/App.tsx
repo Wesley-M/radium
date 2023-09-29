@@ -1,8 +1,15 @@
-import { Card } from "@design-system/components/card"
+import 'simplebar-react/dist/simplebar.min.css'
+import '@design-system/components/surfaces/scroll/scroll-style.css'
+import { Sidebar } from '@components/sidebar'
+import { Player } from '@components/player'
+import { Outlet } from 'react-router-dom'
 
-function App() {    
+export function App() {    
   return (
-    <>Hello</>
+    <>
+      <Sidebar content={<Outlet/>}/>
+      <Player />
+    </>
   )
 }
   

@@ -9,7 +9,12 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@', replacement: path.resolve(__dirname, 'src') },
-      { find: '@design-system', replacement: path.resolve(__dirname, 'src/design-system') }
+      { find: '@design-system', replacement: path.resolve(__dirname, 'src/design-system') },
+      { find: '@components', replacement: path.resolve(__dirname, 'src/shared/components') },
+      { find: '@hooks', replacement: path.resolve(__dirname, 'src/shared/hooks') },
+      { find: '@context', replacement: path.resolve(__dirname, 'src/shared/context') },
+      { find: '@utils', replacement: path.resolve(__dirname, 'src/shared/utils') },
+      { find: '@api', replacement: path.resolve(__dirname, 'src/api') }
     ],
   },
 })

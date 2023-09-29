@@ -25,7 +25,12 @@
     "baseUrl": "src",
     "types": ["node"],
     "paths": {
-      "@design-system/*": ["./design-system/*"]
+      "@design-system/*": ["./design-system/*"],
+      "@components/*": ["./shared/components/*"],
+      "@hooks/*": ["./shared/hooks/*"],
+      "@context/*": ["./shared/context/*"],
+      "@utils/*": ["./shared/utils/*"],
+      "@api/*": ["./api/*"],
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],

@@ -38,6 +38,10 @@ export interface Theme {
         border: ColorScale,
         button: {
             primary: string,
+        },
+        text: {
+            primary: string,
+            secondary: string
         }
     },
     spacing: {

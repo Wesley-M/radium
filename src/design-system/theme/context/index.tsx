@@ -47,9 +47,12 @@ export const useTheme = () => {
     return getTokenValue(tokenName)
   }
 
-  const spacing = (s: SpacingAlias): string => {
+  const spacing = (s: SpacingAlias, multiplier = 1): string => {
     const tokenName = get(context?.theme.spacing, alias("spacing", s))
-    return getTokenValue(tokenName)
+    const tokenValue = getTokenValue(tokenName)
+    const tokenNumber = Number(tokenValue.replace(/[a-z]/g, ''))
+    const tokenUnity = tokenValue.replace(/[0-9]./g, '')
+    return (multiplier * tokenNumber) + tokenUnity
   }
 
   const radius = (r: Size): string => {

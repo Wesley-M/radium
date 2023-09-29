@@ -6,13 +6,15 @@
         "sr-300": "background.surface.300",
         "sr-400": "background.surface.400",
         "sr-500": "background.surface.500",
-        "accent": "accent",
         "br-100": "border.100",
         "br-200": "border.200",
         "br-300": "border.300",
         "br-400": "border.400",
         "br-500": "border.500",
-        "bt-primary": "button.primary"
+        "accent": "accent",
+        "bt-primary": "button.primary",
+        "tx-primary": "text.primary",
+        "tx-secondary": "text.secondary"
     },
     "spacing": {
         "st-xxs": "stack.xxs",

@@ -3,23 +3,27 @@
         "background": {
             "body": "blackBase",
             "surface": {
-                "100": "blackDarken8",
+                "100": "blackDarken4",
                 "200": "blackBase",
-                "300": "blackLighten4",
-                "400": "blackLighten8",
+                "300": "blackLighten2",
+                "400": "blackLighten4",
                 "500": "blackLighten16"
             }
         },
-        "accent": "orangeBase",
         "border": {
-            "100": "blackLighten4",
+            "100": "blackLighten2",
             "200": "blackLighten16",
             "300": "blackLighten32",
             "400": "whiteDarken32",
             "500": "whiteBase"
         },
+        "accent": "orangeBase",
         "button": {
             "primary": "whiteBase"
+        },
+        "text": {
+            "primary": "whiteBase",
+            "secondary": "whiteDarken32"
         }
     },
     "spacing": {

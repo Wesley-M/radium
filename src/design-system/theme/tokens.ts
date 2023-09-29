@@ -1,8 +1,8 @@
 // Colors
-export const blackBase = "#292929"
-export const blackDarken8 = "#1F1F1F"
-export const blackLighten4 = "#333333"
-export const blackLighten8 = "#3D3D3D"
+export const blackBase = "#1A1A1A"
+export const blackDarken4 = "#0F0F0F"
+export const blackLighten2 = "#1F1F1F"
+export const blackLighten4 = "#242424"
 export const blackLighten16 = "#525252"
 export const blackLighten32 = "#7A7A7A"
 export const orangeBase = "#FF7A00"
