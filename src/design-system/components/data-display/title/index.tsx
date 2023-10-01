@@ -78,9 +78,9 @@ export const Title = (props: TitleProps) => {
             gap={spacing(`st-${gap}`)} 
             sx={sx}
         >
-            { isAbove && <>{sub}</>}
+            { isAbove && subtitle && <>{sub}</>}
             { title }
-            { !isAbove && <>{sub}</>}
+            { !isAbove && subtitle && <>{sub}</>}
         </Stack>
     )
 }   

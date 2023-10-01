@@ -5,6 +5,7 @@ import { usePlaylist } from "@hooks/use-playlist"
 import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded';
 import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded';
 import { Station } from "libs/radio-browser-api.types";
+import { useState } from "react";
 
 interface StationCardProps {
     station: Station,
@@ -23,8 +24,8 @@ export const StationCard = (props: StationCardProps) => {
 
     const player = usePlayer()
     const playlist = usePlaylist()
-    const { palette } = useTheme()
-
+    const [hover, setHover] = useState(false)
+    
     const getIcon = () => {
         if (player?.isPlaying(station)) {
             return <PauseCircleFilledRoundedIcon/>
@@ -49,7 +50,9 @@ export const StationCard = (props: StationCardProps) => {
                 icon: getIcon(),
                 onClick: () => playStation(station, collection, stationIdx),
             }}
+            onHoverChange={setHover}
             enableAlwaysShowAction={player?.isPlaying(station)}
+            enableMarquee={hover}
         />
     )
 }

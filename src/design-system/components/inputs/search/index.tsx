@@ -92,6 +92,7 @@ export const Search = (props: SearchProps) => {
         if (e.key === 'Enter') {
             e.preventDefault()
             onEnter(text)
+            handleClose()
         }
     }
 

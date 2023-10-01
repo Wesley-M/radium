@@ -113,5 +113,20 @@
             "color": "whiteDarken32",
             "fontFamily": "fontFamily1"
         }
+    },
+    "components": {
+        "player": {
+            "compact": {
+                "size": "playerCompactSize"
+            }
+        },
+        "sidebar": {
+            "mini": {
+                "width": "sidebarMiniWidth"
+            },
+            "regular": {
+                "width": "sidebarRegularWidth"
+            }
+        }
     }
 }

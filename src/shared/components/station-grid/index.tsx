@@ -27,10 +27,9 @@ export const StationGrid = (props: StationGridProps) => {
     }
 
     const grid = useSmartGrid(gridOptions)
+    const navigate = useNavigate();
     
     const hasHiddenStations = () => grid.hasHiddenItems()
-
-    const navigate = useNavigate();
 
     const isLoading = () => collection.status === "loading"
     
@@ -40,10 +39,11 @@ export const StationGrid = (props: StationGridProps) => {
 
     return (
         <Section 
+            innerRef={grid.ref}
             title={collection.data?.title} 
             subtitle={collection.data?.description}
             actions={hasHiddenStations() && (
-                <Button onClick={() => navigate(collection.data?.query.name)}>
+                <Button onClick={() => navigate("/" + collection.data?.query.id)}>
                     Show all
                 </Button>
             )}
@@ -79,12 +79,11 @@ const LoadingStationGrid = (props: LoadingStationGridProps) => {
             
             <SmartGrid 
                 itemProps={{ minWidth: isCompact ? 300 : 150 }}
-                variant={isCompact ? "fill-xy" : "fit-x"}
+                variant={isCompact ? "fill-xy" : "fit-xy"}
             >
                 {[...Array(isCompact ? 3 : 10)].map((_, index) => (
                     <Item key={index}>
                         <Card
-                            size={!isCompact ? 150 : undefined}
                             padding={isCompact ? "xs" : "sm"}
                             borderRadius='md'
                             variant={isCompact ? "compact" : "default"}

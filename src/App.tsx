@@ -3,12 +3,15 @@ import '@design-system/components/surfaces/scroll/scroll-style.css'
 import { Sidebar } from '@components/sidebar'
 import { Player } from '@components/player'
 import { Outlet } from 'react-router-dom'
+import { Scroll } from '@design-system/components/surfaces/scroll'
 
 export function App() {    
   return (
     <>
-      <Sidebar content={<Outlet/>}/>
-      <Player />
+      <Scroll maxHeight="100vh">
+        <Sidebar content={<Outlet/>}/>
+      </Scroll>
+      <Player/>
     </>
   )
 }

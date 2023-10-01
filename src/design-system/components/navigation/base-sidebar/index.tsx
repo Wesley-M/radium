@@ -9,6 +9,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useIsMobile } from '@design-system/hooks/use-is-mobile';
 import { MiniContext } from '@design-system/components/navigation/base-sidebar/context/mini-context';
 import { Search } from '@design-system/components/inputs/search';
+import { useNavigate } from "react-router-dom"
 
 const DEFAULT_WIDTH = 300;
 const MINI_WIDTH = 100;
@@ -22,11 +23,18 @@ export function BaseSidebar(props: BaseSidebarProps) {
   const { children, content } = props;
 
   const isMobile = useIsMobile("md")
+  const navigate = useNavigate()
   const { palette, spacing } = useTheme()
+
   const [open, setOpen] = useState(false)
   const [mini, setMini] = useState(false)
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   
+  const handleSearch = (t: string) => {
+    if (!t) return
+    navigate(`/search?q=${t}`)
+  }
+
   const handleDrawerToggle = () => {
     if (!isMobile) {
       setWidth(!mini ? MINI_WIDTH : DEFAULT_WIDTH)
@@ -46,6 +54,13 @@ export function BaseSidebar(props: BaseSidebarProps) {
   useEffect(() => {
     window.addEventListener("resize", handleResize, false);
   }, []);
+
+  const search = (
+    <Search 
+      placeholder="Search for stations or tags" 
+      onEnter={handleSearch}
+    />
+  )
 
   const header = (
     <Stack 
@@ -71,7 +86,7 @@ export function BaseSidebar(props: BaseSidebarProps) {
       </Stack>
 
       <Box display={{ xs: 'flex', md: "none" }} sx={{ marginTop: 1 }}>
-          <Search placeholder="Search for stations or tags"/>
+        {search}
       </Box>
     </Stack>
   )
@@ -143,15 +158,19 @@ export function BaseSidebar(props: BaseSidebarProps) {
         }}
       >
         {isMobile ? header : null}
-        <Box
+        <Stack
+          gap={spacing("st-md")}
           sx={{
             padding: spacing("st-md"),
             paddingTop: spacing("st-sm"),
             paddingBottom: spacing("st-xl", 2),
           }}
         >
+          <Box display={{ xs: 'none', md: "flex" }}>
+            {search}
+          </Box>
           {content}
-        </Box>
+        </Stack>
       </Box>
     </Box>
   );

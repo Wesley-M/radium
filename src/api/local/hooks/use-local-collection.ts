@@ -7,14 +7,14 @@
 
 import { Station } from "libs/radio-browser-api.types"
 import { useEffect, useState } from "react";
-import { LocalCollection } from "@api/utils/local-collection";
+import { CollectionId, LocalCollection } from "@api/local/services/local-collection";
 
 interface Options {
     limit?: number
     onStorageChange?: () => void
 }
 
-export const useLocalCollection = (collectionId: string, options?: Options) => {
+export const useLocalCollection = (collectionId: CollectionId, options?: Options) => {
     /** 
      * Build a new LocalCollection
     */
@@ -23,7 +23,7 @@ export const useLocalCollection = (collectionId: string, options?: Options) => {
     /** 
      * The collection is stored in localStorage and in the state
     */
-    const [_, saveStateCollection] = useState<Map<string, Station>>(localCollection.getFromStorage());
+    const [_, saveStateCollection] = useState<Map<CollectionId, Station>>(localCollection.getFromStorage());
 
     /** 
      * Save the collection in the state when it changes in localStorage

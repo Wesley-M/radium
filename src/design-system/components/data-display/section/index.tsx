@@ -16,7 +16,8 @@ interface SectionProps {
     titleProps?: TextProps,
     subtitleProps?: TextProps,
     gap?: Size,
-    goBack?: string
+    goBack?: string,
+    innerRef?: (element: HTMLElement | null) => void
 }
 
 export const Section = (props: SectionProps) => {
@@ -28,14 +29,15 @@ export const Section = (props: SectionProps) => {
         titleProps, 
         subtitleProps,
         gap = "md",
-        goBack
+        goBack,
+        innerRef
     } = props
 
     const { spacing } = useTheme()
     const navigate = useNavigate();
     
     return (
-        <Stack gap={spacing(`st-${gap}`)}>
+        <Stack gap={spacing(`st-${gap}`)} ref={innerRef}>
             <Stack 
                 direction="row" 
                 alignItems="flex-end"
@@ -56,7 +58,7 @@ export const Section = (props: SectionProps) => {
                     <Title 
                         isAbove
                         subtitle={subtitle} 
-                        titleProps={{ as: "h2", ...titleProps }}
+                        titleProps={{ as: "h2", noWrap: false, ...titleProps }}
                         subtitleProps={{ isUppercase: true, ...subtitleProps }}
                     >
                         {title}

@@ -12,7 +12,8 @@ export const MinimalCard = (props: CardProps) => {
         padding = "xs",
         actionProps,
         cardProps,
-        imageProps
+        imageProps,
+        onHoverChange
     } = props
 
     const { avatar, spacing, palette, radius } = useTheme()   
@@ -45,6 +46,11 @@ export const MinimalCard = (props: CardProps) => {
         transition: "opacity 100ms ease-in-out"
     }
 
+    const handleHoverChange = (hover: boolean) => {
+        setHover(hover)
+        onHoverChange?.(hover)
+    }
+
     return (
         <BaseCard
             {...props}
@@ -63,7 +69,7 @@ export const MinimalCard = (props: CardProps) => {
                 sx: { ...imageStyle, ...imageProps?.sx }
             }}
             cardRef={cardRef}
-            onHoverChange={setHover}
+            onHoverChange={handleHoverChange}
         />
     )
 }

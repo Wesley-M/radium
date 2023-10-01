@@ -1,3 +1,8 @@
+/** 
+ * @file Image component that supports aspect ratio, proxy loading, skeletons, 
+ * custom fallbacks, ringlights, and custom background based on dominant color.
+*/
+
 import { Box, Skeleton } from "@mui/material";
 import { ReactNode, RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CssSize } from "../../../utils/size";
@@ -8,9 +13,9 @@ import ColorThief from "colorthief";
 import { Color } from "@design-system/utils";
 
 export interface ImageProps {
-  /** Alt text for the image */
+  /** Alternative text for the image */
   alt?: string
-  /** Border radius of the image */
+  /** Border radius */
   borderRadius?: Size
   /** Fallback component to render when image fails to load */
   fallback?: ReactNode
@@ -42,7 +47,6 @@ export const Image = (props: ImageProps) => {
   const {
     borderRadius = "md",
     src = "",
-    width = 100,
     height,
     maxWidth,
     alt = "",
@@ -55,18 +59,24 @@ export const Image = (props: ImageProps) => {
     hasRinglight = false
   } = props
 
-  const widthInPx = Math.min(CssSize.build(maxWidth || width).toPx() ?? 0, CssSize.build(width).toPx() ?? 0)
+  // Calculate image width in pixels (considering a maximum width). It 
+  // enables aspect ratio to work with relative values (vh, vw, rem, em).
+  const maxWidthInPx = CssSize.build(maxWidth || props.width || 100).toPx() || 0
+  const widthInPx = CssSize.build(props.width || 100).toPx() || 0
+  const width = Math.min(maxWidthInPx, widthInPx)
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+
   const [ratioHeight, setRatioHeight] = useState(0)
   const [background, setBackground] = useState<string | undefined>("transparent")
+
   const imageRef = useRef<HTMLImageElement>(null)
 
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     overflow: 'hidden',
-    width: widthInPx,
+    width: width,
     height: height || ratioHeight,
     backgroundColor: background,
     borderRadius: radius(borderRadius),
@@ -77,7 +87,7 @@ export const Image = (props: ImageProps) => {
     top: 0,
     left: 0,
     width: '100%',
-    maxWidth: maxWidth || widthInPx,
+    maxWidth: maxWidth || "auto",
     height: '100%',
     objectFit: 'cover',
     borderRadius: radius(borderRadius),
@@ -85,6 +95,10 @@ export const Image = (props: ImageProps) => {
     border: hasRinglight ? `2px solid ${palette("br-500")}` : undefined
   }
   
+  /** 
+   * Update background color based on a darker version of the 
+   * image dominant color
+  */
   const updateBackgroundColor = (imageRef?: RefObject<HTMLImageElement>) => {
     if (!imageRef?.current) return
     const colorThief = new ColorThief();
@@ -93,6 +107,10 @@ export const Image = (props: ImageProps) => {
     setBackground(backgroundColor)
   }
 
+  /** 
+   * Handle image load event by updating background color and
+   * bubbling up the event
+  */
   const handleImageLoad = () => {
     setLoading(false)
     setError(false)
@@ -100,22 +118,42 @@ export const Image = (props: ImageProps) => {
     onLoad()
   }
 
-  const handleImageError = () => {
+  /** 
+   * Handle image error event by hiding the image and 
+   * bubbling up the event
+  */
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    event.currentTarget.style.display = 'none'
     setLoading(false)
     setError(true)
   }
 
+  /** 
+   * Handle height change by re-calculating the height 
+   * based on the aspect ratio (called when the width changes)
+  */
   const handleHeightChange = () => {
-    const newHeight = calculateHeight(ratio, widthInPx)
+    const newHeight = width / ratio
     setRatioHeight(newHeight)
     onHeightChange(newHeight)
   }
 
+  /** 
+   * Reset component state to initial values
+  */
   const reset = () => {
     setLoading(true) 
     setError(false)
     setBackground("transparent")
     onSrcChange(imageRef)
+  }
+
+  /** 
+   * For security reasons, browsers do not allow the access of image 
+   * data unless it is served with CORS enabled.
+  */
+  const getProxyURL = (url?: string) => {
+    return url && `https://corsproxy.io/?${url}`
   }
 
   // Reset state when image changes
@@ -126,15 +164,18 @@ export const Image = (props: ImageProps) => {
   // Re-calculate height on width change
   useEffect(() => {
     handleHeightChange()
-  }, [width, ratio])
+  }, [widthInPx, ratio])
 
-  // Render fallback on error
+  /** 
+   * Render fallback component when image fails to load and/or 
+   * it is not provided
+  */
   if ((error || !src) && fallback) {
     return (
       <Box sx={containerStyle}>
         <Fallback 
           style={{ 
-            width: widthInPx, 
+            width: width, 
             height: height || ratioHeight, 
             borderRadius: radius(borderRadius) 
           }}
@@ -154,13 +195,13 @@ export const Image = (props: ImageProps) => {
             height: height || ratioHeight,
           }} 
           variant="rounded" 
-          width={widthInPx} 
+          width={width} 
           height={height} 
         />
       )}
 
       <img 
-        src={useProxy ? getURLWithCorsEnabled(src) : src}
+        src={useProxy ? getProxyURL(src) : src}
         alt={alt} 
         crossOrigin="anonymous"
         ref={imageRef} 
@@ -170,15 +211,4 @@ export const Image = (props: ImageProps) => {
       />
     </Box>
   )
-}
-
-const getURLWithCorsEnabled = (url?: string) => {
-  return url && `https://corsproxy.io/?${url}`
-}
-
-const calculateHeight = (aspectRatio: number, width: number): number => {
-  if (aspectRatio <= 0) {
-    throw new Error("Aspect ratio must be a positive number.");
-  }
-  return width / aspectRatio;
 }

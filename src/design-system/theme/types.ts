@@ -1,9 +1,21 @@
+/** 
+ * Possible size values
+*/
 export type Size = "xxs" | "xs" | "sm" | "md" | "lg" | "xl"
 
+/** 
+ * Common color scale
+*/
 export type Color = "100" | "200" | "300" | "400" | "500"
 
+/** 
+ * Predefined text tags
+*/
 export type TextTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2"
 
+/** 
+ * Size scale structure
+*/
 export interface SizeScale {
     xxs: string,
     xs: string,
@@ -13,6 +25,9 @@ export interface SizeScale {
     xl: string,
 }
 
+/**
+ * Color scale structure
+*/
 export interface ColorScale {
     100: string,
     200: string,
@@ -43,14 +58,14 @@ export interface Theme {
             primary: string,
             secondary: string
         }
-    },
+    }
     spacing: {
         stack: SizeScale,
         inline: SizeScale,
-    },
+    }
     border: {
         radius: SizeScale,
-    },
+    }
     image: {
         avatar: SizeScale,
     }
@@ -63,5 +78,20 @@ export interface Theme {
         h6: Text,
         body1: Text,
         body2: Text
+    }
+    components: {
+        player: {
+            compact: {
+                size: string
+            }
+        },
+        sidebar: {
+            mini: {
+                width: string
+            },
+            regular: {
+                width: string
+            }
+        }
     }
 }

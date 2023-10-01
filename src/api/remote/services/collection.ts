@@ -1,20 +1,18 @@
-import { StationCollection } from "@api/assets/station-collections"
-import { LocalCollection } from "@api/utils/local-collection"
-import { normalizeStations } from "@api/utils/normalize-stations"
+import { StationCollection } from "@api/static/station-collections"
+import { LocalCollection } from "@api/local/services/local-collection"
+import { normalizeStations } from "@api/remote/utils/normalize-stations"
 import * as RadioAPI from 'radio-browser-api'
+
+const api = new RadioAPI.RadioBrowserApi('radium')
 
 const SERVER_CACHE_TIME = 1000 * 60 * 60 * 24
 const SERVER_STALE_TIME = 1000 * 60 * 60 * 24
-
-const api = new RadioAPI.RadioBrowserApi('radium')
 
 const fetchCollection = async (collection: StationCollection) => {
     const stations = await fetchStations(collection)
         
     return {
-        title: collection.title,
-        description: collection.description,
-        query: collection.query,
+        ...collection,
         content: normalizeStations(stations)
     }
 }
@@ -22,7 +20,7 @@ const fetchCollection = async (collection: StationCollection) => {
 const fetchStations = async (collection: StationCollection) => {
     switch(collection.query.target) {
         case "CLIENT":
-            return await fetchClientStations(collection.query.name)
+            return await fetchClientStations(collection.query.id)
         case "SERVER":
             return await fetchServerStations(api, collection.query)
     }

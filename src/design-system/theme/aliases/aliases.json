@@ -79,5 +79,8 @@
         "bd2-fontWeight": "body2.fontWeight",
         "bd2-color": "body2.color",
         "bd2-fontFamily": "body2.fontFamily"
+    },
+    "components": {
+        "cm-size": "player.compact.size"
     }
 }

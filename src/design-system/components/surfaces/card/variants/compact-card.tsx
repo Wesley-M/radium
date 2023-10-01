@@ -10,7 +10,8 @@ export const CompactCard = (props: CardProps) => {
         cardProps,
         borderRadius = "md",
         size = 80,
-        padding = "xs"
+        padding = "xs",
+        onHoverChange,
     } = props
 
     const { palette, spacing, avatar, radius } = useTheme()
@@ -35,6 +36,11 @@ export const CompactCard = (props: CardProps) => {
         gap: spacing("st-sm")
     }
 
+    const handleHoverChange = (hover: boolean) => {
+        setHover(hover)
+        onHoverChange?.(hover)
+    }
+    
     return (
         <BaseCard
             {...props}
@@ -51,7 +57,7 @@ export const CompactCard = (props: CardProps) => {
                 width: imageWidth
             }}
             cardRef={cardRef}
-            onHoverChange={setHover}
+            onHoverChange={handleHoverChange}
         />
     )
 }

@@ -3,7 +3,7 @@ import { Stack, SvgIconProps } from "@mui/material";
 import { ComponentType, useContext } from "react";
 import { Text } from "@design-system/components/data-display/text";
 import { MiniContext } from "@design-system/components/navigation/base-sidebar/context/mini-context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface BaseSidebarItemProps {
   icon: ComponentType<SvgIconProps>
@@ -16,7 +16,8 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
   const { icon, title, isActive = false, to } = props
   const { palette, spacing } = useTheme()
   const mini = useContext(MiniContext)
-
+  const navigate = useNavigate()
+  
   const Icon = icon
 
   const text = (
@@ -31,6 +32,26 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
       {title}
     </Text>
   )
+
+  const link = (
+    to ? (
+      <Link to={to} style={{ textDecoration: "none" }}>
+        {text}
+      </Link>
+    ) : (
+      <>{text}</>
+    )
+  )
+
+  // {!mini && (
+  //   <>
+  //     {to ? (
+  //       <Link to={to} style={{ textDecoration: "none" }}>
+  //         {text}
+  //       </Link>
+  //     ) : text}
+  //   </>        
+  // )}
 
   return (
     <Stack 
@@ -47,6 +68,7 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
           opacity: 1
         }
       }}
+      onClick={() => to && navigate(to)}
     >
       <Icon 
         sx={{ 
@@ -54,15 +76,7 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
           color: palette("tx-primary") 
         }} 
       />
-      {!mini && (
-        <>
-          {to ? (
-            <Link to={to} style={{ textDecoration: "none" }}>
-              {text}
-            </Link>
-          ) : text}
-        </>        
-      )}
+      {!mini && text}
     </Stack>
   )
 }

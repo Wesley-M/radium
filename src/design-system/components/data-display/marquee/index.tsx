@@ -16,7 +16,7 @@ export const Marquee = (props: MarqueeProps) => {
     const { 
         text, 
         textProps, 
-        speed = 25,
+        speed = 20,
         minDurationInSec = 5,
         maxDurationInSec = 25 
     } = props
@@ -59,10 +59,7 @@ export const Marquee = (props: MarqueeProps) => {
                 innerRef={textRef}
                 sx={merge({
                     width: "fit-content",
-                    animation: getAnimation(),
-                    "&:hover": {
-                        animationPlayState: "paused"
-                    },
+                    animation: getAnimation()
                 }, textProps?.sx)}
             >
                 {text}

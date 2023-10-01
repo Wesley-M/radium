@@ -41,19 +41,19 @@ export interface CardProps {
     enableAlwaysShowAction?: boolean
     /** Loading state */
     loading?: boolean
+    /**  Hover state change handler  */
+    onHoverChange?: (hover: boolean) => void
 }
 
 type BaseCardProps = CardProps & {
     /**  Reference for the card container  */
-    cardRef?: (element: HTMLElement | SVGElement | null) => void,
-    /**  Hover state change handler  */
-    onHoverChange?: (hover: boolean) => void,
+    cardRef?: (element: HTMLElement | SVGElement | null) => void
 }
 
 /** 
  * Base structure of the card component
 */
-export const BaseCard = (props: BaseCardProps) => {
+export const BaseCard = (props: BaseCardProps) => {    
     const { spacing } = useTheme()
 
     const { 
@@ -115,6 +115,7 @@ export const BaseCard = (props: BaseCardProps) => {
     if (loading) {
         return (
             <LoadingCard 
+                innerRef={cardRef}
                 baseCardStyle={baseCardStyle} 
                 baseImageStyle={baseImageStyle} 
                 baseContentStyle={baseContentStyle}
@@ -176,14 +177,22 @@ interface LoadingCardProps {
     imageProps?: ImageProps & {
         sx?: SxProps
     }
+    innerRef?: (element: HTMLElement | SVGElement | null) => void,
 }
 
 const LoadingCard = (props: LoadingCardProps) => {
-    const {baseCardStyle, baseImageStyle, baseContentStyle, imageProps} = props
+    const {
+        baseCardStyle, 
+        baseImageStyle, 
+        baseContentStyle, 
+        imageProps,
+        innerRef
+    } = props
+    
     const { palette, spacing } = useTheme()
 
     return (
-        <Stack sx={baseCardStyle}>
+        <Stack sx={baseCardStyle} ref={innerRef}>
             <Box width={imageProps?.width} sx={baseImageStyle}>
                 <Skeleton 
                     variant="rounded" 

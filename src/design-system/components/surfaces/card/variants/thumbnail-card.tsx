@@ -13,7 +13,8 @@ export const ThumbnailCard = (props: CardProps) => {
         actionProps,
         cardProps,
         contentProps,
-        imageProps
+        imageProps,
+        onHoverChange
     } = props
 
     const { avatar, spacing, palette, radius } = useTheme()   
@@ -48,6 +49,11 @@ export const ThumbnailCard = (props: CardProps) => {
         transition: "opacity 100ms ease-in-out",
     }
 
+    const handleHoverChange = (hover: boolean) => {
+        setHover(hover)
+        onHoverChange?.(hover)
+    }
+
     return (
         <BaseCard
             {...props}
@@ -70,7 +76,7 @@ export const ThumbnailCard = (props: CardProps) => {
                 sx: { ...imageStyle, ...imageProps?.sx }
             }}
             cardRef={cardRef}
-            onHoverChange={setHover}
+            onHoverChange={handleHoverChange}
         />
     )
 }

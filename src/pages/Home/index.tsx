@@ -20,17 +20,12 @@ export const Home = () => {
     const isCompactCollection = (index: Number) => index === 0
 
     const handleSearch = (t: string) => {
+        if (!t) return
         navigate(`/search?q=${t}`)
     }
 
     return (
        <Stack gap={spacing("st-xl")}>
-            <Box display={{ xs: 'none', md: "flex" }}>
-                <Search 
-                    placeholder="Search for stations or tags" 
-                    onEnter={handleSearch}
-                />
-            </Box>
             {collections.map((collection, index) => (
                 <React.Fragment key={index}>
                     {!isEmptyCollection(collection) && (

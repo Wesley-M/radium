@@ -5,7 +5,7 @@
  * content - by using a remote json or using ML to recommend content.
 */
 
-import { AdvancedStationQuery } from "libs/radio-browser-api.types"
+import { AdvancedStationQuery, Station } from "libs/radio-browser-api.types"
 
 /** 
  * The target where the query should be executed.
@@ -22,15 +22,32 @@ type TargetType = "CLIENT" | "SERVER"
 */
 type QueryType = "RANDOM" | "RECENTLY_PLAYED" | "GLOBAL_TOP" | "TOP"
 
+/** 
+ * A station id
+*/
+export type StationId = string
+
+/** 
+ * It is a description of a set of stations. We use both a 
+ * query and a content to decide which stations should be retrieved.
+*/
 export interface StationCollection {
+    /** The title of the collection */
     title: string
-    description: string
+    /** A user-friendly and short description for a collection */
+    description?: string
+    /** Used to specify the request to be executed */
     query: {
-        name: string,
-        target: TargetType,
-        type: QueryType,
+        /** Query's ID */
+        id: string,
+        /** Whether the request is for a local collection (LOCAL) or a remote resource (SERVER) */
+        target?: TargetType,
+        /** The type of query to be executed */
+        type?: QueryType,
+        /** Standard filters for the Radio Browser API */
         filters?: AdvancedStationQuery
     }
+    content?: Station[] | StationId[]
 }
 
 export const stationsMap: Record<string, StationCollection> = {
@@ -38,7 +55,7 @@ export const stationsMap: Record<string, StationCollection> = {
         "title": "Feeling lucky",
         "description": "Here are some random stations",
         "query": {
-            "name": "feeling_lucky",
+            "id": "feeling_lucky",
             "target": "SERVER",
             "type": "RANDOM",
             "filters": {
@@ -51,7 +68,7 @@ export const stationsMap: Record<string, StationCollection> = {
         "title": "Recently played",
         "description": "Pick up were you left off",
         "query": {
-            "name": "recently_played",
+            "id": "recently_played",
             "target": "CLIENT",
             "type": "RECENTLY_PLAYED"
         }
@@ -60,7 +77,7 @@ export const stationsMap: Record<string, StationCollection> = {
         "title": "Top stations",
         "description": "The most popular stations",
         "query": {
-            "name": "top_stations",
+            "id": "top_stations",
             "target": "SERVER",
             "type": "GLOBAL_TOP",
             "filters": {
@@ -73,7 +90,7 @@ export const stationsMap: Record<string, StationCollection> = {
         "title": "Let's Rock it!",
         "description": "Popular Rock Stations",
         "query": {
-            "name": "rock_stations",
+            "id": "rock_stations",
             "target": "SERVER",
             "type": "TOP",
             "filters": {
@@ -87,7 +104,7 @@ export const stationsMap: Record<string, StationCollection> = {
         "title": "Working it out!",
         "description": "Popular Workout Stations",
         "query": {
-            "name": "workout_stations",
+            "id": "workout_stations",
             "target": "SERVER",
             "type": "TOP",
             "filters": {

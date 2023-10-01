@@ -5,8 +5,10 @@ export const blackLighten2 = "#1F1F1F"
 export const blackLighten4 = "#242424"
 export const blackLighten16 = "#525252"
 export const blackLighten32 = "#7A7A7A"
+
 export const orangeBase = "#FF7A00"
 export const orangeDarken16 = "#AD5300"
+
 export const whiteBase = "#FFFFFF"
 export const whiteDarken16 = "#D6D6D6"
 export const whiteDarken32 = "#ADADAD"
@@ -64,3 +66,12 @@ export const imageSize600 = "4.5rem"
 export const imageSize700 = "5rem"
 export const imageSize800 = "5.5rem"
 export const imageSize900 = "6rem"
+
+// Components
+
+// Player
+export const playerCompactSize = "90px"
+
+// Sidebar
+export const sidebarMiniWidth = "100px"
+export const sidebarRegularWidth = "300px"
