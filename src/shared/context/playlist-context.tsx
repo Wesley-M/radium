@@ -33,6 +33,7 @@ export const PlaylistProvider = (props: PlaylistProviderProps) => {
     */
     const getStream = () => {
         if (isEmpty()) return null
+        console.log(queue[position])
         return queue[position]
     }
 

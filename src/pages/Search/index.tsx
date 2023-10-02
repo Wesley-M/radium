@@ -41,13 +41,13 @@ export const Search = () => {
         <Stack gap={spacing("st-md")}>
             <StationGrid 
                 collection={collectionReqByName} 
-                isCompact={false}
+                isCompact={true}
                 goBack="/"
                 variant="fit-xy"
             />
             <StationGrid 
                 collection={collectionReqByTag} 
-                isCompact={false}
+                isCompact={true}
                 goBack="/"
                 variant="fit-xy"
             />

@@ -2,13 +2,14 @@ import { useTheme } from "@design-system/theme"
 import { Stack } from "@mui/material"
 import { Image } from "@design-system/components/data-display/image"
 import { Color, CssSize } from "@design-system/utils"
-import useMeasure from "react-use-measure"
 import { Volume } from "@components/player/components/controls/volume"
 import { useDominantColor } from "@hooks/use-dominant-color"
 import { Like, PlaybackControls } from "@components/player/components/controls"
 import { Collapse } from "@components/player/components/controls"
 import { Title } from "@design-system/components/data-display/title"
 import { usePlaylist } from "@hooks/use-playlist"
+import { useState } from "react"
+import { useOnResize } from "@design-system/hooks/use-on-resize"
 
 interface FullPlayerProps {
     onCloseClick?: () => void,
@@ -19,7 +20,6 @@ export const FullPlayer = (props: FullPlayerProps) => {
  
     const playlist = usePlaylist() 
     const { palette, spacing } = useTheme()
-    const [playerRef, playerBounds] = useMeasure()
 
     const { 
         dominantColor, 
@@ -31,11 +31,15 @@ export const FullPlayer = (props: FullPlayerProps) => {
     const gradientStart = dominantColor && Color.build(dominantColor).logShade(-0.7) || palette("sr-500")
     const gradientEnd = dominantColor && Color.build(dominantColor).logShade(-0.95) || palette("sr-100")
     
+    const getImageWidth = () => window.innerWidth - spacingMdInPx * 2
+    const [imageWidth, setImageWidth] = useState(getImageWidth())
+    
+    useOnResize(() => setImageWidth(getImageWidth()))
+
     const stream = playlist?.getStream()
 
     return (
         <Stack
-            ref={playerRef}
             justifyContent="space-between"
             gap={spacing("st-md")}
             sx={{
@@ -43,7 +47,7 @@ export const FullPlayer = (props: FullPlayerProps) => {
                 height: "100%",
                 background: `linear-gradient(180deg, ${gradientStart} 0%, ${gradientEnd} 100%)`,
                 padding: spacing("st-md"),
-                overflow: "auto"
+                overflow: "auto",
             }}
         >
             <Stack
@@ -55,7 +59,7 @@ export const FullPlayer = (props: FullPlayerProps) => {
 
             <Image 
                 src={stream?.favicon}
-                width={playerBounds.width - spacingMdInPx * 2} 
+                width={imageWidth} 
                 borderRadius="sm"
                 onSrcChange={updateColor}
                 onLoad={() => setImageIsReady?.(true)}

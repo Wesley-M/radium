@@ -5,6 +5,7 @@ import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledR
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 import { Size } from "@design-system/theme/types";
+import { usePlaylist } from "@hooks/use-playlist";
 
 interface PlayProps {
     size?: Size,
@@ -14,7 +15,8 @@ interface PlayProps {
 export const Play = (props: PlayProps) => {
     const { size = "md", variant = "filled" } = props
     const player = usePlayer()
-    
+    const playlist = usePlaylist()
+
     const PlayIcon = variant === "filled" ? PlayCircleFilledRoundedIcon : PlayArrowRoundedIcon
     const PauseIcon = variant === "filled" ? PauseCircleFilledRoundedIcon : PauseRoundedIcon
     
@@ -22,7 +24,7 @@ export const Play = (props: PlayProps) => {
         <ActionButton
             icon={player?.isPlaying() ? <PauseIcon/> : <PlayIcon/>}
             size={size}
-            onClick={() => player?.toggle()}
+            onClick={() => player?.toggle(playlist?.getStream())}
             loading={player?.isLoading()}
         />
     )

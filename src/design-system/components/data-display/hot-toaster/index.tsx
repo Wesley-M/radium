@@ -6,14 +6,14 @@ import { useTheme } from "@design-system/theme"
 import { Toaster } from "react-hot-toast"
 
 export const HotToaster = () => {
-  const { theme, palette, radius } = useTheme()
+  const { palette, radius } = useTheme()
 
   return (
       <Toaster
         position="bottom-right"
         containerStyle={{
           position: "absolute",
-          bottom: theme?.components.player.compact.size
+          bottom: 90
         }}
         toastOptions={{
           error: {

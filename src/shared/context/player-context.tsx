@@ -9,8 +9,8 @@ import { Text } from "@design-system/components/data-display/text";
 interface PlayerControls {
     play: (scheduled?: boolean) => void
     pause: () => void
-    toggle: (station?: Station) => void
-    isPlaying: (station?: Station) => boolean
+    toggle: (station?: Station | null) => void
+    isPlaying: (station?: Station | null) => boolean
     changeVolume: (vol: number) => void
     getVolume: () => number
     skipPrev: () => void
@@ -100,7 +100,7 @@ export const PlayerProvider = (props: PlayerProviderProps) => {
     /** 
      * Toggle play/pause
     */
-    const toggle = (station?: Station) => {
+    const toggle = (station?: Station | null) => {
         isPlaying(station) ? pause() : play(true)
     }
 
@@ -134,7 +134,7 @@ export const PlayerProvider = (props: PlayerProviderProps) => {
     /** 
      * Check if a stream is playing (current stream or passed stream)
     */
-    const isPlaying = (station?: Station) => {
+    const isPlaying = (station?: Station | null) => {
         if (station) return gap.playing && station?.id === stream?.id
         return gap.playing
     }

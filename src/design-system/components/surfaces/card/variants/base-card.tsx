@@ -92,7 +92,7 @@ export const BaseCard = (props: BaseCardProps) => {
     const baseCardStyle: SxProps = {
         padding: paddingInPx + "px",
         position: "relative",
-        transition: "all 200ms ease-in-out",
+        transition: "background-color 200ms ease-in-out",
         width: "100%",
         height: "100%",
         visibility: isEmpty() ? "hidden" : "inherit",

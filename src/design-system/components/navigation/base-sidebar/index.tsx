@@ -17,10 +17,11 @@ const MINI_WIDTH = 100;
 export interface BaseSidebarProps {
   children?: ReactNode
   content?: ReactNode
+  onResize?: () => void
 }
 
 export function BaseSidebar(props: BaseSidebarProps) {
-  const { children, content } = props;
+  const { children, content, onResize } = props;
 
   const isMobile = useIsMobile("md")
   const navigate = useNavigate()
@@ -49,6 +50,7 @@ export function BaseSidebar(props: BaseSidebarProps) {
     setOpen(false)
     setMini(false)
     setWidth(DEFAULT_WIDTH)
+    onResize?.()
   }
 
   useEffect(() => {

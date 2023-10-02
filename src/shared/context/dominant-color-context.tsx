@@ -1,6 +1,5 @@
-import ColorThief from "colorthief";
+import { useColorPicker } from "@design-system/hooks/use-color-piker";
 import { ReactNode, RefObject, createContext, useState } from "react";
-import { prominent } from 'color.js'
 
 interface DominantColorContextProps {
     dominantColor: string | null;
@@ -19,12 +18,12 @@ export const DominantColorProvider = (props: DominantColorProviderProps) => {
     const { children } = props
     
     const [ dominantColor , setDominantColor] = useState<string | null>(null)
-
+    const colorPicker = useColorPicker()
+    
     const update = (imageRef?: RefObject<HTMLImageElement>) => {
         if (!imageRef?.current) return
-        const colorThief = new ColorThief();
-        const pickedColor = colorThief.getColor(imageRef.current)
-        setDominantColor(`rgb(${pickedColor.toString()})`)
+        const color = colorPicker.pickDominant(imageRef.current.src, imageRef)
+        setDominantColor(color)
     }
 
     const reset = () => {

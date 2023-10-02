@@ -19,8 +19,9 @@ type TargetType = "CLIENT" | "SERVER"
  * - RECENTLY_PLAYED: Returns recently played stations
  * - GLOBAL_TOP: Returns the most popular stations
  * - TOP: Returns the most popular stations with a specific tag
+ * - MANUAL: Returns a list of stations specified by ids
 */
-type QueryType = "RANDOM" | "RECENTLY_PLAYED" | "GLOBAL_TOP" | "TOP"
+type QueryType = "RANDOM" | "RECENTLY_PLAYED" | "GLOBAL_TOP" | "TOP" | "MANUAL"
 
 /** 
  * A station id
@@ -45,22 +46,71 @@ export interface StationCollection {
         /** The type of query to be executed */
         type?: QueryType,
         /** Standard filters for the Radio Browser API */
-        filters?: AdvancedStationQuery
+        filters?: AdvancedStationQuery & { ids?: StationId[] }
     }
-    content?: Station[] | StationId[]
+    /** Used to specify the content of the collection */
+    content?: Station[]
+    /** Whether the collection should be displayed in a compact way */
+    isCompact?: boolean
 }
 
 export const stationsMap: Record<string, StationCollection> = {
-    "feeling_lucky": {
-        "title": "Feeling lucky",
-        "description": "Here are some random stations",
+    "handpicked": {
+        "title": "Featured",
+        "description": "Handpicked stations for you to enjoy",
         "query": {
-            "id": "feeling_lucky",
+            "id": "handpicked",
             "target": "SERVER",
-            "type": "RANDOM",
+            "type": "MANUAL",
             "filters": {
-                "limit": 3,
-                "language": "english"
+                "ids": [
+                    "fb5a24f9-ef55-4f05-8217-35a0293d7d47",
+                    "17c8d579-662c-401e-8a28-fdf32d79576f",
+                    "b011d22e-e725-11e8-a9cc-52543be04c81",
+                    "6d6cce52-c2e6-4615-8251-27f5ce62e788",
+                    "86b20e25-6719-4017-9592-e7f92de95dea",
+                    "961c96ef-0601-11e8-ae97-52543be04c81",
+                    "439fafd7-b35b-4a6c-b22f-d9e4fbd9dfd4"
+                ]
+            }
+        },
+    },
+    "relaxation": {
+        "title": "Relaxation",
+        "description": "Take a break and listen",
+        "query": {
+            "id": "relaxation",
+            "target": "SERVER",
+            "type": "MANUAL",
+            "filters": {
+                "ids": [
+                    "9618f5ba-0601-11e8-ae97-52543be04c81",
+                    "5c35c578-6c34-11ea-b1cf-52543be04c81",
+                    "b826a9d2-c08a-4a7d-9879-057eda0ccfb2",
+                    "389011a1-3a96-11e9-9b4e-52543be04c81",
+                    "1665ae4c-74dc-44f0-bd0a-7a0d0291aa8c",
+                    "b6d47672-aa01-4363-bd26-32f0e8d9570e"
+                ]
+            }
+        },
+        "isCompact": true
+    },
+    "news": {
+        "title": "News",
+        "description": "To keep you well informed",
+        "query": {
+            "id": "news",
+            "target": "SERVER",
+            "type": "MANUAL",
+            "filters": {
+                "ids": [
+                    "98adecf7-2683-4408-9be7-02d3f9098eb8",
+                    "8b43d8b2-910d-4e10-ac9f-1aa8aabc5fb4",
+                    "8490339f-3207-45f4-bbc9-60155e95972f",
+                    "43e02577-2635-11e9-a80b-52543be04c81",
+                    "7ebbe310-c33a-436b-9f90-6c5b282a5ab4",
+                    "506dd5ea-1f85-4ee6-9d94-b1b839f8b8f5"
+                ]
             }
         }
     },
@@ -72,47 +122,49 @@ export const stationsMap: Record<string, StationCollection> = {
             "target": "CLIENT",
             "type": "RECENTLY_PLAYED"
         }
-    },
-    "top_stations": {
-        "title": "Top stations",
-        "description": "The most popular stations",
-        "query": {
-            "id": "top_stations",
-            "target": "SERVER",
-            "type": "GLOBAL_TOP",
-            "filters": {
-                "limit": 50,
-                "language": "english"
-            }
-        }
-    },
-    "rock_stations": {
-        "title": "Let's Rock it!",
-        "description": "Popular Rock Stations",
-        "query": {
-            "id": "rock_stations",
-            "target": "SERVER",
-            "type": "TOP",
-            "filters": {
-                "tag": "rock",
-                "language": "english",
-                "limit": 50,
-            }
-        }
-    },
-    "workout_stations": {
-        "title": "Working it out!",
-        "description": "Popular Workout Stations",
-        "query": {
-            "id": "workout_stations",
-            "target": "SERVER",
-            "type": "TOP",
-            "filters": {
-                "tag": "workout",
-                "limit": 50,
-            }
-        }
     }
 }
 
 export const stationsArr: StationCollection[] = Object.values(stationsMap)
+
+
+// "top_stations": {
+//     "title": "Top stations",
+//     "description": "The most popular stations",
+//     "query": {
+//         "id": "top_stations",
+//         "target": "SERVER",
+//         "type": "GLOBAL_TOP",
+//         "filters": {
+//             "limit": 50,
+//             "language": "english"
+//         }
+//     }
+// },
+// "rock_stations": {
+//     "title": "Let's Rock it!",
+//     "description": "Popular Rock Stations",
+//     "query": {
+//         "id": "rock_stations",
+//         "target": "SERVER",
+//         "type": "TOP",
+//         "filters": {
+//             "tag": "rock",
+//             "language": "english",
+//             "limit": 50,
+//         }
+//     }
+// },
+// "workout_stations": {
+//     "title": "Working it out!",
+//     "description": "Popular Workout Stations",
+//     "query": {
+//         "id": "workout_stations",
+//         "target": "SERVER",
+//         "type": "TOP",
+//         "filters": {
+//             "tag": "workout",
+//             "limit": 50,
+//         }
+//     }
+// }

@@ -1,5 +1,4 @@
 import { Card } from "@design-system/components/surfaces/card";
-import { useTheme } from "@design-system/theme";
 import { usePlayer } from "@hooks/use-player"
 import { usePlaylist } from "@hooks/use-playlist"
 import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded';

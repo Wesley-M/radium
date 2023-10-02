@@ -10,7 +10,7 @@ const SERVER_STALE_TIME = 1000 * 60 * 60 * 24
 
 const fetchCollection = async (collection: StationCollection) => {
     const stations = await fetchStations(collection)
-        
+    
     return {
         ...collection,
         content: normalizeStations(stations)
@@ -38,9 +38,11 @@ const fetchServerStations = async (api: any, query: any) => {
         case "GLOBAL_TOP":
             return await api.getAllStations({...query.filters, order: "clickCount"}, {}, true)
         case "TOP":
-            return await api.searchStations({...query.filters, order: "clickCount"})
+            return await api.searchStations({...query.filters, order: "clickCount"}, {}, true)
+        case "MANUAL":
+            return await api.getStationsById(query.filters.ids)
         default:
-            return await api.searchStations(query.filters)
+            return await api.searchStations(query.filters, {}, true)
     }
 }
 

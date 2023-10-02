@@ -18,10 +18,15 @@ interface StationGridProps {
 }
 
 export const StationGrid = (props: StationGridProps) => {
-    const { collection, isCompact, variant, goBack } = props
+    const { 
+        collection, 
+        isCompact, 
+        variant = "fit-xy", 
+        goBack 
+    } = props
     
     const gridOptions = {
-        variant: variant ?? "fit-xy",
+        variant,
         items: collection.data?.content,
         itemProps: { minWidth: isCompact ? 300 : 150 },
     }
@@ -34,7 +39,7 @@ export const StationGrid = (props: StationGridProps) => {
     const isLoading = () => collection.status === "loading"
     
     if (isLoading()) {
-        return <LoadingStationGrid isCompact={isCompact}/>
+        return <LoadingStationGrid isCompact={isCompact} variant={variant}/>
     }
 
     return (
@@ -67,10 +72,11 @@ export const StationGrid = (props: StationGridProps) => {
 
 interface LoadingStationGridProps {
     isCompact?: boolean
+    variant?: GridFit
 }
 
 const LoadingStationGrid = (props: LoadingStationGridProps) => {
-    const { isCompact = false } = props
+    const { isCompact = false, variant = "fit-xy"  } = props
     const { spacing } = useTheme()
 
     return (
@@ -79,7 +85,7 @@ const LoadingStationGrid = (props: LoadingStationGridProps) => {
             
             <SmartGrid 
                 itemProps={{ minWidth: isCompact ? 300 : 150 }}
-                variant={isCompact ? "fill-xy" : "fit-xy"}
+                variant={variant}
             >
                 {[...Array(isCompact ? 3 : 10)].map((_, index) => (
                     <Item key={index}>

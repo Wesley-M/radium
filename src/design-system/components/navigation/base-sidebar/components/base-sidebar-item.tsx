@@ -3,7 +3,7 @@ import { Stack, SvgIconProps } from "@mui/material";
 import { ComponentType, useContext } from "react";
 import { Text } from "@design-system/components/data-display/text";
 import { MiniContext } from "@design-system/components/navigation/base-sidebar/context/mini-context";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface BaseSidebarItemProps {
   icon: ComponentType<SvgIconProps>
@@ -32,26 +32,6 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
       {title}
     </Text>
   )
-
-  const link = (
-    to ? (
-      <Link to={to} style={{ textDecoration: "none" }}>
-        {text}
-      </Link>
-    ) : (
-      <>{text}</>
-    )
-  )
-
-  // {!mini && (
-  //   <>
-  //     {to ? (
-  //       <Link to={to} style={{ textDecoration: "none" }}>
-  //         {text}
-  //       </Link>
-  //     ) : text}
-  //   </>        
-  // )}
 
   return (
     <Stack 

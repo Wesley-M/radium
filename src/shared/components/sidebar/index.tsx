@@ -3,20 +3,25 @@ import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded';
 import { BaseSidebar, BaseSidebarSection, BaseSidebarItem, BaseSidebarProps } from '@design-system/components/navigation/base-sidebar';
 import { Stack } from '@mui/material';
 import { Library } from '@components/sidebar/components/library';
+import { useState } from 'react';
 
 export const Sidebar = (props: Omit<BaseSidebarProps, 'children'>) => {    
     const { content } = props    
 
-    // TODO: Replace static heights
-    // TODO: Move this logic
     const getLibraryMaxHeight = () => {
         const playerHeight = 80
         const endY = window.innerHeight - playerHeight
         return (endY - 240) + "px"
     }
 
+    const [libraryMaxHeight, setLibraryMaxHeight] = useState(getLibraryMaxHeight())
+
+    const handleLibraryMaxHeight = () => {
+        setLibraryMaxHeight(getLibraryMaxHeight())
+    }
+
     return (
-        <BaseSidebar content={content}>
+        <BaseSidebar content={content} onResize={handleLibraryMaxHeight}>
             <BaseSidebarSection>
                 <Stack gap="1em">
                     <BaseSidebarItem 
@@ -35,7 +40,7 @@ export const Sidebar = (props: Omit<BaseSidebarProps, 'children'>) => {
                         icon={MusicNoteRoundedIcon} 
                         isActive
                     />
-                    <Library maxHeight={getLibraryMaxHeight()}/>
+                    <Library maxHeight={libraryMaxHeight}/>
                 </Stack>
             </BaseSidebarSection>
         </BaseSidebar>

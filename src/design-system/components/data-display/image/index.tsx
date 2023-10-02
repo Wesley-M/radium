@@ -9,8 +9,7 @@ import { CssSize } from "../../../utils/size";
 import { Size } from "@design-system/theme/types";
 import { useTheme } from "@design-system/theme";
 import { ReactComponent as Fallback } from "@design-system/assets/image-fallback.svg";
-import ColorThief from "colorthief";
-import { Color } from "@design-system/utils";
+import { useColorPicker } from "@design-system/hooks/use-color-piker";
 
 export interface ImageProps {
   /** Alternative text for the image */
@@ -72,6 +71,7 @@ export const Image = (props: ImageProps) => {
   const [background, setBackground] = useState<string | undefined>("transparent")
 
   const imageRef = useRef<HTMLImageElement>(null)
+  const colorPicker = useColorPicker()
 
   const containerStyle: React.CSSProperties = {
     position: 'relative',
@@ -101,10 +101,8 @@ export const Image = (props: ImageProps) => {
   */
   const updateBackgroundColor = (imageRef?: RefObject<HTMLImageElement>) => {
     if (!imageRef?.current) return
-    const colorThief = new ColorThief();
-    const pickedColor = `rgb(${colorThief.getColor(imageRef.current).toString()})`
-    const backgroundColor = Color.build(pickedColor).logShade(-0.5)
-    setBackground(backgroundColor)
+    const color = colorPicker.pickDarkerDominant(imageRef.current.src, imageRef, 50)
+    setBackground(color)
   }
 
   /** 
@@ -208,6 +206,7 @@ export const Image = (props: ImageProps) => {
         style={imageStyle}
         onError={handleImageError}
         onLoad={handleImageLoad}
+        loading="lazy"
       />
     </Box>
   )
