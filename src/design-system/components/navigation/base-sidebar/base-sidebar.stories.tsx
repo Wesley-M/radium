@@ -45,15 +45,3 @@ export const Default: Story = {
       )
     },
 };
-
-/** 
- * <Sidebar onMiniDrawerChange={setMiniDrawer} enableMiniDrawer>
- *  <SidebarSection title="" icon="">
- *    <SidebarItem title="" icon="" />
- *    <SidebarItem title="" icon="" />
- *  </SidebarSection>
- *  <SidebarSection title="Your Library" icon="">
- *    <CardList collapse={isMiniDrawer}/>
- *  </SidebarSection>
- * </Sidebar>
-*/

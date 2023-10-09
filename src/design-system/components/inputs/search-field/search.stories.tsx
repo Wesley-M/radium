@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Search } from '.';
+import { SearchField } from '.';
 import { ThemeProvider } from '@design-system/theme';
 import { Box } from '@mui/material';
 
 const meta = {
   title: 'Design-System/inputs/Search',
-  component: Search,
+  component: SearchField,
   parameters: {
     layout: 'centered',
   },
@@ -27,7 +27,7 @@ const meta = {
       </ThemeProvider>
     )
   ]
-} satisfies Meta<typeof Search>;
+} satisfies Meta<typeof SearchField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -35,6 +35,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
       placeholder: "Search for stations or tags...",
-      onEnter: () => alert("Enter was pressed!")
+      onChange: () => console.log("I changed!")
     },
 };

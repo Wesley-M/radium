@@ -34,7 +34,10 @@ export interface CardProps {
     contentProps?: {
         sx?: SxProps
     }
+    /** Disable action button */
     disableAction?: boolean
+    /** Disable image */
+    disableImage?: boolean
     /** Enable marquee effect for title */
     enableMarquee?: boolean
     /** Always show action button */
@@ -62,6 +65,7 @@ export const BaseCard = (props: BaseCardProps) => {
         cardProps,
         contentProps,
         disableAction = false,
+        disableImage = false,
         enableAlwaysShowAction = false,
         enableMarquee = false,
         imageProps,
@@ -78,13 +82,14 @@ export const BaseCard = (props: BaseCardProps) => {
     const paddingInPx = (CssSize.build(spacing(`in-${padding}`)).toPx() || 0)
 
     const isEmpty = () => title && titleBounds.width === 0
+    const isActionVisible = () => ((hover && !disableAction) || enableAlwaysShowAction)
 
     const baseActionStyle: SxProps = {
         position: "absolute",
         size: "sm",
         "& .MuiSvgIcon-root": {
             color: palette("accent"),
-            background: `radial-gradient(closest-side, ${palette("bc-body")}, transparent)`,  
+            background: `radial-gradient(closest-side, ${palette("sr-100")}, transparent)`,  
         },
         ...actionProps?.sx
     }
@@ -94,12 +99,18 @@ export const BaseCard = (props: BaseCardProps) => {
         position: "relative",
         transition: "background-color 200ms ease-in-out",
         width: "100%",
-        height: "100%",
+        height: "fit-content",
         visibility: isEmpty() ? "hidden" : "inherit",
-        ...cardProps?.sx
+        ...cardProps?.sx,
+        ...(disableAction && { 
+            background: "transparent"
+        }),
     }
 
-    const baseImageStyle = imageProps?.sx
+    const baseImageStyle = {
+        ...imageProps?.sx,
+        display: disableImage ? "none" : "inherit"
+    }
 
     const baseContentStyle: SxProps = {
         overflow: "hidden",
@@ -109,7 +120,7 @@ export const BaseCard = (props: BaseCardProps) => {
 
     // Update hover state (callback)
     useEffect(() => {
-        !disableAction && onHoverChange(hover)
+        onHoverChange(hover)
     }, [hover])
         
     if (loading) {
@@ -155,16 +166,20 @@ export const BaseCard = (props: BaseCardProps) => {
                 </Title>
             </Box>
 
-            <Box>
-                {((hover && !disableAction) || enableAlwaysShowAction) && (
-                    <ActionButton
-                        icon={actionProps?.icon || <PlayCircleFilledWhiteRoundedIcon/>}
-                        onClick={actionProps?.onClick}
-                        size={actionProps?.size}
-                        color={actionProps?.color}
-                        sx={baseActionStyle}
-                    />
-                )}
+            <Box 
+                sx={{
+                    visibility: isActionVisible() ? "inherit" : "hidden",
+                    opacity: isActionVisible() ? 1 : 0,
+                    transition: "opacity 200ms ease-in",
+                }}
+            >
+                <ActionButton
+                    icon={actionProps?.icon || <PlayCircleFilledWhiteRoundedIcon/>}
+                    onClick={actionProps?.onClick}
+                    size={actionProps?.size}
+                    color={actionProps?.color}
+                    sx={baseActionStyle}
+                />
             </Box>
         </Stack>
     )

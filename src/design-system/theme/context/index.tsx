@@ -72,9 +72,11 @@ export const useTheme = () => {
     return getTokenValue(tokenName)
   }
 
+  const theme = (path: string) => getTokenValue(get(context?.theme, path))
+
   return {
     mode: context?.mode,
-    theme: context?.theme,
+    theme,
     avatar,
     palette,
     spacing,

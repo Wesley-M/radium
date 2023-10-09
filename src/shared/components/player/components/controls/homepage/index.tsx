@@ -6,6 +6,8 @@ export const Homepage = () => {
     const playlist = usePlaylist()
     const stream = playlist?.getStream()
 
+    if (!stream?.homepage) return
+    
     return (
         <ActionButton
             icon={<LanguageRoundedIcon/>}

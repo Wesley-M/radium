@@ -26,6 +26,7 @@ export const Play = (props: PlayProps) => {
             size={size}
             onClick={() => player?.toggle(playlist?.getStream())}
             loading={player?.isLoading()}
+            disabled={playlist?.isEmpty()}
         />
     )
 }

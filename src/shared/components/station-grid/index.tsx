@@ -1,104 +1,111 @@
 import { Card } from "@design-system/components/surfaces/card"
-import { SmartGrid, Item } from "@design-system/components/layout/smart-grid"
+import { SmartGrid, SmartGridItem, SmartGridProps } from "@design-system/components/layout/smart-grid"
 import { Title } from "@design-system/components/data-display/title"
-import { useTheme } from "@design-system/theme"
-import { Stack } from "@mui/material"
 import { Station } from "libs/radio-browser-api.types"
 import { StationCard } from "@components/station-card"
 import { Section } from "@design-system/components/data-display/section"
 import { GridFit, useSmartGrid } from "@design-system/components/layout/smart-grid/use-smart-grid"
 import { useNavigate } from "react-router-dom"
 import { Button } from "@design-system/components/inputs/button"
+import merge from "lodash.merge"
 
 interface StationGridProps {
-    collection: any
-    isCompact?: boolean
-    variant?: GridFit
+    /** Stations to render */
+    data: Station[]
+    /** Title of the grid */
+    title?: string
+    /** Subtitle of the grid */
+    subtitle?: string
+    /** Go back to this route */
     goBack?: string
+    /** Go to this route */
+    goTo?: string
+    /** Smart grid properties */
+    smartGridProps?: SmartGridProps
+    /** Loading state */
+    loading?: boolean
+    /** Number of loading items */
+    loadingItems?: number
+    /** Whether the grid is compact */
+    isCompact?: boolean
+    /** Whether to enable the title section */
+    enableTitleSection ?: boolean
 }
 
 export const StationGrid = (props: StationGridProps) => {
     const { 
-        collection, 
-        isCompact, 
-        variant = "fit-xy", 
-        goBack 
+        data = [],
+        title = "",
+        subtitle = "",
+        goBack,
+        goTo = "/",
+        loadingItems = 20,
+        loading = true,
+        isCompact = false, 
+        enableTitleSection = true,
     } = props
-    
-    const gridOptions = {
-        variant,
-        items: collection.data?.content,
-        itemProps: { minWidth: isCompact ? 300 : 150 },
-    }
 
-    const grid = useSmartGrid(gridOptions)
-    const navigate = useNavigate();
-    
+    /** 
+     * Default smart grid props
+    */
+    const smartGridProps = merge({
+        variant: "fit-xy",
+        items: data,
+        itemProps: { gap: "sm", minWidth: isCompact ? 400 : 180 },
+    }, props.smartGridProps)
+
+    /** 
+     * Stantiate the smart grid logic
+    */
+    const grid = useSmartGrid({
+        variant: smartGridProps.variant as GridFit,
+        items: smartGridProps.items,
+        itemProps: smartGridProps.itemProps,
+    })
+
+    const navigate = useNavigate()
+
     const hasHiddenStations = () => grid.hasHiddenItems()
 
-    const isLoading = () => collection.status === "loading"
-    
-    if (isLoading()) {
-        return <LoadingStationGrid isCompact={isCompact} variant={variant}/>
-    }
+    const stationCards = smartGridProps.items.map((station: Station, index: number) => (
+        <SmartGridItem key={station.id}>
+            <StationCard 
+                station={station} 
+                stationIdx={index} 
+                collection={smartGridProps.items}
+                isCompact={isCompact}                        
+            />
+        </SmartGridItem>
+    ))
+
+    const loadingCards = [...Array(loadingItems)].map((_, index) => (
+        <SmartGridItem key={index}>
+            <Card
+                padding={isCompact ? "xs" : "sm"}
+                borderRadius='md'
+                variant={isCompact ? "compact" : "default"}
+                enableAlwaysShowAction={false}
+                loading={true}
+            />
+        </SmartGridItem>
+    ))
 
     return (
         <Section 
             innerRef={grid.ref}
-            title={collection.data?.title} 
-            subtitle={collection.data?.description}
+            title={enableTitleSection ? title : ""} 
+            subtitle={enableTitleSection ? subtitle : ""}
             actions={hasHiddenStations() && (
-                <Button onClick={() => navigate("/" + collection.data?.query.id)}>
+                <Button onClick={() => navigate(goTo)}>
                     Show all
                 </Button>
             )}
             goBack={goBack}
         >
-            <SmartGrid {...gridOptions}>
-                {collection.data?.content.map((station: Station, index: number) => (
-                    <Item key={station.id}>
-                        <StationCard 
-                            station={station} 
-                            stationIdx={index} 
-                            collection={collection}
-                            isCompact={isCompact}                        
-                        />
-                    </Item>
-                ))}
+            {enableTitleSection && loading && <Title isAbove loading={true}/>}
+            <SmartGrid {...smartGridProps}>
+                {loading ? [...stationCards, ...loadingCards] : stationCards}              
             </SmartGrid>
         </Section>
-    )
-}
-
-interface LoadingStationGridProps {
-    isCompact?: boolean
-    variant?: GridFit
-}
-
-const LoadingStationGrid = (props: LoadingStationGridProps) => {
-    const { isCompact = false, variant = "fit-xy"  } = props
-    const { spacing } = useTheme()
-
-    return (
-        <Stack gap={spacing("st-md")}>
-            <Title isAbove loading={true}/>
-            
-            <SmartGrid 
-                itemProps={{ minWidth: isCompact ? 300 : 150 }}
-                variant={variant}
-            >
-                {[...Array(isCompact ? 3 : 10)].map((_, index) => (
-                    <Item key={index}>
-                        <Card
-                            padding={isCompact ? "xs" : "sm"}
-                            borderRadius='md'
-                            variant={isCompact ? "compact" : "default"}
-                            enableAlwaysShowAction={false}
-                            loading={true}
-                        />
-                    </Item>
-                ))}
-            </SmartGrid>
-        </Stack>
     )
 }

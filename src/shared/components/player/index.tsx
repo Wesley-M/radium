@@ -7,13 +7,12 @@ import { useState } from "react"
 import { usePlaylist } from "@hooks/use-playlist"
 
 export const Player = () => {
-    const isMobile = useIsMobile()
     const [isFull, setFull] = useState(false)
-
     const playlist = usePlaylist()
 
-    // Does not render if there is nothing in the playlist
-    if (playlist?.isEmpty()) {
+    // Does not render if we are in mobile and there is nothing in the playlist
+    const isMobile = useIsMobile()
+    if (isMobile && playlist?.isEmpty()) {
         return null
     }
     

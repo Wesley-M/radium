@@ -29,6 +29,10 @@ export const ThumbnailCard = (props: CardProps) => {
     const actionStyle = {
         bottom: (cardBounds.height - actionSizeInPx) / 2,
         right: cardBounds.width - imageWidth / 2 - paddingInPx - actionSizeInPx / 2,
+        "& .MuiSvgIcon-root": {
+            color: palette("accent"),
+            backgroundColor: "transparent"
+        },
     }
 
     const cardStyle: React.CSSProperties = {
@@ -45,8 +49,8 @@ export const ThumbnailCard = (props: CardProps) => {
     }
 
     const imageStyle = {
-        opacity: hover ? 0.8 : 1,
-        transition: "opacity 100ms ease-in-out",
+        opacity: hover ? 0.6 : 1,
+        transition: "opacity 200ms ease-in-out",
     }
 
     const handleHoverChange = (hover: boolean) => {

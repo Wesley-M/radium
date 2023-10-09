@@ -1,15 +1,20 @@
-import { useStationCollection } from "@api/remote/hooks/use-station-collection";
 import { useParams } from "react-router-dom";
 import { StationGrid } from "@components/station-grid";
+import { useSearch } from "@hooks/use-search";
 
 export const ShowAll = () => {
     const { collectionId } = useParams()
-    const collectionReq = useStationCollection(collectionId ?? "")
+    
+    const collection = useSearch({ collectionId: collectionId || "" })
     
     return (
-        <StationGrid 
-            collection={collectionReq} 
+        <StationGrid
+            title={collection.metadata.title}
+            subtitle={collection.metadata.description}
+            data={collection.data} 
+            loading={collection.req.isLoading}
             isCompact={true}
+            goTo={"/" + collection.metadata.query?.id}
             goBack="/"
         />
     )

@@ -91,8 +91,9 @@ export const Image = (props: ImageProps) => {
     height: '100%',
     objectFit: 'cover',
     borderRadius: radius(borderRadius),
-    transition: 'opacity 200ms ease-in-out',
-    border: hasRinglight ? `2px solid ${palette("br-500")}` : undefined
+    transition: 'opacity 300ms ease-in-out',
+    border: hasRinglight ? `2px solid ${palette("br-500")}` : undefined,
+    opacity: 0
   }
   
   /** 
@@ -109,7 +110,8 @@ export const Image = (props: ImageProps) => {
    * Handle image load event by updating background color and
    * bubbling up the event
   */
-  const handleImageLoad = () => {
+  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    event.currentTarget.style.opacity = '1'
     setLoading(false)
     setError(false)
     updateBackgroundColor(imageRef)
@@ -189,7 +191,7 @@ export const Image = (props: ImageProps) => {
           sx={{ 
             borderRadius: radius(borderRadius), 
             backgroundColor: palette("sr-500"),
-            transition: 'opacity 200ms ease-in-out',
+            transition: 'opacity 300ms ease-in-out',
             height: height || ratioHeight,
           }} 
           variant="rounded" 
@@ -204,9 +206,9 @@ export const Image = (props: ImageProps) => {
         crossOrigin="anonymous"
         ref={imageRef} 
         style={imageStyle}
+        loading="lazy"
         onError={handleImageError}
         onLoad={handleImageLoad}
-        loading="lazy"
       />
     </Box>
   )

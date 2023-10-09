@@ -1,15 +1,14 @@
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import { useTheme } from '@design-system/theme';
-import { Stack } from '@mui/material';
+import { AppBar, Stack, Toolbar, alpha } from '@mui/material';
 import { ReactComponent as Logo } from '@design-system/assets/logo.svg';
 import { ActionButton } from '@design-system/components/inputs/action-button';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { ReactNode, useEffect, useState } from 'react';
 import { useIsMobile } from '@design-system/hooks/use-is-mobile';
 import { MiniContext } from '@design-system/components/navigation/base-sidebar/context/mini-context';
-import { Search } from '@design-system/components/inputs/search';
-import { useNavigate } from "react-router-dom"
+import { SearchField } from '@design-system/components/inputs/search-field';
 
 const DEFAULT_WIDTH = 300;
 const MINI_WIDTH = 100;
@@ -23,18 +22,12 @@ export interface BaseSidebarProps {
 export function BaseSidebar(props: BaseSidebarProps) {
   const { children, content, onResize } = props;
 
-  const isMobile = useIsMobile("md")
-  const navigate = useNavigate()
-  const { palette, spacing } = useTheme()
-
   const [open, setOpen] = useState(false)
   const [mini, setMini] = useState(false)
   const [width, setWidth] = useState(DEFAULT_WIDTH)
   
-  const handleSearch = (t: string) => {
-    if (!t) return
-    navigate(`/search?q=${t}`)
-  }
+  const { palette, spacing, theme } = useTheme()
+  const isMobile = useIsMobile("md")
 
   const handleDrawerToggle = () => {
     if (!isMobile) {
@@ -58,50 +51,15 @@ export function BaseSidebar(props: BaseSidebarProps) {
   }, []);
 
   const search = (
-    <Search 
-      placeholder="Search for stations or tags" 
-      onEnter={handleSearch}
-    />
-  )
-
-  const header = (
-    <Stack 
-      direction="row" 
-      alignItems="center" 
-      justifyContent={mini ? "center" : "space-between"}
-      sx={{
-        padding: spacing("st-xs"),
-        paddingBottom: spacing("st-sm"),
-        backgroundColor: palette("sr-100"),
-        width: "100%"
-      }}
-    >
-      <Stack direction="row" gap={spacing("in-sm")}>
-        <ActionButton 
-          icon={<MenuRoundedIcon/>} 
-          size="xs" 
-          hoverEffect="opacity"
-          sx={{ marginTop: "8px" }}
-          onClick={handleDrawerToggle}
-        />
-        {mini ? null : <Logo/>}
-      </Stack>
-
-      <Box display={{ xs: 'flex', md: "none" }} sx={{ marginTop: 1 }}>
-        {search}
-      </Box>
-    </Stack>
+    <SearchField placeholder="What are you looking for?" />
   )
 
   const drawer = (
-    <>
-      {header}
-      <MiniContext.Provider value={mini}>
-        <Stack direction="column">
-          {children}
-        </Stack>
-      </MiniContext.Provider>
-    </>
+    <MiniContext.Provider value={mini}>
+      <Stack direction="column" marginTop={isMobile ? "4em" : 0}>
+        {children}
+      </Stack>
+    </MiniContext.Provider>
   )
   
   return (
@@ -129,6 +87,12 @@ export function BaseSidebar(props: BaseSidebarProps) {
             },
           }}
         >
+          <SidebarHeader 
+            onDrawerToggle={handleDrawerToggle} 
+            mini={mini}
+            search={search}
+            disableSearch
+          />
           {drawer}
         </Drawer>
 
@@ -141,11 +105,17 @@ export function BaseSidebar(props: BaseSidebarProps) {
               backgroundColor: palette("sr-100"), 
               width,
               overflow: "hidden",
+              height: `calc(100% - ${theme("components.player.compact.height")})`,
               borderRight: `2px solid ${palette("sr-300")}`
             }
           }}
           open={open}
         >
+          <SidebarHeader 
+            onDrawerToggle={handleDrawerToggle} 
+            mini={mini}
+            search={search}
+          />
           {drawer}
         </Drawer>
       </Box>
@@ -159,23 +129,106 @@ export function BaseSidebar(props: BaseSidebarProps) {
           background: palette("bc-body")
         }}
       >
-        {isMobile ? header : null}
+        {isMobile ? (
+          <SidebarHeader 
+            onDrawerToggle={handleDrawerToggle} 
+            mini={mini}
+            search={search}
+          />
+        ) : null}
+        
+        <Box 
+          sx={{ 
+            display: { xs: 'none', md: "flex" }, 
+            width: "100%", 
+            position: "fixed", 
+            zIndex: 1000
+          }}
+        >
+          <AppBar 
+            component="nav" 
+            position="absolute" 
+            elevation={0}
+            sx={{ 
+              backgroundColor: alpha(palette("sr-200"), 0.9), 
+              padding: spacing("in-xxs"),
+              backdropFilter: "blur(5px)",
+              borderBottom: `2px solid ${palette("sr-300")}`
+            }}
+          >
+            <Toolbar>
+              {search}
+            </Toolbar>
+          </AppBar>
+        </Box>
+
         <Stack
           gap={spacing("st-md")}
           sx={{
             padding: spacing("st-md"),
-            paddingTop: spacing("st-sm"),
+            paddingTop: spacing("st-xl", 1.5),
             paddingBottom: spacing("st-xl", 2),
+            position: "relative",
           }}
         >
-          <Box display={{ xs: 'none', md: "flex" }}>
-            {search}
-          </Box>
           {content}
         </Stack>
       </Box>
     </Box>
   );
+}
+
+interface SidebarHeaderProps {
+  mini?: boolean
+  onDrawerToggle: () => void
+  search: ReactNode
+  disableSearch?: boolean
+}
+
+const SidebarHeader = (props: SidebarHeaderProps) => {
+  const { 
+    mini, 
+    onDrawerToggle, 
+    search,
+    disableSearch = false 
+  } = props
+
+  const { palette, spacing } = useTheme()
+  const isMobile = useIsMobile("md")
+
+  return (
+    <Stack 
+      direction="row" 
+      alignItems="center" 
+      justifyContent={mini ? "center" : "space-between"}
+      sx={{
+        padding: spacing("st-xs"),
+        paddingBottom: spacing("st-sm"),
+        backgroundColor: palette("sr-100"),
+        width: "100%",
+        position: isMobile ? "absolute" : "static",
+        zIndex: 1000
+      }}
+    >
+      <Stack direction="row" gap={spacing("in-sm")}>
+        <ActionButton 
+          icon={<MenuRoundedIcon/>} 
+          size="xs" 
+          hoverEffect="opacity"
+          sx={{ marginTop: "8px" }}
+          onClick={onDrawerToggle}
+        />
+        {mini ? null : <Logo/>}
+      </Stack>
+
+      <Box 
+        display={{ xs: disableSearch ? "none" : "flex", md: "none" }} 
+        sx={{ marginTop: 1 }}
+      >
+        {search}
+      </Box>
+    </Stack>
+  )
 }
 
 export { BaseSidebarSection } from './components/base-sidebar-section';

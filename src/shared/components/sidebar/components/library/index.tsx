@@ -2,7 +2,7 @@ import { Scroll } from "@design-system/components/surfaces/scroll";
 import { MiniContext } from "@design-system/components/navigation/base-sidebar/context/mini-context";
 import { Card } from "@design-system/components/surfaces/card";
 import { useTheme } from "@design-system/theme";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip } from "@mui/material";
 import { useContext } from "react";
 import { Station } from "libs/radio-browser-api.types";
 import { usePlaylist } from "@hooks/use-playlist";
@@ -10,17 +10,18 @@ import { usePlayer } from "@hooks/use-player";
 import { Text } from "@design-system/components/data-display/text";
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import { useLibrary } from "@api/index";
-
+  
 export const Library = ({ maxHeight }: {maxHeight: string}) => {
     const library = useLibrary()
     const isMini = useContext(MiniContext)
+    const { spacing } = useTheme()
 
     if (library.isEmpty() && !isMini) return <EmptyLibraryWarning/>
     
     return (
         <Box 
             sx={{
-                marginTop: isMini ? 0 : "1em",
+                marginTop: isMini ? 0 : spacing("st-xs"),
                 "& .simplebar-content": {
                     width: isMini ? "fit-content" : "100%"
                 }
@@ -67,7 +68,7 @@ interface StationCardProps {
 
 const StationCard = ({ station, index }: StationCardProps) => {
     const isMini = useContext(MiniContext)
-    const { spacing } = useTheme()
+    const { palette, spacing } = useTheme()
     
     const playlist = usePlaylist()
     const player = usePlayer()
@@ -78,7 +79,7 @@ const StationCard = ({ station, index }: StationCardProps) => {
         player?.play(true)
     }
 
-    return (
+    const card = (
         <Card 
             actionProps={{
                 onClick: playStation,
@@ -95,5 +96,32 @@ const StationCard = ({ station, index }: StationCardProps) => {
             subtitle={isMini ? undefined : station.tags.join(", ")}
             size={60}
         />
+    )
+
+    return (
+        <Tooltip 
+            componentsProps={{
+                tooltip: {
+                    sx: {
+                        backgroundColor: palette("sr-200"), 
+                        border: `2px solid ${palette("sr-400")}`,
+                        padding: 0
+                    }
+                }
+            }}
+            title={isMini && (
+                <Card 
+                    variant="minimal"
+                    title={station.name}
+                    subtitle={station.tags.join(", ")}
+                    size={60}
+                    disableAction
+                    disableImage
+                />
+            )} 
+            placement="right"
+        >
+            <div>{card}</div>
+        </Tooltip>
     );
 }

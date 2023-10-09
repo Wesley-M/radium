@@ -117,15 +117,15 @@
     "components": {
         "player": {
             "compact": {
-                "size": "playerCompactSize"
+                "height": "playerCompactHeight"
             }
         },
         "sidebar": {
             "mini": {
                 "width": "sidebarMiniWidth"
             },
-            "regular": {
-                "width": "sidebarRegularWidth"
+            "default": {
+                "width": "sidebarDefaultWidth"
             }
         }
     }

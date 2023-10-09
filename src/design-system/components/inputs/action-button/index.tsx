@@ -46,7 +46,7 @@ export const ActionButton = (props: ActionButtonProps) => {
         "& .MuiSvgIcon-root": {
             fontSize: avatar(size),
             color: palette(color),
-            opacity: hasOpacityEffect ? 0.9 : 1,
+            opacity: hasOpacityEffect ? 0.95 : 1,
             transition: "transform 200ms ease-in-out, opacity 200ms ease-in-out"
         },
         "&:hover .MuiSvgIcon-root": {

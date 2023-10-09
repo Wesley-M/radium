@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useState } from "react";
-import { Station } from "../../libs/radio-browser-api.types";
+import { Station } from "../../../../libs/radio-browser-api.types";
+import { useRecentlyPlayed } from "@api/index";
 
 interface PlaylistControls {
     add: (station: Station) => void
@@ -23,7 +24,9 @@ interface PlaylistProviderProps {
 export const PlaylistProvider = (props: PlaylistProviderProps) => {
     const { children } = props
 
-    const [queue, setQueue] = useState<Station[]>([])
+    const recentlyPlayed = useRecentlyPlayed()
+    const [queue, setQueue] = useState<Station[]>(recentlyPlayed?.list({ reverse: true }))
+    // recentlyPlayed?.list({ reverse: true })
     const [position, setPosition] = useState(0)
 
     const isEmpty = () => queue.length === 0
@@ -33,7 +36,6 @@ export const PlaylistProvider = (props: PlaylistProviderProps) => {
     */
     const getStream = () => {
         if (isEmpty()) return null
-        console.log(queue[position])
         return queue[position]
     }
 

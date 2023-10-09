@@ -81,8 +81,8 @@
         "bd2-fontFamily": "body2.fontFamily"
     },
     "components": {
-        "cm-size": "player.compact.size",
+        "cm-height": "player.compact.height",
         "mn-width": "sidebar.mini.width",
-        "rg-width": "sidebar.regular.width"
+        "df-width": "sidebar.default.width"
     }
 }

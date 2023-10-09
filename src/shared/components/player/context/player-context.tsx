@@ -46,9 +46,17 @@ export const PlayerProvider = (props: PlayerProviderProps) => {
             autoplay,
             html5: true,
             initialVolume: volume / 100,
-            format: stream?.codec.toLowerCase()
+            format: normalizedExtension(stream?.codec)
         })
     }
+
+    /** 
+     * Get the format extension from the codec
+    */
+    const normalizedExtension = (format: string) => {
+        const letters = format.replace(/[^a-zA-Z0-9]/g, '')
+        return letters.toLowerCase()
+    } 
 
     /** 
      * Play the current stream
@@ -170,15 +178,7 @@ export const PlayerProvider = (props: PlayerProviderProps) => {
     // If there is an error, skip to the next stream
     useEffect(() => {
         if (!gap.error) return
-        toast.error(() => (
-            <Text 
-                noWrap={false} 
-                color="tx-primary"
-            >
-                Sorry, the stream <b>{playlist?.getStream()?.name}</b> {' '}
-                is not available right now.
-            </Text>
-        ))
+        toast.error(() => <StreamError/>)
         skipNext()
     }, [gap.error])
 
@@ -198,5 +198,21 @@ export const PlayerProvider = (props: PlayerProviderProps) => {
         <PlayerContext.Provider value={controls}>
             {children}
         </PlayerContext.Provider>
+    )
+}
+
+/** 
+ * Display an error message when a stream is not available
+*/
+const StreamError = () => {
+    const playlist = usePlaylist()
+    return (
+        <Text 
+            noWrap={false} 
+            color="tx-primary"
+        >
+            Sorry, the stream <b>{playlist?.getStream()?.name}</b> {' '}
+            is not available right now.
+        </Text>
     )
 }

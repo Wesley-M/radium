@@ -19,7 +19,7 @@ export const SlideUp = (props: SlideUpProps) => {
             <Box 
                 sx={{ 
                     position: "fixed", 
-                    zIndex: 1100, 
+                    zIndex: 9999, 
                     width: "100%", 
                     height: "100%",
                     top: 0

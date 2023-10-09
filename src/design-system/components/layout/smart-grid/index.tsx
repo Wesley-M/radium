@@ -1,11 +1,19 @@
-import { Box, Grid, Stack, SxProps } from "@mui/material";
+import { Grid } from "@mui/material";
 import { GridFit, useSmartGrid } from "./use-smart-grid";
-import { ReactNode } from "react";
 import React from "react";
 import { Size } from "@design-system/theme/types";
 import merge from "lodash.merge";
-  
-type GridProps = {
+import { SmartGridItemProps } from "./components/item";
+import { InfiniteItemList } from "@design-system/components/layout/smart-grid/components/infinite-item-list";
+import { FixedSizeListProps } from "react-window";
+import { StaticItemList } from "@design-system/components/layout/smart-grid/components/static-item-list";
+
+export type SmartGridProps = {
+    // Grid items to render
+    children?: React.ReactElement<SmartGridItemProps> | React.ReactElement<SmartGridItemProps>[],
+    // Grid variant
+    variant?: GridFit,
+    // Enable the items to receive height that matches the aspect ratio
     itemProps?: {
         // Gap between items
         gap?: Size,
@@ -14,26 +22,38 @@ type GridProps = {
         // Aspect ratio of an item (e.g. 3/4, 1/1)
         ratio?: number,
     },
-    // Grid items to render
-    children?: React.ReactElement<ItemProps> | React.ReactElement<ItemProps>[],
-    // Grid variant
-    variant?: GridFit,
-    // Enable the items to receive height that matches the aspect ratio
+    // Infinite grid props
+    infiniteGridProps?: {
+        loadMore: () => void,
+        hasMore: () => boolean,
+        loading: boolean,
+        listProps?: Partial<FixedSizeListProps>
+    }
+    // Enable aspect ratio
     enableAspectRatio?: boolean
+    // Enable infinite grid
+    enableInfiniteGrid?: boolean
 }
 
-export const SmartGrid = (props: GridProps) => {    
+export const SmartGrid = (props: SmartGridProps) => {    
+    const { 
+        children = [],
+        variant = "fit-x",
+        enableAspectRatio = false,
+        enableInfiniteGrid = false
+    } = props
+
     const itemProps = merge({
         gap: "sm",
         minWidth: 200,
         ratio: 1
     }, props.itemProps)
-    
-    const { 
-        children = [],
-        variant = "fit-x",
-        enableAspectRatio = false
-    } = props
+
+    const infiniteGridProps = merge({
+        loadMore: (() => {}),
+        hasMore: (() => false),
+        loading: true
+    }, props.infiniteGridProps)
 
     const grid = useSmartGrid({ 
         itemProps, 
@@ -57,67 +77,49 @@ export const SmartGrid = (props: GridProps) => {
         return {}
     }
     
-    // Injecting the dimensions into the grid items
+    // Injecting dimensions into the grid items
     const itemsWithDimensions = grid.rows.map(row => {
-        return row.map((item, idx) => {
+        return row.map((item) => {
             if (React.isValidElement(item)) {
-                return React.cloneElement(item, {key: `item-${idx}`, width: grid.itemProps.width, height: grid.itemProps.height });
+                return React.cloneElement(item, {width: grid.itemProps.width, height: grid.itemProps.height });
             }
             return item;
         })
     })
+
+    const ItemList = enableInfiniteGrid ? (
+        <InfiniteItemList
+            items={itemsWithDimensions}
+            loading={infiniteGridProps.loading}
+            loadMore={infiniteGridProps.loadMore}
+            hasMore={infiniteGridProps.hasMore}
+            listProps={infiniteGridProps.listProps}
+            itemWrapperProps={{
+                sx: { gap: grid.itemProps.gap }
+            }}
+        />
+    ) : (
+        <StaticItemList
+            items={itemsWithDimensions}
+            itemWrapperProps={{
+                sx: { gap: grid.itemProps.gap }
+            }}
+        />
+    )
 
     return (
         <Grid
             container
             sx={{ 
                 width: "100%", 
-                ...getOverflowXStyles(),
+                ...getOverflowXStyles() 
             }} 
             ref={grid.ref} 
             gap={grid.itemProps.gap}
         >
-            {itemsWithDimensions.map((row, idx) => {
-                return (
-                    <Stack 
-                        key={`item-row-${idx}`} 
-                        direction="row" 
-                        sx={{ gap: grid.itemProps.gap}}
-                    >
-                        {row.map((item) => item)}
-                    </Stack>
-                )
-            })}
+            {ItemList}
         </Grid>
     )
 }
 
-interface ItemProps {
-    children?: ReactNode,
-    width?: number,
-    height?: number,
-    sx?: SxProps
-}
-  
-export const Item = (props: ItemProps) => {
-    const { 
-        children, 
-        width, 
-        height,
-        sx 
-    } = props
-
-    return (
-        <Box 
-            width={width} 
-            sx={{ 
-                minWidth: width,
-                height,
-                ...sx
-            }}
-        >
-            {children}
-        </Box>
-    )
-}
-  
+export { SmartGridItem } from "./components/item"

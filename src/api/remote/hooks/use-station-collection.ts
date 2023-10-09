@@ -1,22 +1,25 @@
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { StationCollection, stationsMap } from '@api/static/station-collections'
-import { fetchCollection, getCacheConfig } from "@api/remote/services/collection"
+import { fetchCollection, getCacheConfig } from "@api/services/collection"
 
 /** 
- * Retrieves a station collection
+ * Retrieves a station collection, given a target template or known id
 */
-export const useStationCollection = (collection: string | StationCollection) => {
-    let collectionObj: StationCollection
-    if (typeof collection === "string") {
-        collectionObj = stationsMap[collection]
-    } else {
-        collectionObj = collection
+export const useStationCollection = (target: string | StationCollection) => {    
+    // Check if the target is a known id
+    const isId = typeof target === "string"
+    if (isId && !(target in stationsMap)) {
+        throw new Error(`the target id ${target} does not exist`)
     }
-
-    return useQuery({
-        queryKey: [collectionObj.query.id],
-        queryFn: () => fetchCollection(collectionObj),
+    
+    // Get the target template
+    const targetTemplate = isId ? stationsMap[target] : target
+    
+    return useInfiniteQuery({
+        queryKey: ["infinite", targetTemplate.query.id],
+        queryFn: ({ pageParam = 0 }) => fetchCollection(targetTemplate, pageParam),
+        getNextPageParam: (_lastPage, pages) => pages.length * (targetTemplate.query?.filters?.limit || 0),
         refetchOnWindowFocus: false,
-        ...getCacheConfig(collectionObj)
+        ...getCacheConfig(targetTemplate)
     })
 }

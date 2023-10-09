@@ -3,15 +3,17 @@ import { useTheme } from "@design-system/theme"
 import { Box, Stack } from "@mui/material"
 import { Volume } from "@components/player/components/controls/volume";
 import { useIsMobile } from "@design-system/hooks/use-is-mobile";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { Homepage, Like, PlaybackControls } from "@components/player/components/controls";
 import { usePlaylist } from "@hooks/use-playlist";
 
 export const CompactPlayer = () => {
+    const playlist = usePlaylist() 
+    const [hover, setHover] = useState(false)
+    
     const { spacing } = useTheme()
     const isMobile = useIsMobile("md")
-    const playlist = usePlaylist() 
-    
+
     const stream = playlist?.getStream()
 
     return (
@@ -35,7 +37,8 @@ export const CompactPlayer = () => {
                     }}
                     size={60}
                     disableAction
-                    enableMarquee
+                    enableMarquee={hover}
+                    onHoverChange={setHover}
                 />
                 <Like/>
                 <Homepage/>
@@ -66,14 +69,14 @@ export const CompactPlayer = () => {
 
 const CompactContainer = (props: PropsWithChildren) => {
     const { children } = props
-    const { palette, spacing } = useTheme()
+    const { palette, spacing, theme } = useTheme()
     const isMobile = useIsMobile("md")
 
     return (
         <Stack
             sx={{
                 width: "100%",
-                height: 70,
+                height: `calc(${theme("components.player.compact.height")} - 10px)`,
                 backgroundColor: palette("sr-100"),
                 position: "absolute",
                 bottom: 0,

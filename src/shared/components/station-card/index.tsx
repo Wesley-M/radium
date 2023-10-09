@@ -7,9 +7,9 @@ import { Station } from "libs/radio-browser-api.types";
 import { useState } from "react";
 
 interface StationCardProps {
-    station: Station,
-    stationIdx: number,
-    collection: any,
+    station: Station
+    collection: Station[]
+    stationIdx: number
     isCompact?: boolean
 }
 
@@ -17,8 +17,8 @@ export const StationCard = (props: StationCardProps) => {
     const { 
         station, 
         stationIdx, 
-        collection, 
-        isCompact 
+        isCompact,
+        collection
     } = props
 
     const player = usePlayer()
@@ -32,10 +32,12 @@ export const StationCard = (props: StationCardProps) => {
         return <PlayCircleFilledRoundedIcon/>
     }
 
-    const playStation = (station: Station, collection: any, index: number) => {
-        playlist?.set(collection.data.content, index)
+    const playStation = (station: Station, index: number) => {
+        playlist?.set(collection, index)
         player?.toggle(station)
     }
+
+    const play = () => playStation(station, stationIdx)
 
     return (
         <Card
@@ -47,7 +49,7 @@ export const StationCard = (props: StationCardProps) => {
             variant={isCompact ? "compact" : "default"}
             actionProps={{
                 icon: getIcon(),
-                onClick: () => playStation(station, collection, stationIdx),
+                onClick: play,
             }}
             onHoverChange={setHover}
             enableAlwaysShowAction={player?.isPlaying(station)}

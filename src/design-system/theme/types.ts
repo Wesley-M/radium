@@ -82,14 +82,14 @@ export interface Theme {
     components: {
         player: {
             compact: {
-                size: string
+                height: string
             }
         },
         sidebar: {
             mini: {
                 width: string
             },
-            regular: {
+            default: {
                 width: string
             }
         }

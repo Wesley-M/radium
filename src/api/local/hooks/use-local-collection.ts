@@ -7,7 +7,7 @@
 
 import { Station } from "libs/radio-browser-api.types"
 import { useEffect, useState } from "react";
-import { CollectionId, LocalCollection } from "@api/local/services/local-collection";
+import { CollectionId, LocalCollection } from "@api/services/local-collection";
 
 interface Options {
     limit?: number

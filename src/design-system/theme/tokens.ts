@@ -70,8 +70,8 @@ export const imageSize900 = "6rem"
 // Components
 
 // Player
-export const playerCompactSize = "90px"
+export const playerCompactHeight = "80px"
 
 // Sidebar
 export const sidebarMiniWidth = "100px"
-export const sidebarRegularWidth = "300px"
+export const sidebarDefaultWidth = "300px"

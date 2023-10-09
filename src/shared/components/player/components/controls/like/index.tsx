@@ -8,11 +8,13 @@ export const Like = () => {
     const library = useLibrary()
     const playlist = usePlaylist()
     const stream = playlist?.getStream()
-    
+
     const getLikeIcon = () => {
         if (library.has(stream?.id || "")) return <FavoriteRoundedIcon/>
         return <FavoriteBorderRoundedIcon/>
     }
+
+    if (!stream) return
     
     return (
         <ActionButton

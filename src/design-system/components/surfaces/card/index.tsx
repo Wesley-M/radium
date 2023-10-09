@@ -9,21 +9,16 @@ type MainCardProps = CardProps & {
 }
 
 export const Card = (props: MainCardProps) => {
-    const { 
-        variant = "default"
-    } = props
+    const { variant = "default" } = props
 
-    if (variant === "minimal") {
-        return <MinimalCard {...props} />
+    switch(variant) {
+        case "minimal":
+            return <MinimalCard {...props} />
+        case "compact":
+            return <CompactCard {...props} />
+        case "thumbnail":
+            return <ThumbnailCard {...props} />
+        default:
+            return <DefaultCard {...props} />
     }
-
-    if (variant === "thumbnail") {
-        return <ThumbnailCard {...props} />
-    }
-
-    if (variant === "compact") {
-        return <CompactCard {...props} />
-    }
-    
-    return <DefaultCard {...props} />
 }

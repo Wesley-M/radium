@@ -30,6 +30,8 @@
  *  <overflow-x>
  *     Fit all items in one line (each item receives a minimum width), 
  *     but it allows overflow. 
+ * 
+ * one-line, overflow-line, all, pretty
 */
 
 import { useIsMobile } from "@design-system/hooks/use-is-mobile";
