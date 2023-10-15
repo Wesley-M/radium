@@ -14,7 +14,9 @@
         "accent": "accent",
         "bt-primary": "button.primary",
         "tx-primary": "text.primary",
-        "tx-secondary": "text.secondary"
+        "tx-secondary": "text.secondary",
+        "tx-white": "text.white",
+        "tx-black": "text.black"
     },
     "spacing": {
         "st-xxs": "stack.xxs",

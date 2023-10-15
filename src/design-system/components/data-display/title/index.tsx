@@ -99,16 +99,43 @@ const LoadingTitle = (props: LoadingTitleProps) => {
     } = props
     
     const { palette, spacing } = useTheme()
-
+    
     return (
         <Stack 
             direction="column" 
             gap={spacing(`st-${gap}`)} 
             sx={containerStyle}
+            width="100%"
         >
-            { isAbove && <Skeleton variant="rounded" sx={{ width: "20%", background: palette("sr-500") }}/>}
-            <Skeleton variant="rounded" sx={{ height: 30, background: palette("sr-500"), width: "50%" }} />
-            { !isAbove && <Skeleton variant="rounded" sx={{ width: "20%", background: palette("sr-500") }}/>}
+            {isAbove && (
+                <Skeleton 
+                    variant="rounded" 
+                    sx={{ 
+                        width: "40%", 
+                        background: palette("sr-500"),
+                        minWidth: 150
+                    }}
+                />
+            )}
+            <Skeleton 
+                variant="rounded" 
+                sx={{ 
+                    height: 30, 
+                    background: palette("sr-500"), 
+                    width: "20%", 
+                    minWidth: 100 
+                }} 
+            />
+            {!isAbove && (
+                <Skeleton 
+                    variant="rounded" 
+                    sx={{ 
+                        width: "40%", 
+                        background: palette("sr-500"),
+                        minWidth: 150
+                    }}
+                />
+            )}
         </Stack>
     )
 }

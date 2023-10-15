@@ -5,6 +5,7 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded';
 import { Stack } from '@mui/material';
+import { MemoryRouter } from 'react-router-dom';
 
 const meta = {
   title: 'Design-System/navigation/BaseSidebar',
@@ -16,7 +17,9 @@ const meta = {
   decorators: [
     (Story: any) => (
       <ThemeProvider>
-        <Story/>
+        <MemoryRouter>
+          <Story/>
+        </MemoryRouter>
       </ThemeProvider>
     )
   ]
@@ -27,18 +30,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-      children: (
+      content: (
         <>
           <BaseSidebarSection>
             <Stack direction="column" gap="1em">
-              <BaseSidebarItem title="Home" icon={HomeRoundedIcon} isActive/>
-              <BaseSidebarItem title="Search" icon={SearchRoundedIcon} />
+              <BaseSidebarItem title="Home" activeIcon={HomeRoundedIcon} isActive/>
+              <BaseSidebarItem title="Search" inactiveIcon={SearchRoundedIcon} />
             </Stack>
           </BaseSidebarSection>
 
           <BaseSidebarSection>
             <Stack direction="column" gap="1em">
-              <BaseSidebarItem title="Your library" icon={MusicNoteRoundedIcon} isActive/>
+              <BaseSidebarItem title="Your library" activeIcon={MusicNoteRoundedIcon} isActive/>
             </Stack>
           </BaseSidebarSection>
         </>

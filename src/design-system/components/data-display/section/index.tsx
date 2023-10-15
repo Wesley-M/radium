@@ -8,7 +8,7 @@ import { Stack } from "@mui/material"
 import { ReactNode } from "react"
 import { useNavigate } from "react-router-dom"
 
-interface SectionProps {
+export interface SectionProps {
     children?: ReactNode,
     actions?: ReactNode,
     title?: string,
@@ -18,6 +18,7 @@ interface SectionProps {
     gap?: Size,
     goBack?: string,
     innerRef?: (element: HTMLElement | null) => void
+    loading?: boolean
 }
 
 export const Section = (props: SectionProps) => {
@@ -30,11 +31,12 @@ export const Section = (props: SectionProps) => {
         subtitleProps,
         gap = "md",
         goBack,
-        innerRef
+        innerRef,
+        loading = true
     } = props
 
     const { spacing } = useTheme()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     
     return (
         <Stack gap={spacing(`st-${gap}`)} ref={innerRef}>
@@ -47,6 +49,7 @@ export const Section = (props: SectionProps) => {
                     direction="row" 
                     gap={spacing("in-sm")} 
                     alignItems="center"
+                    width="100%"
                 >
                     {goBack && (
                         <ActionButton
@@ -60,12 +63,17 @@ export const Section = (props: SectionProps) => {
                         subtitle={subtitle} 
                         titleProps={{ as: "h2", noWrap: false, ...titleProps }}
                         subtitleProps={{ isUppercase: true, ...subtitleProps }}
+                        loading={loading}
                     >
                         {title}
                     </Title>
                 </Stack>
 
-                <Stack direction="row" gap={spacing("in-sm")}>
+                <Stack 
+                    direction="row" 
+                    gap={spacing("in-sm")} 
+                    width="fit-content"
+                >
                     {actions}
                 </Stack>
             </Stack>

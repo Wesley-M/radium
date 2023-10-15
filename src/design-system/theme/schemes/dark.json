@@ -23,7 +23,9 @@
         },
         "text": {
             "primary": "whiteBase",
-            "secondary": "whiteDarken32"
+            "secondary": "whiteDarken32",
+            "white": "whiteBase",
+            "black": "blackBase"
         }
     },
     "spacing": {

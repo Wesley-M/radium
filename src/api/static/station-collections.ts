@@ -51,6 +51,8 @@ export interface StationCollection {
     content?: Station[]
     /** Whether the collection should be displayed in a compact way */
     isCompact?: boolean
+    /** Number of items loading */
+    loadingItems?: number
 }
 
 export const stationsMap: Record<string, StationCollection> = {
@@ -76,6 +78,7 @@ export const stationsMap: Record<string, StationCollection> = {
                 ]
             }
         },
+        "loadingItems": 20
     },
     "relaxation": {
         "title": "Relaxation",
@@ -95,7 +98,8 @@ export const stationsMap: Record<string, StationCollection> = {
                 ]
             }
         },
-        "isCompact": true
+        "isCompact": true,
+        "loadingItems": 6
     },
     "news": {
         "title": "News",
@@ -119,7 +123,8 @@ export const stationsMap: Record<string, StationCollection> = {
                     ["times_radio", "d1b0b82d-aa27-49e5-a98e-716ceff7e2f7"]
                 ]
             }
-        }
+        },
+        "loadingItems": 20
     },
     "recently_played": {
         "title": "Recently played",
@@ -131,7 +136,8 @@ export const stationsMap: Record<string, StationCollection> = {
             "filters": {
                 "reverse": true
             }
-        }
+        },
+        "loadingItems": 20
     }
 }
 

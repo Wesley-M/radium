@@ -3,7 +3,7 @@ import { Box, SxProps } from "@mui/material"
 import { ReactNode, memo } from "react"
 
 export interface SmartGridItemProps {
-    children?: ReactNode,
+    children?: (width?: number, height?: number) => ReactNode,
     width?: number,
     height?: number,
     sx?: SxProps
@@ -26,7 +26,7 @@ export const SmartGridItem = memo((props: SmartGridItemProps) => {
                 ...sx
             }}
         >
-            {children}
+            {children?.(width, height)}
         </Box>
     )
 }, hasEqualProps)

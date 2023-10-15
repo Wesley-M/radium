@@ -2,12 +2,13 @@ import { useTheme } from "@design-system/theme"
 import Stack from "@mui/material/Stack"
 import React from "react"
 import { useAllStationCollections } from "@api/index"
-import { StationGrid } from "@components/station-grid"
+import { StationGrid } from "@design-system/components/layout/station-grid"
+import { stationsArr } from "@api/static/station-collections"
 
 export const Home = () => {
     const { spacing } = useTheme()
     const collections = useAllStationCollections()
-
+    
     const isEmptyCollection = (collection: any) => {
         const content = collection.data?.content
         return content && content.length === 0
@@ -19,14 +20,18 @@ export const Home = () => {
                 <React.Fragment key={index}>
                     {!isEmptyCollection(collection) && (
                         <StationGrid 
-                            title={collection.data?.title}
-                            subtitle={collection.data?.description}
                             data={collection.data?.content || []}
                             goTo={collection.data?.query?.id.toString() || "/"}
                             loading={collection.isFetching}
-                            isCompact={collection.data?.isCompact}
+                            loadingItems={stationsArr[index].loadingItems}
+                            isCompact={stationsArr[index].isCompact}
+                            sectionProps={{
+                                title: collection.data?.title,
+                                subtitle: collection.data?.description,
+                            }}
                             smartGridProps={{
-                                variant: collection.data?.isCompact ? "fill-xy" : "fit-x",
+                                variant: stationsArr[index].isCompact ? "rect" : "oneline",
+                                itemProps: { gap: "sm" }
                             }}
                         />
                     )}

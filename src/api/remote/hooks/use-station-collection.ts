@@ -9,7 +9,7 @@ export const useStationCollection = (target: string | StationCollection) => {
     // Check if the target is a known id
     const isId = typeof target === "string"
     if (isId && !(target in stationsMap)) {
-        throw new Error(`the target id ${target} does not exist`)
+        throw new Error(`Playlist with name "${target}" was not found`)
     }
     
     // Get the target template

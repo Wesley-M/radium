@@ -1,32 +1,31 @@
 import { useTheme } from "@design-system/theme"
 import { CssSize } from "@design-system/utils"
 import { BaseCard, CardProps } from "@design-system/components/surfaces/card/variants/base-card"
-import useMeasure from "react-use-measure"
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { useState } from "react";
 
 export const MinimalCard = (props: CardProps) => {
     const { 
         borderRadius = "md",
-        size = 60,
         padding = "xs",
         actionProps,
         cardProps,
         imageProps,
-        onHoverChange
+        onHoverChange,
+        width = 260,
+        height = 60
     } = props
 
     const { avatar, spacing, palette, radius } = useTheme()   
-    const [cardRef, cardBounds] = useMeasure()
     const [hover, setHover] = useState(false)
 
     const actionSizeInPx = CssSize.build(avatar("sm")).toPx() || 0
     const paddingInPx = (CssSize.build(spacing(`in-${padding}`)).toPx() || 0)
-    const imageWidth = size - 2 * paddingInPx
+    const imageWidth = height - 2 * paddingInPx
 
     const actionStyle = {
-        bottom: (cardBounds.height - actionSizeInPx) / 2,
-        right: cardBounds.width - imageWidth / 2 - paddingInPx - actionSizeInPx / 2,
+        bottom: (height - actionSizeInPx) / 2,
+        right: width - imageWidth / 2 - paddingInPx - actionSizeInPx / 2,
         "& .MuiSvgIcon-root": {
             color: palette("accent"),
             backgroundColor: "transparent"
@@ -34,6 +33,8 @@ export const MinimalCard = (props: CardProps) => {
     }
 
     const cardStyle: React.CSSProperties = {
+        width,
+        height,
         alignItems: "center",
         borderRadius: radius(borderRadius),
         backgroundColor: hover ? palette("sr-400") : "transparent",
@@ -41,8 +42,7 @@ export const MinimalCard = (props: CardProps) => {
         gap: spacing("st-sm"),
         transition: "background-color 100ms ease-in-out",
         padding: paddingInPx + "px",
-        paddingRight: spacing("st-sm"),
-        width: "100%"
+        paddingRight: spacing("st-sm")
     }
 
     const imageStyle = {
@@ -72,7 +72,6 @@ export const MinimalCard = (props: CardProps) => {
                 width: imageWidth,
                 sx: { ...imageStyle, ...imageProps?.sx }
             }}
-            cardRef={cardRef}
             onHoverChange={handleHoverChange}
         />
     )

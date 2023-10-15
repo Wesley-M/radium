@@ -3,12 +3,18 @@ import { useTheme } from "@design-system/theme";
 import { SxProps } from "@mui/material";
 
 interface BaseSidebarSectionProps {
-  children: React.ReactNode;
+  /** Content of the sidebar section */
+  children: React.ReactNode
+  /** Custom styles for the sidebar section */
   sx?: SxProps
 }
 
+/**
+ * A sidebar section is a container for sidebar items.
+ * It is used to group items that belong to the same category.
+ */
 export const BaseSidebarSection = (props: BaseSidebarSectionProps) => {
-  const { children, sx } = props;
+  const { children, sx } = props
   const { spacing } = useTheme()
   
   return (

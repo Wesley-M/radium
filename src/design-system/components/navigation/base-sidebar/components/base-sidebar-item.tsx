@@ -1,26 +1,46 @@
 import { useTheme } from "@design-system/theme";
 import { Stack, SvgIconProps } from "@mui/material";
-import { ComponentType, useContext } from "react";
+import { ComponentType } from "react";
 import { Text } from "@design-system/components/data-display/text";
-import { MiniContext } from "@design-system/components/navigation/base-sidebar/context/mini-context";
 import { useNavigate } from "react-router-dom";
+import { useSidebar } from "@design-system/hooks/use-sidebar";
 
 interface BaseSidebarItemProps {
-  icon: ComponentType<SvgIconProps>
+  /** Icon to be used when the item is inactive */
+  inactiveIcon?: ComponentType<SvgIconProps>
+  /** Icon to be used when the item is active */
+  activeIcon?: ComponentType<SvgIconProps>
+  /** Title of the item */
   title: string
+  /** Whether the item is active or not */
   isActive?: boolean
+  /** Path to navigate to when the item is clicked */
   to?: string
 }
-  
+
+/**
+ * A sidebar item is a clickable element that can be used to 
+ * navigate to a different page.
+ */
 export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
-  const { icon, title, isActive = false, to } = props
+  const {
+    activeIcon, 
+    inactiveIcon, 
+    title,
+    to, 
+    isActive = false 
+  } = props
+
   const { palette, spacing } = useTheme()
-  const mini = useContext(MiniContext)
+  const { isMini } = useSidebar()
   const navigate = useNavigate()
   
-  const Icon = icon
+  const SelectedIcon = isActive ? activeIcon : inactiveIcon
 
-  const text = (
+  /** 
+   * If the sidebar is in mini mode, the text is not rendered
+  */
+  const text = isMini ? null : (
     <Text 
       as="body1" 
       sx={{ 
@@ -37,7 +57,7 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
     <Stack 
       direction="row" 
       alignItems="center" 
-      justifyContent={ mini ? "center" : "flex-start" }
+      justifyContent={ isMini ? "center" : "flex-start" }
       gap={spacing("in-xxs")}
       paddingY={spacing("in-xs")}
       sx={{
@@ -50,13 +70,15 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
       }}
       onClick={() => to && navigate(to)}
     >
-      <Icon 
-        sx={{ 
-          fontSize: "2rem", 
-          color: palette("tx-primary") 
-        }} 
-      />
-      {!mini && text}
+      {SelectedIcon && (
+        <SelectedIcon
+          sx={{ 
+            fontSize: "2rem", 
+            color: palette("tx-primary") 
+          }} 
+        />
+      )}
+      {text}
     </Stack>
   )
 }

@@ -47,6 +47,6 @@ export const Default: Story = {
                     backgroundColor: "#fff" 
                 }} 
             />
-        ),
+        )
     },
 };

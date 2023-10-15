@@ -1,1 +1,1 @@
-export * from "./context/index"
+export * from "./context/theme-context"

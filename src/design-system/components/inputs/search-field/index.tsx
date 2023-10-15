@@ -12,9 +12,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 interface SearchFieldProps {
     /** Placeholder text for search input */
     placeholder?: string
-    /** Callback when user types on search input */
+    /** [OPTIONAL] Callback when user types on search input */
     onChange?: (text: string) => void
-    /** Callback when user resets search input */
+    /** [OPTIONAL] Callback when user resets search input */
     onReset?: () => void
 }
 
@@ -172,15 +172,16 @@ export const SearchField = (props: SearchFieldProps) => {
                 </Stack>
                 
                 <Popper
-                    anchorEl={popoverAnchorEl}
+                    anchorEl={null}
                     open={open}
                     sx={{
-                        width: "calc(100% - 1em)",
-                        position: "fixed",
+                        width: "100%",
+                        position: "absolute",
                         zIndex: 1000,
-                        marginRight: "-2em !important"
+                        padding: "10px 4px",
+                        marginTop: "-2px"
                     }}
-                    placement="left"
+                    disablePortal
                 >
                     <Paper
                         sx={{
@@ -223,7 +224,7 @@ const StyledSearch = ({ children, focus }: StyledSearchProps) => {
                 marginLeft: 0,
                 width: isMobile ? '100%' : '30%',
                 minWidth: 300,
-                height: 50,
+                height: isMobile ? 60 : 50,
                 maxWidth: isMobile ? 'initial' : 600,
                 display: 'flex',
                 alignItems: "center",

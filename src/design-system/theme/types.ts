@@ -45,18 +45,20 @@ export interface Text {
 
 export interface Theme {
     colors: {
+        accent: string,
         background: {
             body: string,
             surface: ColorScale
         },
-        accent: string,
         border: ColorScale,
         button: {
             primary: string,
         },
         text: {
             primary: string,
-            secondary: string
+            secondary: string,
+            white: string,
+            black: string,
         }
     }
     spacing: {

@@ -34,7 +34,10 @@ export interface ImageProps {
   onSrcChange?: (imageRef: RefObject<HTMLImageElement>) => void
   /** Image source */
   src?: string
-  /** Whether to use a proxy to load the image */
+  /** 
+   * Whether to use a proxy to load the image. Useful 
+   * when there is CORS restrictions. 
+   * */
   useProxy?: boolean
   /** Width */
   width?: string | number

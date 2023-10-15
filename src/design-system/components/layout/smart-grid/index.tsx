@@ -38,7 +38,7 @@ export type SmartGridProps = {
 export const SmartGrid = (props: SmartGridProps) => {    
     const { 
         children = [],
-        variant = "fit-x",
+        variant = "oneline",
         enableAspectRatio = false,
         enableInfiniteGrid = false
     } = props
@@ -61,21 +61,6 @@ export const SmartGrid = (props: SmartGridProps) => {
         items: !Array.isArray(children) ? [children] : children,
         enableAspectRatio,
     })
-
-    // Styles to be applied when overflow-x variant is selected
-    const getOverflowXStyles = () => {
-        if (grid.variant === "overflow-x") {
-            return {
-                overflow: "scroll",
-                "&::-webkit-scrollbar": {
-                    display: "none",
-                },
-                scrollbarWidth: "none",
-                msOverflowStyle: "none"
-            } as React.CSSProperties
-        }
-        return {}
-    }
     
     // Injecting dimensions into the grid items
     const itemsWithDimensions = grid.rows.map(row => {
@@ -112,9 +97,16 @@ export const SmartGrid = (props: SmartGridProps) => {
             container
             sx={{ 
                 width: "100%", 
-                ...getOverflowXStyles() 
+                ...(grid.variant === "overflow-oneline" && {
+                    overflow: "scroll",
+                    "&::-webkit-scrollbar": {
+                        display: "none",
+                    },
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none"
+                }),
             }} 
-            ref={grid.ref} 
+            ref={grid.smartGridRef} 
             gap={grid.itemProps.gap}
         >
             {ItemList}

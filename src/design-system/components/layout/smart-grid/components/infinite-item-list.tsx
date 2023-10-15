@@ -54,9 +54,9 @@ export const InfiniteItemList = (props: InfiniteItemListProps) => {
                     width="100%"
                     itemData={{ items, sx: itemWrapperProps?.sx }}
                     itemCount={itemCount}
-                    itemSize={listProps?.itemSize || 100}
+                    itemSize={listProps?.itemSize || 88}
                     onItemsRendered={onItemsRendered}
-                    overscanCount={listProps?.overscanCount || 10}
+                    overscanCount={listProps?.overscanCount || 20}
                     style={{ overflowX: "hidden" }}
                     ref={ref}
                     {...listProps}

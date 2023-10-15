@@ -37,13 +37,17 @@ const mockItems = (n: number) => {
   return new Array(n).fill(0).map(
     (_, i) => (
       <SmartGridItem>
-        <Card
-          title={`Radio Station ${i}`}
-          subtitle="Gender 1, Gender 2, Gender 3, Gender 4, Gender 5"
-          imageProps={{ src: "https://picsum.photos/id/247/500/500" }}
-          padding="sm"
-          borderRadius='md'
-        />
+        {(width, _height) => (
+          <Card
+            title={`Radio Station ${i}`}
+            subtitle="Gender 1, Gender 2, Gender 3, Gender 4, Gender 5"
+            imageProps={{ src: "https://picsum.photos/id/247/500/500", hasRinglight: true, borderRadius: "xxs" }}
+            borderRadius="md"
+            padding="sm"
+            width={width}
+            height={250}
+          />
+        )}
       </SmartGridItem>
     )
   )
@@ -54,14 +58,18 @@ const mockCompactItems = (n: number) => {
   return new Array(n).fill(0).map(
     (_, i) => (
       <SmartGridItem>
-        <Card
-          title={`Radio Station ${i}`}
-          subtitle="Gender 1, Gender 2, Gender 3, Gender 4, Gender 5"
-          imageProps={{ src: "https://picsum.photos/id/247/500/500", hasRinglight: true, borderRadius: "xxs" }}
-          borderRadius="xxs"
-          padding="xxs"
-          variant="compact"
-        />
+        {(width, height) => (
+          <Card
+            title={`Radio Station ${i}`}
+            subtitle="Gender 1, Gender 2, Gender 3, Gender 4, Gender 5"
+            imageProps={{ src: "https://picsum.photos/id/247/500/500", hasRinglight: true, borderRadius: "xxs" }}
+            borderRadius="xxs"
+            padding="xxs"
+            variant="compact"
+            width={width}
+            height={height}
+          />
+        )}
       </SmartGridItem>
     )
   )
@@ -70,21 +78,21 @@ const mockCompactItems = (n: number) => {
 export const OneLineFit: Story = {
   args: {
     children: mockItems(5),
-    variant: "fit-x"
+    variant: "oneline"
   },
 };
 
 export const FullGrid: Story = {
   args: {
     children: mockItems(5),
-    variant: "fit-xy"
+    variant: "all"
   },
 };
 
-export const Fill: Story = {
+export const Rectangle: Story = {
   args: {
     children: mockCompactItems(2),
-    variant: "fill-xy",
+    variant: "rect",
     itemProps: { minWidth: 250 }
   },
 };
@@ -92,7 +100,7 @@ export const Fill: Story = {
 export const SlideShow: Story = {
   args: {
     children: mockItems(5),
-    variant: "overflow-x"
+    variant: "overflow-oneline"
   },
 };
 

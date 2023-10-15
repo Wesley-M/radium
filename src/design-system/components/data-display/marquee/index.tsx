@@ -5,10 +5,15 @@ import { useEffect, useRef, useState } from "react"
 import merge from "lodash.merge"
 
 interface MarqueeProps {
+    /** The text to be displayed */
     text?: string
+    /** The props to be passed to the text component */
     textProps?: TextProps
+    /** The speed of the marquee (how fast the hidden text will be shown) */
     speed?: number
+    /** The maximum duration of the animation in seconds */
     maxDurationInSec?: number
+    /** The minimum duration of the animation in seconds */
     minDurationInSec?: number
 }
 
@@ -33,14 +38,13 @@ export const Marquee = (props: MarqueeProps) => {
         100% {transform: translateX(0);}
     `
 
-    // Re-calculate the width of the text not in the screen
-    useEffect(() => {
+    const calculateHiddenSpace = () => {
         if (!textRef.current) return
         const textEl = textRef.current
         const textWidth = textEl.clientWidth
         const hiddenSpace = textWidth - containerBounds.width
         setHiddenSpace(hiddenSpace);
-    }, [textRef?.current?.clientWidth, containerBounds.width]);
+    }
 
     const getAnimationDuration = () => {
         const duration = (hiddenSpace || 0) / speed
@@ -51,6 +55,14 @@ export const Marquee = (props: MarqueeProps) => {
         const hasAnimation = hiddenSpace > 0
         return hasAnimation ? `${marqueeKeyframes} ${getAnimationDuration()}s infinite linear` : "none"
     }
+
+    /** 
+     * Calculate the hidden space when the text or container 
+     * size changes
+    */
+    useEffect(() => {
+        calculateHiddenSpace()
+    }, [textRef?.current?.clientWidth, containerBounds.width]);
 
     return (
         <Box ref={containerRef} sx={{ width: "100%", overflow: "hidden" }}>

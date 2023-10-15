@@ -26,7 +26,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        size: 200,
+        width: 200,
+        height: 250,
         imageProps: {
           src: "https://picsum.photos/200/300"
         },
@@ -37,17 +38,22 @@ export const Default: Story = {
 
 export const Compact: Story = {
   args: {
+      width: 300,
+      height: 80,
       variant: "compact",
       imageProps: {
         src: "https://picsum.photos/200/300"
       },
       title: "National Geographic",
       subtitle: "jazz, comedy, rock",
+      enableMarquee: true
   },
 };
 
 export const Minimal: Story = {
   args: {
+      width: 300,
+      height: 80,
       variant: "minimal",
       imageProps: {
         src: "https://picsum.photos/200/300"
@@ -59,6 +65,8 @@ export const Minimal: Story = {
 
 export const Thumbnail: Story = {
   args: {
+      width: 90,
+      height: 90,
       variant: "thumbnail",
       imageProps: {
         src: "https://picsum.photos/200/300"
@@ -68,6 +76,8 @@ export const Thumbnail: Story = {
 
 export const BrokenImage: Story = {
   args: {
+      width: 200,
+      height: 250,
       variant: "default",
       imageProps: {
         src: "https://picsum.phot"
@@ -79,6 +89,8 @@ export const BrokenImage: Story = {
 
 export const Square: Story = {
   args: {
+      width: 250,
+      height: 250,
       variant: "default",
       borderRadius: "xxs",
       imageProps: {
@@ -92,48 +104,59 @@ export const Square: Story = {
 
 export const LoadingDefault: Story = {
   args: {
-    size: 200,
+    width: 200,
+    height: 250,
     imageProps: {
       src: "https://picsum.photos/200/300"
     },
     title: "National Geographic",
     subtitle: "jazz, comedy, rock",
-    loading: true
+    loading: true,
+    hideWhileEmpty: false
   },
 };
 
 export const LoadingCompact: Story = {
   args: {
+    width: 300,
+    height: 80,
     variant: "compact",
     imageProps: {
       src: "https://picsum.photos/200/300"
     },
     title: "National Geographic",
     subtitle: "jazz, comedy, rock",
-    loading: true
+    loading: true,
+    hideWhileEmpty: false
   },
 };
 
 export const LoadingMinimal: Story = {
   args: {
+    width: 300,
+    height: 80,
     variant: "minimal",
     imageProps: {
       src: "https://picsum.photos/200/300"
     },
     title: "National Geographic",
     subtitle: "jazz, comedy, rock",
-    loading: true
+    loading: true,
+    hideWhileEmpty: false
   },
 };
 
 export const LoadingThumbnail: Story = {
   args: {
+    width: 90,
+    height: 90,
     variant: "thumbnail",
     imageProps: {
       src: "https://picsum.photos/200/300"
     },
     title: "National Geographic",
     subtitle: "jazz, comedy, rock",
-    loading: true
+    loading: true,
+    hideWhileEmpty: false
   },
 };

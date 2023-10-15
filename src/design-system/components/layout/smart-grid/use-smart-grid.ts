@@ -1,38 +1,12 @@
 /** 
- * The goal is to represent a grid where the elements fit 100% of the grid width,
- * while considering gaps and each element aspect ratio.
+ * The goal is to reach a grid that knows how to fill all of its
+ * available space, given different circumstances. Such as:
  * 
- * To fit the elements horizontally, the following needs to be true:
- * 
- *  Variables:
- *  - Cmw: Card minimum width
- *  - Cw:  Card width
- *  - Tw:  Total grid width
- *  - Cg:  Width of inter-card gap
- *  - Cn:  Number of whole cards able to fit in Tw
- *  - Cxn: Exact number of cards to fit in Tw
- * 
- *  Rules:
- *  1. Cxn = (Tw + Cg) / (Cmw + Cg)
- *  2. Cn = floor(Cxn)
- *  3. Cw = (Tw - (Cn x Cg) + Cg) / Cn
- * 
- *  The variant can be explained as:
- *  
- *  <fit-x>
- *     Fit one line of items on desktop (only shows what is possible). 
- *     On mobile, switch to the overflow-x variant to improve experience (scrollable).
- *  <fit-xy>
- *     Fit all items in multiple lines as needed
- *  <fill-xy>
- *     When possible, all the items will fill one line. Otherwise, 
- *     it switches to the fit-xy variant.
- *  <overflow-x>
- *     Fit all items in one line (each item receives a minimum width), 
- *     but it allows overflow. 
- * 
- * one-line, overflow-line, all, pretty
-*/
+ * - Minimum width of each element
+ * - Aspect ratio of each element
+ * - How many elements to fit in each line
+ * - How many lines to fit in the grid
+ */
 
 import { useIsMobile } from "@design-system/hooks/use-is-mobile";
 import { useTheme } from "@design-system/theme";
@@ -40,36 +14,72 @@ import { Size } from "@design-system/theme/types";
 import { CssSize } from "@design-system/utils";
 import useMeasure from "react-use-measure"
 
-export type GridFit = "fit-x" | "fill-xy" | "fit-xy" | "overflow-x"
+/* 
+* The grid display variants are:
+* 
+* - oneline: Shows only one line of elements, and it hides the rest. This line
+* should fill all of the available space, given the minimum width of each 
+* element (e.g. a width of 200px and an item's minimum width of 45px will
+* result in 4 items per line, each with 50px of width). In mobile, this
+* variant will change to overflow-oneline.
+* 
+* - overflow-oneline: Shows only one line of elements, and it allows overflow. 
+* All elements will have the same minimum width.
+* 
+* - all: Shows the all elements, each line follows the same rules as the oneline 
+* variant. Except the last line will be filled with the remaining elements.
+* 
+* - pretty: If there is only one line, it will fill it with items. If it is not
+* possible, it will show the items in multiple lines, each line follows the same 
+* rules as the oneline. Except the last line will not be shown if it is not filled.
+*/
+export type GridFit = "oneline" | "overflow-oneline" | "all" | "rect"
 
-interface Options<I> {
+interface GridOptions<I> {
+    /** Properties to be applied to each item */
     itemProps?: {
+        /** Item`s minimum width */
         minWidth?: number,
+        /** Item`s aspect ratio */
         ratio?: number,
+        /** Item`s gap */
         gap?: Size
     },
+    /** Grid display variant */
     variant?: GridFit,
+    /** Items to be processed */
     items?: I[],
+    /** If true, the item`s height will be calculated based on its width and aspect ratio */
     enableAspectRatio?: boolean
 }
 
 interface GridReturn<I> {
+    /** Properties to be applied to each item */
     itemProps: {
+        /** Item`s computed width */
         width: number;
+        /** Item`s computed height */
         height?: number;
+        /** Item`s minimum width */
         minWidth?: number;
+        /** Item`s aspect ratio */
         ratio?: number;
+        /** Item`s gap */
         gap?: string;
     },
+    /** Grid display variant */
     variant: GridFit,
+    /** Items to be displayed */
     rows: I[][],
+    /** Reference to the grid container */
+    smartGridRef: (element: HTMLElement | null) => void
+    /** Returns true if there are hidden items */
     hasHiddenItems: () => boolean,
-    ref: (element: HTMLElement | null) => void
 }
 
-export const useSmartGrid = <I>(options: Options<I>): GridReturn<I> => {
+export const useSmartGrid = <I>(options: GridOptions<I>): GridReturn<I> => {
     const {
-        variant = "fit-x",
+        variant = "oneline",
         itemProps,
         items = [],
         enableAspectRatio = false
@@ -87,86 +97,137 @@ export const useSmartGrid = <I>(options: Options<I>): GridReturn<I> => {
     // Item`s gap
     const gap = CssSize.build(spacing(`in-${itemProps?.gap || "md"}`)).toPx() || 0
     
-    // Reference and grid boundaries
-    const [ref, bounds] = useMeasure()
+    // Reference and boundaries for the grid container
+    const [containerRef, containerBounds] = useMeasure()
 
-    // Grid variants can change behaviour when certain conditions are met
-    const getVariant = () => {
-        // When variant is fit-x, in mobile it is better to use a slideshow approach
-        if (variant === "fit-x" && isMobile) return "overflow-x"
-
-        // When variant is fill-xy, it is only possible to fit all items in one line
-        // if the grid width is greater than the sum of all items minimum width + gaps
-        if (variant === "fill-xy" && items.length * (minWidth + gap) > bounds.width) return "fit-xy"
-        
+    /** 
+     * Variants can change depending on the screen size, so we 
+     * need to compute it:
+    */
+    const computeVariant = () => {
+        if (variant === "oneline" && isMobile) return "overflow-oneline"
         return variant
     }
 
-    const getNumberOfItemsInX = () : number => {
-        let itens = 0
-        if (getVariant() === "fill-xy") {
-            itens = items.length
-        } else if (minWidth + gap === 0) {
-            itens = 0
-        } else {
-            itens = Math.floor((bounds.width + gap) / (minWidth + gap))
-        }
-        return Math.max(1, itens)
+    /** 
+     * Computes the number of items to fit in each line
+     * 
+     * [FIT EXPLANATION]: The logic behind the fit of each line, it is as follows:
+     *  
+     *  Variables:
+     *  - Imw: Item minimum width
+     *  - Iw:  Item width
+     *  - Tw:  Total grid width
+     *  - Gp:  Gap between items
+     *  - In:  Number of whole items able to fit in Tw
+     *  - Ixn: Exact number of items to fit in Tw
+     * 
+     *  Rules:
+     *  1. Ixn = (Tw + Gp) / (Imw + Gp)
+     *  2. In = floor(Ixn)
+     *  3. Iw = (Tw - (In x Gp) + Gp) / In
+    */
+    const computeItemsPerLine = () : number => {
+        // Item has no dimensions
+        if (minWidth + gap === 0) return 0
+        
+        // Needed to fit all items in one line
+        const onelineFit = Math.floor((containerBounds.width + gap) / (minWidth + gap))
+
+        // Rect mode, but there are not enough items to fill the line
+        const isIncompleteRect = computeVariant() === "rect" && items.length < onelineFit
+        
+        // Overflow mode
+        const isOverflow = computeVariant() === "overflow-oneline"
+
+        let result = onelineFit
+        if (isIncompleteRect || isOverflow) result = items.length
+        
+        // Prevent division by zero
+        return Math.max(1, result)
     }
 
-    const getItemWidth = () : number => {
-        const numberOfItemsInX = getNumberOfItemsInX()
-        if (numberOfItemsInX === 0) return 0
-        if (getVariant() === "overflow-x") return minWidth
-        return Math.max(0, (bounds.width - (numberOfItemsInX * gap) + gap) / numberOfItemsInX)
+    /** 
+     * Compute the width of each item, based on the variant
+    */
+    const computeItemWidth = () : number => {
+        const itemsPerLine = computeItemsPerLine()
+        const isOverflow = computeVariant() === "overflow-oneline"
+        const onelineFit = (containerBounds.width - (itemsPerLine * gap) + gap) / itemsPerLine
+
+        let result = onelineFit
+        if (itemsPerLine === 0) result = 0
+        if (isOverflow) result = minWidth
+
+        return Math.max(0, result)
     }
 
-    const getItemDimensions = () => {
-        const width = getItemWidth()
+    /** 
+     * Compute the dimensions of each item (width, height). It is
+     * important to note that the height is only computed if the
+     * aspect ratio is enabled.
+    */
+    const computeItemDimensions = () => {
+        const width = computeItemWidth()
         if (enableAspectRatio) return { width, height: width / ratio}
         return {width, height: undefined}
     }
 
-    const getItems = () => {
-        const items2d = convertTo2DArray(items, getNumberOfItemsInX())
-        switch (getVariant()) {
-            case "fit-x":
-                return items2d.length === 0 ? [] : [items2d[0]]
-            case "fill-xy":
-                return [items]
-            case "overflow-x":
+    /** 
+     * Compute the rows which will be displayed
+    */
+    const computeRows = () => {
+        const rows = to2D(items, computeItemsPerLine())
+        
+        const firstRow = rows[0]
+        const lastRow = rows[rows.length - 1]
+        const isLastRowIncomplete = lastRow?.length < computeItemsPerLine()
+
+        switch (computeVariant()) {
+            case "oneline":
+                return rows.length === 0 ? [] : [firstRow]
+            case "overflow-oneline":
                 return items.length === 0 ? [] : [items]
+            case "rect":
+                if (rows.length <= 1) return rows
+                return (isLastRowIncomplete) ? rows.slice(0, -1) : rows 
             default: 
-                return items2d
+                return rows
         }
     }
 
+    /** 
+     * Checks if the grid has hidden items
+    */
     const hasHiddenItems = () => {
-        return getVariant() === "fit-x" && items.length > getNumberOfItemsInX()
+        const rows = to2D(items, computeItemsPerLine())
+        const onelineHasHidden = computeVariant() === "oneline" && items.length > computeItemsPerLine()
+        const rectHasHidden = computeVariant() === "rect" && computeRows().length < rows.length
+        return onelineHasHidden || rectHasHidden
+    }
+
+    /**
+     * Converts a 1D array into a 2D array with a specified number of columns.
+     */
+    const to2D = (arr: any[], numCols: number): Array<any> => {
+        return arr.reduce((acc, val, index) => {
+            const rowIndex = Math.floor(index / numCols);
+            acc[rowIndex] = acc[rowIndex] || [];
+            acc[rowIndex].push(val);
+            return acc;
+        }, []);
     }
 
     return {
-        itemProps: {ratio, minWidth, gap: `${gap}px`, ...getItemDimensions()},
-        variant: getVariant(),
-        rows: getItems(),
+        itemProps: {
+            ratio, 
+            minWidth, 
+            gap: `${gap}px`, 
+            ...computeItemDimensions()
+        },
+        variant: computeVariant(),
+        rows: computeRows(),
         hasHiddenItems,
-        ref,
+        smartGridRef: containerRef,
     }
 }
-
-/**
- * Converts a 1D array into a 2D array with a specified number of columns.
- *
- * @param {Array} arr - The input 1D array.
- * @param {number} numCols - The number of columns in the resulting 2D array.
- * @returns {Array} The resulting 2D array.
- */
-const convertTo2DArray = (arr: any[], numCols: number): Array<any> => {
-    return arr.reduce((acc, val, index) => {
-      const rowIndex = Math.floor(index / numCols);
-      acc[rowIndex] = acc[rowIndex] || [];
-      acc[rowIndex].push(val);
-      return acc;
-    }, []);
-  }
-  

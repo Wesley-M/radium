@@ -1,5 +1,4 @@
 import { useTheme } from "@design-system/theme"
-import useMeasure from "react-use-measure"
 import { CssSize } from "@design-system/utils"
 import { useState } from "react"
 import { BaseCard, CardProps } from "@design-system/components/surfaces/card/variants/base-card"
@@ -9,29 +8,30 @@ export const DefaultCard = (props: CardProps) => {
     const { 
         borderRadius = "md",
         padding = "sm",
-        size,
+        width = 200,
+        height = 250,
         actionProps,
         cardProps,
         contentProps,
         imageProps
     } = props
-
+    
     const { palette, radius, spacing } = useTheme()
-    const [cardRef, cardBounds] = useMeasure()
     const [imageHeight, setImageHeight] = useState(0)
-
     const paddingInPx = (CssSize.build(spacing(`in-${padding}`)).toPx() || 0)
-    const imageWidth = (size || cardBounds.width) - 2 * paddingInPx
+    
+    const imageWidth = width - 2 * paddingInPx
 
     const actionStyle = {
-        bottom: cardBounds.height - imageHeight - (paddingInPx / 2),
+        bottom: height - imageHeight - (paddingInPx / 2),
         right: 1.5 * paddingInPx
     }
 
     const cardStyle: SxProps = {
+        width,
+        height,
         flexDirection: "column",
         position: "relative",
-        height: "100%",
         maxHeight: "100%",
         borderRadius: radius(borderRadius),
         backgroundColor: palette("sr-300"),
@@ -39,9 +39,16 @@ export const DefaultCard = (props: CardProps) => {
             backgroundColor: palette("sr-400")
         }
     }
+
+    const imageStyle: SxProps = {
+        flex: 3,
+        overflow: "hidden",
+        borderRadius: radius(imageProps?.borderRadius || "md"),
+    }
         
     const contentStyle = {
         marginTop: spacing("st-sm"),
+        flex: 1,
     }
 
     return (
@@ -62,10 +69,10 @@ export const DefaultCard = (props: CardProps) => {
             }}
             imageProps={{ 
                 ...imageProps,
-                onHeightChange: setImageHeight,
-                width: imageWidth 
+                sx: { ...imageStyle, ...contentProps?.sx },
+                width: imageWidth,
             }}
-            cardRef={cardRef}
+            onImageContainerHeightChange={setImageHeight}
         />
     )
 }

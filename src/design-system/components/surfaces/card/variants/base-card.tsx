@@ -8,18 +8,25 @@ import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFill
 import { ActionButton, ActionButtonProps } from "@design-system/components/inputs/action-button"
 import { Title } from "@design-system/components/data-display/title"
 import useMeasure from "react-use-measure"
+import { TextProps } from "@design-system/components/data-display/text"
 
 export interface CardProps {
     /**  Radius of card outer borders (xxs, xs, sm, md, lg, xl, xxl) */
     borderRadius?: Size
-    /**  Specifies the width of the card image (the aspect ratio is 1:1) */
-    size?: number
+    /**  Width of the card */
+    width?: number
+    /**  Height of the card */
+    height?: number
     /**  Padding around the card */
     padding?: Size
     /**  Title  */
     title?: string
+    /**  Title properties  */
+    titleProps?: TextProps
     /**  Subtitle  */
     subtitle?: string
+    /**  Subtitle properties  */
+    subtitleProps?: TextProps
     /**  Image properties  */
     imageProps?: ImageProps & {
         sx?: SxProps
@@ -44,24 +51,22 @@ export interface CardProps {
     enableAlwaysShowAction?: boolean
     /** Loading state */
     loading?: boolean
+    /** Hide card when empty */
+    hideWhileEmpty?: boolean
     /**  Hover state change handler  */
     onHoverChange?: (hover: boolean) => void
-}
-
-type BaseCardProps = CardProps & {
-    /**  Reference for the card container  */
-    cardRef?: (element: HTMLElement | SVGElement | null) => void
+    /**  Callback when image container height changes  */
+    onImageContainerHeightChange?: (height: number) => void
 }
 
 /** 
  * Base structure of the card component
 */
-export const BaseCard = (props: BaseCardProps) => {    
-    const { spacing } = useTheme()
+export const BaseCard = (props: CardProps) => {    
+    const { palette, spacing } = useTheme()
 
     const { 
         actionProps,
-        cardRef,
         cardProps,
         contentProps,
         disableAction = false,
@@ -72,17 +77,25 @@ export const BaseCard = (props: BaseCardProps) => {
         onHoverChange = () => {},
         padding = "sm",
         subtitle,
+        subtitleProps,
         title,
-        loading = false
+        titleProps,
+        loading = false,
+        width = 100,
+        height = 100,
+        onImageContainerHeightChange,
+        hideWhileEmpty = true
     } = props
 
-    const { palette } = useTheme()
     const [hover, setHover] = useState(false)
     const [titleRef, titleBounds] = useMeasure()
-    const paddingInPx = (CssSize.build(spacing(`in-${padding}`)).toPx() || 0)
+    const [imageContainerRef, imageContainerBounds] = useMeasure()
 
-    const isEmpty = () => title && titleBounds.width === 0
+    const isEmpty = () => hideWhileEmpty && (title && titleBounds.width === 0 || width === 0)
+
     const isActionVisible = () => ((hover && !disableAction) || enableAlwaysShowAction)
+
+    const paddingInPx = (CssSize.build(spacing(`in-${padding}`)).toPx() || 0)
 
     const baseActionStyle: SxProps = {
         position: "absolute",
@@ -97,10 +110,10 @@ export const BaseCard = (props: BaseCardProps) => {
     const baseCardStyle: SxProps = {
         padding: paddingInPx + "px",
         position: "relative",
-        transition: "background-color 200ms ease-in-out",
-        width: "100%",
-        height: "fit-content",
-        visibility: isEmpty() ? "hidden" : "inherit",
+        transition: "background-color 200ms ease-in-out;",
+        width,
+        height,
+        opacity: isEmpty() ? 0 : 1,
         ...cardProps?.sx,
         ...(disableAction && { 
             background: "transparent"
@@ -109,7 +122,7 @@ export const BaseCard = (props: BaseCardProps) => {
 
     const baseImageStyle = {
         ...imageProps?.sx,
-        display: disableImage ? "none" : "inherit"
+        display: disableImage ? "none" : "inherit",
     }
 
     const baseContentStyle: SxProps = {
@@ -117,6 +130,17 @@ export const BaseCard = (props: BaseCardProps) => {
         gap: spacing("st-xxs"),
         ...contentProps?.sx
     }
+
+    const handleImageContainerHeightChange = () => {
+        if (onImageContainerHeightChange) {
+            onImageContainerHeightChange(imageContainerBounds.height)
+        }
+    }
+
+    // Update image container height (callback)
+    useEffect(() => {
+        handleImageContainerHeightChange()
+    }, [imageContainerBounds.height])
 
     // Update hover state (callback)
     useEffect(() => {
@@ -126,7 +150,6 @@ export const BaseCard = (props: BaseCardProps) => {
     if (loading) {
         return (
             <LoadingCard 
-                innerRef={cardRef}
                 baseCardStyle={baseCardStyle} 
                 baseImageStyle={baseImageStyle} 
                 baseContentStyle={baseContentStyle}
@@ -137,12 +160,15 @@ export const BaseCard = (props: BaseCardProps) => {
 
     return (
         <Stack
-            ref={cardRef}
             sx={baseCardStyle}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
         >
-            <Box width={imageProps?.width} sx={baseImageStyle}>
+            <Box 
+                width={imageProps?.width} 
+                sx={baseImageStyle} 
+                ref={imageContainerRef}
+            >
                 <Image 
                     {...imageProps}
                     useProxy
@@ -157,9 +183,13 @@ export const BaseCard = (props: BaseCardProps) => {
                         color: "tx-primary", 
                         isUppercase: true, 
                         isBold: true,
-                        sx: { opacity: 0.8 }
+                        sx: { opacity: 0.8 },
+                        ...subtitleProps
                     }}
-                    titleProps={{ as: "h5" }}
+                    titleProps={{ 
+                        as: "h5", 
+                        ...titleProps 
+                    }}
                     enableMarquee={enableMarquee}
                 >
                     {title}
@@ -192,7 +222,6 @@ interface LoadingCardProps {
     imageProps?: ImageProps & {
         sx?: SxProps
     }
-    innerRef?: (element: HTMLElement | SVGElement | null) => void,
 }
 
 const LoadingCard = (props: LoadingCardProps) => {
@@ -201,13 +230,12 @@ const LoadingCard = (props: LoadingCardProps) => {
         baseImageStyle, 
         baseContentStyle, 
         imageProps,
-        innerRef
     } = props
-    
+        
     const { palette, spacing } = useTheme()
-
+    
     return (
-        <Stack sx={baseCardStyle} ref={innerRef}>
+        <Stack sx={baseCardStyle}>
             <Box width={imageProps?.width} sx={baseImageStyle}>
                 <Skeleton 
                     variant="rounded" 
