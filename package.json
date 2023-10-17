@@ -30,8 +30,9 @@
     "icecast-metadata-stats": "^0.1.10",
     "lodash.get": "^4.4.2",
     "lodash.merge": "^4.6.2",
-    "preact": "^10.18.1",
     "radio-browser-api": "^6.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-fast-compare": "^3.2.2",
     "react-hot-toast": "^2.4.1",
     "react-i18next": "^13.3.0",
@@ -39,6 +40,7 @@
     "react-router-dom": "^6.16.0",
     "react-use-audio-player": "^2.1.1",
     "react-use-measure": "^2.1.1",
+    "react-virtualized-auto-sizer": "^1.0.20",
     "react-window": "^1.8.9",
     "react-window-infinite-loader": "^1.0.9",
     "source-map-explorer": "^2.5.3",
@@ -47,7 +49,6 @@
     "vite-plugin-svgr": "^3.2.0"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.6.0",
     "@storybook/addon-docs": "^7.4.0",
     "@storybook/addon-essentials": "^7.4.0",
     "@storybook/addon-interactions": "^7.4.0",

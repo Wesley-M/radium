@@ -1,18 +1,13 @@
 import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
 import svgr from "vite-plugin-svgr";
 import * as path from 'path'
-import preact from "@preact/preset-vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [svgr(), preact()],
+  plugins: [svgr(), react()],
   build: {
     sourcemap: true,
-  },
-  esbuild: {
-    jsxFactory: 'h',
-    jsxFragment: 'Fragment',
-    jsxInject: `import { h, Fragment } from 'preact'`,
   },
   resolve: {
     alias: [

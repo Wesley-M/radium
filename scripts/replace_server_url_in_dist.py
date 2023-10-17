@@ -16,9 +16,6 @@ import glob
 # Stores mirrors to all radio api browsers servers
 RADIO_MIRRORS = "https://nl1.api.radio-browser.info/json/servers"
 
-# Server URL to be replaced
-TO_REPLACE = "http://all.api.radio-browser.info/json/servers"
-
 # Request mirror servers
 headers = {'Accept': 'application/json'}
 all_servers = requests.get(RADIO_MIRRORS, headers=headers).json()
@@ -33,14 +30,14 @@ server_filename = f"https://{random_server_name}/json/servers"
 # Get file content and replace it
 with open(js_filename) as file:
     contents = file.read()
-    contents = contents.replace(TO_REPLACE, f"https://{random_server_name}/json/servers")
+    contents = contents.replace(RADIO_MIRRORS, f"https://{random_server_name}/json/servers")
 
 # Write the replaced contents
 with open(js_filename, "w") as file:
     file.write(contents)
 
 print("------>> REPLACE SERVER URL <<------")
-print(f"Replace: {TO_REPLACE}")
+print(f"Replace: {RADIO_MIRRORS}")
 print(f"By: {server_filename}")
 print(f"In: {js_filename}")
 print("------------------------------------")
