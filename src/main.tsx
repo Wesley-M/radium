@@ -11,6 +11,8 @@ import { HotToaster } from '@design-system/components/data-display/hot-toaster/i
 import { PlayerProvider } from '@design-system/components/player/context/player-context.tsx'
 import { PlaylistProvider } from '@design-system/components/player/context/playlist-context.tsx'
 import { GlobalStyle } from './GlobalStyle.tsx'
+import './i18n';
+import { LanguageProvider } from './i18n/context'
 
 const queryClient = new QueryClient()
 
@@ -28,18 +30,20 @@ const router = createBrowserRouter(routes)
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
     <CssBaseline />
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <GlobalStyle/>
-        <DominantColorProvider>
-          <PlaylistProvider>
-            <PlayerProvider>
-              <RouterProvider router={router} />
-            </PlayerProvider>
-          </PlaylistProvider>
-        </DominantColorProvider>
-        <HotToaster/>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <LanguageProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <GlobalStyle/>
+          <DominantColorProvider>
+            <PlaylistProvider>
+              <PlayerProvider>
+                  <RouterProvider router={router} />
+              </PlayerProvider>
+            </PlaylistProvider>
+          </DominantColorProvider>
+          <HotToaster/>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </LanguageProvider>
   </>,
 )

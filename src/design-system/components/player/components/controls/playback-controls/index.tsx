@@ -3,7 +3,7 @@ import { Stack, SxProps } from "@mui/material";
 import { Size } from "@design-system/theme/types";
 import { Skip } from "@design-system/components/player/components/controls/skip";
 import { Play } from "@design-system/components/player/components/controls/play";
-import { ColorAlias } from "@design-system/utils";
+import { ColorAlias } from "@design-system/theme/aliases";
 
 interface PlaybackControlsProps {
     skipSize?: Size

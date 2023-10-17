@@ -1,13 +1,13 @@
 {
     "colors": {
         "background": {
-            "body": "blackBase",
+            "body": "solarizedBlackBase",
             "surface": {
-                "100": "blackDarken4",
-                "200": "blackBase",
-                "300": "blackLighten2",
-                "400": "blackLighten4",
-                "500": "blackLighten16"
+                "100": "solarizedBlackDarken4",
+                "200": "solarizedBlackBase",
+                "300": "solarizedBlackLighten2",
+                "400": "solarizedBlackLighten4",
+                "500": "solarizedBlackLighten16"
             }
         },
         "border": {
@@ -17,13 +17,13 @@
             "400": "whiteDarken32",
             "500": "whiteBase"
         },
-        "accent": "orangeBase",
+        "accent": "solarizedYellow",
         "button": {
             "primary": "whiteBase"
         },
         "text": {
-            "primary": "whiteBase",
-            "secondary": "whiteDarken32",
+            "primary": "solarizedDarkTextLighten24",
+            "secondary": "solarizedDarkTextLighten16",
             "white": "whiteBase",
             "black": "blackBase"
         }
@@ -48,7 +48,7 @@
     },
     "border": {
         "radius": {
-            "xxs": "radius000",
+            "xxs": "radius100",
             "xs": "radius100",
             "sm": "radius200",
             "md": "radius300",
@@ -70,49 +70,49 @@
         "h1": {
             "fontSize": "fontSize700",
             "fontWeight": "fontWeight700",
-            "color": "whiteBase",
+            "color": "solarizedDarkTextLighten24",
             "fontFamily": "fontFamily1"
         },
         "h2": {
             "fontSize": "fontSize600",
             "fontWeight": "fontWeight700",
-            "color": "whiteBase",
+            "color": "solarizedDarkTextLighten24",
             "fontFamily": "fontFamily1"
         },
         "h3": {
             "fontSize": "fontSize500",
             "fontWeight": "fontWeight600",
-            "color": "whiteBase",
+            "color": "solarizedDarkTextLighten24",
             "fontFamily": "fontFamily1"
         },
         "h4": {
             "fontSize": "fontSize400",
             "fontWeight": "fontWeight600",
-            "color": "whiteBase",
+            "color": "solarizedDarkTextLighten24",
             "fontFamily": "fontFamily1"
         },
         "h5": {
             "fontSize": "fontSize300",
             "fontWeight": "fontWeight600",
-            "color": "whiteBase",
+            "color": "solarizedDarkTextLighten24",
             "fontFamily": "fontFamily1"
         },
         "h6": {
             "fontSize": "fontSize200",
             "fontWeight": "fontWeight600",
-            "color": "whiteBase",
+            "color": "solarizedDarkTextLighten24",
             "fontFamily": "fontFamily1"
         },
         "body1": {
             "fontSize": "fontSize300",
             "fontWeight": "fontWeight400",
-            "color": "whiteDarken32",
+            "color": "solarizedDarkTextLighten16",
             "fontFamily": "fontFamily1"
         },
         "body2": {
             "fontSize": "fontSize100",
             "fontWeight": "fontWeight500",
-            "color": "whiteDarken32",
+            "color": "solarizedDarkTextLighten16",
             "fontFamily": "fontFamily1"
         }
     },

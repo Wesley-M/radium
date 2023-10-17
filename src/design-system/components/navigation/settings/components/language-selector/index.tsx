@@ -2,17 +2,20 @@ import { ButtonGroup, RadioGroup } from "@mui/material";
 import { SelectionButton } from "@design-system/components/navigation/settings/components/selection-button";
 import { USFlagIcon } from "@design-system/assets/USFlagIcon";
 import { BRFlagIcon } from "@design-system/assets/BRFlagIcon";
+import { useLanguageContext } from "@i18n/context";
 
-export const LanguageSelector = () => {    
+export const LanguageSelector = () => {  
+    const context = useLanguageContext()
+
     const handleLanguageSelection = (lang: string) => {
         localStorage.setItem("language", lang)
     }
 
     return (
-        <RadioGroup name="language-selector" defaultValue="english">
+        <RadioGroup name="language-selector" defaultValue={context?.language}>
             <ButtonGroup>
                 <SelectionButton 
-                    value="english" 
+                    value="en" 
                     label="English" 
                     icon={USFlagIcon} 
                     eventToDispatch="language-selection"
@@ -20,7 +23,7 @@ export const LanguageSelector = () => {
                 />
 
                 <SelectionButton 
-                    value="portuguese" 
+                    value="pt" 
                     label="Português" 
                     icon={BRFlagIcon} 
                     eventToDispatch="language-selection"

@@ -131,11 +131,13 @@ export class LocalCollection {
     }
 
     #ensureLimitRestriction(collection: CollectionMap): CollectionMap {
-        if (this.limit && collection.size > this.limit) {
+        // Delete old items if the limit is reached
+        let result = collection
+        while (this.limit && result.size > this.limit + 1) {
             collection.delete(collection.keys().next().value)
-            return this.#save(collection)
+            result = this.#save(collection)
         }
-        return collection
+        return result
     }
 
     #save(collection: CollectionMap): CollectionMap {

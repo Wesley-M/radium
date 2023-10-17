@@ -7,9 +7,11 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { useSidebar } from "@design-system/hooks/use-sidebar"
 import { Settings } from "@design-system/components/navigation/settings"
 import { Logo } from "@design-system/components/data-display/logo"
+import { useTranslation } from "react-i18next"
 
 export const Navbar = () => {
     const { palette, spacing } = useTheme()
+    const { t } = useTranslation()
     const isMobile = useIsMobile("md")
     const sidebar = useSidebar()
 
@@ -66,7 +68,7 @@ export const Navbar = () => {
                   sx={{ marginTop: isMobile ? 1 : 0 }}
                   justifyContent={isMobile ? "flex-end" : "space-between"}
                 >
-                  <SearchField placeholder="What are you looking for ?" />
+                  <SearchField placeholder={t("search.placeholder")} />
                   <Settings/>
                 </Stack>
             </Stack>

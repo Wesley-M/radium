@@ -70,13 +70,12 @@ export const CompactPlayer = () => {
 const CompactContainer = (props: PropsWithChildren) => {
     const { children } = props
     const { palette, spacing, theme } = useTheme()
-    const isMobile = useIsMobile("md")
 
     return (
         <Stack
             sx={{
                 width: "100%",
-                height: `calc(${theme("components.player.compact.height")} - 10px)`,
+                height: theme("components.player.compact.height"),
                 backgroundColor: palette("sr-100"),
                 position: "absolute",
                 bottom: 0,

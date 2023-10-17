@@ -4,7 +4,7 @@ import { usePlayer } from "@design-system/components/player/hooks/use-player"
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import { usePlaylist } from "@design-system/components/player/hooks/use-playlist";
-import { ColorAlias } from "@design-system/utils";
+import { ColorAlias } from "@design-system/theme/aliases";
 
 interface SkipProps {
     direction: "forward" | "backward"

@@ -2,6 +2,7 @@ import { useStationCollection } from "@api/index"
 import { StationCollection, TargetType } from "@api/static/station-collections"
 import { AdvancedStationQuery } from "libs/radio-browser-api.types"
 import merge from "lodash.merge"
+import { useTranslation } from "react-i18next"
 
 export type FilterOption = keyof AdvancedStationQuery
 
@@ -39,6 +40,8 @@ export const useSearch = (props: SearchProps) => {
     const hasCollectionTemplate = "collectionTemplate" in props
     const collectionTemplate = hasCollectionTemplate ? props.collectionTemplate : undefined
     
+    const { t } = useTranslation()
+    
     /** 
      * Returns a mapping of the selected filters to the query.
      * - Used when a query is specified.
@@ -57,7 +60,6 @@ export const useSearch = (props: SearchProps) => {
      * - Used when a query is specified.
     */
     const defaultCollectionTemplate: StationCollection = {
-        title: `Search for "${query}"`,
         query: {
             id: ['search', by, query, localCollection],
             target: localCollection ? localCollection : "SERVER",
@@ -108,6 +110,10 @@ export const useSearch = (props: SearchProps) => {
     */
     const hasNextPage = () => (pages?.[pages.length - 1]?.content?.length || 0) > 0
 
+    if (searchReq.error) {
+        throw new Error(t("error.impossibleToLoadStations"))
+    }
+
     return {
         req: {
             ...searchReq,
@@ -115,8 +121,8 @@ export const useSearch = (props: SearchProps) => {
         }, 
         data: extractStations(), 
         metadata: {
-            title: firstPage?.title,
-            description: firstPage?.description,
+            title: t(`assets.stations.${firstPage?.query.id}.title`),
+            description: t(`assets.stations.${firstPage?.query.id}.description`),
             query: firstPage?.query,
             isCompact: firstPage?.isCompact,
         }

@@ -1,5 +1,4 @@
 import { ActionButton } from "@design-system/components/inputs/action-button"
-import { useIsMobile } from "@design-system/hooks/use-is-mobile"
 import { useTheme } from "@design-system/theme"
 import { Stack } from "@mui/material"
 import { ReactNode } from "react"

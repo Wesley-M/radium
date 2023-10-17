@@ -4,16 +4,18 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import { SelectionButton } from "@design-system/components/navigation/settings/components/selection-button";
 import { ComponentType } from "react";
+import { useTranslation } from "react-i18next";
 
-export const ThemeSelector = () => {
+export const ModeSelector = () => {
     const { mode, spacing } = useTheme()
+    const { t } = useTranslation()
     
-    const handleThemeSelection = (th: string) => {
-        localStorage.setItem("theme", th)
+    const handleModeSelection = (th: string) => {
+        localStorage.setItem("mode", th)
     }
 
     return (
-        <RadioGroup name="theme-selector" defaultValue={mode}>
+        <RadioGroup name="mode-selector" defaultValue={mode}>
             <Stack 
                 gap={spacing("in-xs")}
                 direction="row"
@@ -21,18 +23,18 @@ export const ThemeSelector = () => {
             >
                 <SelectionButton 
                     value="light" 
-                    label="Light" 
+                    label={t("settings.modes.light")}
                     icon={LightModeRoundedIcon as ComponentType<{ color?: string }>} 
-                    eventToDispatch="theme-selection"
-                    onSelection={handleThemeSelection}
+                    eventToDispatch="mode-selection"
+                    onSelection={handleModeSelection}
                 />
 
                 <SelectionButton 
                     value="dark" 
-                    label="Dark" 
+                    label={t("settings.modes.dark")}
                     icon={DarkModeRoundedIcon as ComponentType<{ color?: string }>} 
-                    eventToDispatch="theme-selection"
-                    onSelection={handleThemeSelection}
+                    eventToDispatch="mode-selection"
+                    onSelection={handleModeSelection}
                 /> 
             </Stack>
         </RadioGroup>

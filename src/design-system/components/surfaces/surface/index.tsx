@@ -1,6 +1,6 @@
 import { useTheme } from "@design-system/theme"
+import { ColorAlias, SpacingAlias } from "@design-system/theme/aliases"
 import { Size } from "@design-system/theme/types"
-import { ColorAlias, SpacingAlias } from "@design-system/utils"
 import { Box, SxProps } from "@mui/material"
 
 interface SurfaceProps {

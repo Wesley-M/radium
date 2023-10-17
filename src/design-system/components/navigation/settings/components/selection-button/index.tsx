@@ -6,7 +6,7 @@ interface SelectionButtonProps {
     value: string
     label: string
     eventToDispatch: string 
-    icon: React.ComponentType<{ color?: string }>    
+    icon?: React.ComponentType<{ color?: string }>    
     onSelection: (value: string) => void
 }
 
@@ -70,7 +70,7 @@ export const SelectionButton = (props: SelectionButtonProps) => {
             size="large"
             fullWidth
             disableElevation
-            startIcon={<Icon color={checked ? palette("accent") : alpha(palette("tx-primary"), 0.5)}/>}
+            startIcon={Icon && <Icon color={checked ? palette("accent") : alpha(palette("tx-primary"), 0.5)}/>}
             sx={{
                 boxSizing: "border-box",
                 borderRadius: radius("md"),

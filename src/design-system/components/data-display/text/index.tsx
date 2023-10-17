@@ -1,5 +1,5 @@
 import { useTheme } from "@design-system/theme"
-import { ColorAlias } from "@design-system/utils"
+import { ColorAlias } from "@design-system/theme/aliases"
 import { SxProps, Typography } from "@mui/material"
 import { ReactNode, RefObject } from "react"
 

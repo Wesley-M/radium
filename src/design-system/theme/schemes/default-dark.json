@@ -1,13 +1,13 @@
 {
     "colors": {
         "background": {
-            "body": "whiteBase",
+            "body": "blackBase",
             "surface": {
-                "100": "whiteDarken4",
-                "200": "whiteDarken6",
-                "300": "whiteDarken8",
-                "400": "whiteDarken10",
-                "500": "whiteDarken12"
+                "100": "blackDarken4",
+                "200": "blackBase",
+                "300": "blackLighten2",
+                "400": "blackLighten4",
+                "500": "blackLighten16"
             }
         },
         "border": {
@@ -15,15 +15,15 @@
             "200": "blackLighten16",
             "300": "blackLighten32",
             "400": "whiteDarken32",
-            "500": "blackBase"
+            "500": "whiteBase"
         },
         "accent": "orangeBase",
         "button": {
-            "primary": "blackBase"
+            "primary": "whiteBase"
         },
         "text": {
-            "primary": "blackBase",
-            "secondary": "blackLighten32",
+            "primary": "whiteBase",
+            "secondary": "whiteDarken32",
             "white": "whiteBase",
             "black": "blackBase"
         }
@@ -48,7 +48,7 @@
     },
     "border": {
         "radius": {
-            "xxs": "radius000",
+            "xxs": "radius100",
             "xs": "radius100",
             "sm": "radius200",
             "md": "radius300",
@@ -70,49 +70,49 @@
         "h1": {
             "fontSize": "fontSize700",
             "fontWeight": "fontWeight700",
-            "color": "blackLighten16",
+            "color": "whiteBase",
             "fontFamily": "fontFamily1"
         },
         "h2": {
             "fontSize": "fontSize600",
             "fontWeight": "fontWeight700",
-            "color": "blackLighten16",
+            "color": "whiteBase",
             "fontFamily": "fontFamily1"
         },
         "h3": {
             "fontSize": "fontSize500",
             "fontWeight": "fontWeight600",
-            "color": "blackLighten16",
+            "color": "whiteBase",
             "fontFamily": "fontFamily1"
         },
         "h4": {
             "fontSize": "fontSize400",
             "fontWeight": "fontWeight600",
-            "color": "blackLighten16",
+            "color": "whiteBase",
             "fontFamily": "fontFamily1"
         },
         "h5": {
             "fontSize": "fontSize300",
             "fontWeight": "fontWeight600",
-            "color": "blackLighten16",
+            "color": "whiteBase",
             "fontFamily": "fontFamily1"
         },
         "h6": {
             "fontSize": "fontSize200",
             "fontWeight": "fontWeight600",
-            "color": "blackLighten16",
+            "color": "whiteBase",
             "fontFamily": "fontFamily1"
         },
         "body1": {
             "fontSize": "fontSize300",
             "fontWeight": "fontWeight400",
-            "color": "blackLighten32",
+            "color": "whiteDarken32",
             "fontFamily": "fontFamily1"
         },
         "body2": {
             "fontSize": "fontSize100",
             "fontWeight": "fontWeight500",
-            "color": "blackLighten32",
+            "color": "whiteDarken32",
             "fontFamily": "fontFamily1"
         }
     },

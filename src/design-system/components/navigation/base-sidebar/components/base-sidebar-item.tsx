@@ -61,14 +61,15 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
       gap={spacing("in-xxs")}
       paddingY={spacing("in-xs")}
       sx={{
-        opacity: isActive ? 1 : 0.8,
-        transition: "opacity 200ms ease-in-out",
+        opacity: isActive ? 1 : 0.7,
+        transition: "opacity 300ms ease-in-out",
         "&:hover": {
           cursor: "pointer",
           opacity: 1
         }
       }}
       onClick={() => to && navigate(to)}
+      title={title}
     >
       {SelectedIcon && (
         <SelectedIcon

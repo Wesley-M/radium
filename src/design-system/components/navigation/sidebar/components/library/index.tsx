@@ -8,6 +8,7 @@ import { Text } from "@design-system/components/data-display/text";
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import { useLibrary } from "@api/index";
 import { useSidebar } from "@design-system/hooks/use-sidebar";
+import { Trans, useTranslation } from "react-i18next";
   
 export const Library = ({ maxHeight }: {maxHeight: string}) => {
     const library = useLibrary()
@@ -33,22 +34,23 @@ export const Library = ({ maxHeight }: {maxHeight: string}) => {
 
 const EmptyLibraryWarning = () => {
     const { palette, spacing } = useTheme()
+    const {t} = useTranslation()
 
     return (
         <Box sx={{ p: 1 }}>
-            <Text as="h4" isBold>
-                No stations in sight!
+            <Text as="h5" isBold>
+                {t("sidebar.library.empty.title")}
             </Text>
             <Text as="h5" sx={{ mt: 1, opacity: 0.7, lineHeight: "1.5em" }} noWrap={false}>
-                Add stations to your library by clicking the 
-                <FavoriteBorderRoundedIcon 
-                    style={{ 
-                        verticalAlign: "middle", 
-                        color: palette("accent"),
-                        margin: `0 ${spacing("in-xxs")}`,
-                    }}
-                /> 
-                on the station card.
+                <Trans t={t} i18nKey="sidebar.library.empty.message" components={[ 
+                    <FavoriteBorderRoundedIcon 
+                        style={{ 
+                            verticalAlign: "middle", 
+                            color: palette("accent"),
+                            margin: `0 ${spacing("in-xxs")}`,
+                        }}
+                    />
+                ]}/>
             </Text>
         </Box>
     )

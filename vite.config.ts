@@ -17,7 +17,8 @@ export default defineConfig({
       { find: '@hooks', replacement: path.resolve(__dirname, 'src/shared/hooks') },
       { find: '@context', replacement: path.resolve(__dirname, 'src/shared/context') },
       { find: '@utils', replacement: path.resolve(__dirname, 'src/shared/utils') },
-      { find: '@api', replacement: path.resolve(__dirname, 'src/api') }
+      { find: '@api', replacement: path.resolve(__dirname, 'src/api') },
+      { find: '@i18n', replacement: path.resolve(__dirname, 'src/i18n') }
     ],
   },
 })

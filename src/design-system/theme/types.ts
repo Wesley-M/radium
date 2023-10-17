@@ -1,3 +1,18 @@
+/**
+ * Theme modes
+*/
+export type ThemeMode = "dark" | "light"
+
+/**
+ * Types of corners being used in the app
+*/
+export type CornerType = "rounded" | "sharp"
+
+/**
+ * All color schemes available to use
+*/
+export type ColorScheme = "default" | "solarized" | "monokai"
+
 /** 
  * Possible size values
 */

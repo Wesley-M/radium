@@ -1,6 +1,6 @@
 import { usePlayer } from "@design-system/components/player/hooks/use-player"
 import { useTheme } from "@design-system/theme"
-import { ColorAlias } from "@design-system/utils"
+import { ColorAlias } from "@design-system/theme/aliases"
 import { VolumeDownRounded, VolumeUpRounded } from "@mui/icons-material"
 import { Slider, Stack } from "@mui/material"
 

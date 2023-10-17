@@ -21,7 +21,7 @@ export const Marquee = (props: MarqueeProps) => {
     const { 
         text, 
         textProps, 
-        speed = 20,
+        speed = 15,
         minDurationInSec = 5,
         maxDurationInSec = 25 
     } = props

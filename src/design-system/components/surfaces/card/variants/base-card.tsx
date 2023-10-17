@@ -57,6 +57,7 @@ export interface CardProps {
     onHoverChange?: (hover: boolean) => void
     /**  Callback when image container height changes  */
     onImageContainerHeightChange?: (height: number) => void
+    innerRef?: (element: HTMLElement | null) => void
 }
 
 /** 
@@ -84,7 +85,8 @@ export const BaseCard = (props: CardProps) => {
         width = 100,
         height = 100,
         onImageContainerHeightChange,
-        hideWhileEmpty = true
+        hideWhileEmpty = true,
+        innerRef
     } = props
 
     const [hover, setHover] = useState(false)
@@ -146,7 +148,7 @@ export const BaseCard = (props: CardProps) => {
     useEffect(() => {
         onHoverChange(hover)
     }, [hover])
-        
+
     if (loading) {
         return (
             <LoadingCard 
@@ -163,6 +165,7 @@ export const BaseCard = (props: CardProps) => {
             sx={baseCardStyle}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
+            ref={innerRef}
         >
             <Box 
                 width={imageProps?.width} 
@@ -221,7 +224,8 @@ interface LoadingCardProps {
     baseContentStyle?: SxProps,
     imageProps?: ImageProps & {
         sx?: SxProps
-    }
+    },
+    innerRef?: (element: HTMLElement | null) => void
 }
 
 const LoadingCard = (props: LoadingCardProps) => {
@@ -230,12 +234,13 @@ const LoadingCard = (props: LoadingCardProps) => {
         baseImageStyle, 
         baseContentStyle, 
         imageProps,
+        innerRef
     } = props
         
     const { palette, spacing } = useTheme()
     
     return (
-        <Stack sx={baseCardStyle}>
+        <Stack sx={baseCardStyle} ref={innerRef}>
             <Box width={imageProps?.width} sx={baseImageStyle}>
                 <Skeleton 
                     variant="rounded" 

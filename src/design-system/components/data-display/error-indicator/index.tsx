@@ -1,11 +1,15 @@
 import { ButtonProps, Stack } from "@mui/material"
-import { Text } from "@design-system/components/data-display/text"
+import { Text, TextProps } from "@design-system/components/data-display/text"
 import { useTheme } from "@design-system/theme"
 import { Button } from "@design-system/components/inputs/button"
+import { Size } from "@design-system/theme/types"
 
 interface ErrorIndicatorProps {
     title: string
+    titleProps?: TextProps
     subtitle?: string
+    subtitleProps?: TextProps
+    gap?: Size
     icon?: React.ReactNode
     iconProps?: {
         width?: number | string
@@ -21,7 +25,10 @@ export const ErrorIndicator = (props: ErrorIndicatorProps) => {
         subtitle, 
         icon, 
         iconProps,
+        gap = "md",
         buttonProps,
+        titleProps,
+        subtitleProps,
         enableButton = false
     } = props
     
@@ -32,7 +39,7 @@ export const ErrorIndicator = (props: ErrorIndicatorProps) => {
             width="100%" 
             alignItems="center" 
             justifyContent="center"
-            gap={spacing("st-md")}
+            gap={spacing(`st-${gap}`)}
         >
             {icon && (
                 <Stack
@@ -50,6 +57,7 @@ export const ErrorIndicator = (props: ErrorIndicatorProps) => {
                     isBold 
                     noWrap={false} 
                     isCentered
+                    {...titleProps}
                 >
                     {title}
                 </Text>
@@ -58,6 +66,7 @@ export const ErrorIndicator = (props: ErrorIndicatorProps) => {
                     isBold={false} 
                     noWrap={false}
                     isCentered
+                    {...subtitleProps}
                 >
                     {subtitle}
                 </Text>

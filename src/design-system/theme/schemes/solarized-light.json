@@ -1,0 +1,134 @@
+{
+    "colors": {
+        "background": {
+            "body": "solarizedWhiteBase",
+            "surface": {
+                "100": "solarizedWhiteDarken4",
+                "200": "solarizedWhiteDarken6",
+                "300": "solarizedWhiteDarken8",
+                "400": "solarizedWhiteDarken10",
+                "500": "solarizedWhiteDarken12"
+            }
+        },
+        "border": {
+            "100": "blackLighten2",
+            "200": "blackLighten16",
+            "300": "blackLighten32",
+            "400": "whiteDarken32",
+            "500": "blackBase"
+        },
+        "accent": "solarizedYellow",
+        "button": {
+            "primary": "blackBase"
+        },
+        "text": {
+            "primary": "solarizedLightTextDarken16",
+            "secondary": "solarizedLightTextLighten16",
+            "white": "whiteBase",
+            "black": "blackBase"
+        }
+    },
+    "spacing": {
+        "stack": {
+            "xxs": "space25",
+            "xs": "space50",
+            "sm": "space100",
+            "md": "space200",
+            "lg": "space300",
+            "xl": "space400"
+        },
+        "inline": {
+            "xxs": "space25",
+            "xs": "space50",
+            "sm": "space100",
+            "md": "space200",
+            "lg": "space300",
+            "xl": "space400"
+        }
+    },
+    "border": {
+        "radius": {
+            "xxs": "radius100",
+            "xs": "radius100",
+            "sm": "radius200",
+            "md": "radius300",
+            "lg": "radius400",
+            "xl": "radius500"
+        }
+    },
+    "image": {
+        "avatar": {
+            "xxs": "imageSize100",
+            "xs": "imageSize200",
+            "sm": "imageSize300",
+            "md": "imageSize400",
+            "lg": "imageSize500",
+            "xl": "imageSize600"
+        }
+    },
+    "text": {
+        "h1": {
+            "fontSize": "fontSize700",
+            "fontWeight": "fontWeight700",
+            "color": "solarizedLightTextDarken16",
+            "fontFamily": "fontFamily1"
+        },
+        "h2": {
+            "fontSize": "fontSize600",
+            "fontWeight": "fontWeight700",
+            "color": "solarizedLightTextDarken16",
+            "fontFamily": "fontFamily1"
+        },
+        "h3": {
+            "fontSize": "fontSize500",
+            "fontWeight": "fontWeight600",
+            "color": "solarizedLightTextDarken16",
+            "fontFamily": "fontFamily1"
+        },
+        "h4": {
+            "fontSize": "fontSize400",
+            "fontWeight": "fontWeight600",
+            "color": "solarizedLightTextDarken16",
+            "fontFamily": "fontFamily1"
+        },
+        "h5": {
+            "fontSize": "fontSize300",
+            "fontWeight": "fontWeight600",
+            "color": "solarizedLightTextDarken16",
+            "fontFamily": "fontFamily1"
+        },
+        "h6": {
+            "fontSize": "fontSize200",
+            "fontWeight": "fontWeight600",
+            "color": "solarizedLightTextDarken16",
+            "fontFamily": "fontFamily1"
+        },
+        "body1": {
+            "fontSize": "fontSize300",
+            "fontWeight": "fontWeight400",
+            "color": "solarizedLightTextBase",
+            "fontFamily": "fontFamily1"
+        },
+        "body2": {
+            "fontSize": "fontSize100",
+            "fontWeight": "fontWeight500",
+            "color": "solarizedLightTextBase",
+            "fontFamily": "fontFamily1"
+        }
+    },
+    "components": {
+        "player": {
+            "compact": {
+                "height": "playerCompactHeight"
+            }
+        },
+        "sidebar": {
+            "mini": {
+                "width": "sidebarMiniWidth"
+            },
+            "default": {
+                "width": "sidebarDefaultWidth"
+            }
+        }
+    }
+}

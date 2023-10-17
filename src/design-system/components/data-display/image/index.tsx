@@ -9,7 +9,7 @@ import { CssSize } from "../../../utils/size";
 import { Size } from "@design-system/theme/types";
 import { useTheme } from "@design-system/theme";
 import { ReactComponent as Fallback } from "@design-system/assets/image-fallback.svg";
-import { useColorPicker } from "@design-system/hooks/use-color-piker";
+import { useColorPicker } from "@design-system/hooks/use-color-picker";
 
 export interface ImageProps {
   /** Alternative text for the image */

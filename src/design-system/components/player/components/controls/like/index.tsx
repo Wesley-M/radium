@@ -3,7 +3,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import { usePlaylist } from '@design-system/components/player/hooks/use-playlist';
 import { useLibrary } from '@api/index';
-import { ColorAlias } from '@design-system/utils';
+import { ColorAlias } from '@design-system/theme/aliases';
 
 interface LikeProps {
     color?: ColorAlias

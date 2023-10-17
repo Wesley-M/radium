@@ -1,5 +1,5 @@
 import { ActionButton } from "@design-system/components/inputs/action-button"
-import { ColorAlias } from "@design-system/utils";
+import { ColorAlias } from "@design-system/theme/aliases";
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
 interface CollapseProps {

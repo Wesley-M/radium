@@ -6,7 +6,7 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 import { Size } from "@design-system/theme/types";
 import { usePlaylist } from "@design-system/components/player/hooks/use-playlist";
-import { ColorAlias } from "@design-system/utils";
+import { ColorAlias } from "@design-system/theme/aliases";
 
 interface PlayProps {
     size?: Size

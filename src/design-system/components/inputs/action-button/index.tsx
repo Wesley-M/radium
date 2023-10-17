@@ -1,9 +1,9 @@
 import { useTheme } from "@design-system/theme"
 import { Size } from "@design-system/theme/types"
-import { ColorAlias } from "@design-system/utils"
 import { Box, CircularProgress, IconButton, SvgIconProps, SxProps } from "@mui/material"
 import { ReactElement } from "react"
 import merge from "lodash.merge"
+import { ColorAlias } from "@design-system/theme/aliases"
 
 export interface ActionButtonProps {
     /**  Color  */

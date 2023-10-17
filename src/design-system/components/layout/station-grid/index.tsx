@@ -8,10 +8,14 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@design-system/components/inputs/button"
 import merge from "lodash.merge"
 import { CardProps } from "@design-system/components/surfaces/card/variants/base-card"
+import { useTranslation } from "react-i18next"
+import { useTheme } from "@design-system/theme"
 
 interface StationGridProps {
     /** Stations to render */
     data: Station[]
+    /** Error message */
+    error?: string
     /** Properties for the section */
     sectionProps?: SectionProps
     /** Go to this route */
@@ -33,6 +37,7 @@ interface StationGridProps {
 export const StationGrid = (props: StationGridProps) => {
     const { 
         data = [],
+        error = "",
         goTo = "/",
         loadingItems = 20,
         loading = true,
@@ -41,14 +46,18 @@ export const StationGrid = (props: StationGridProps) => {
         enableSection = true,
         cardProps
     } = props    
-
+    
+    const { radius } = useTheme()
+    const navigate = useNavigate()
+    const { t } = useTranslation()
+    
     /** 
      * Default smart grid props
     */
     const smartGridProps = merge({
         variant: "all",
         items: data,
-        itemProps: { gap: "xs", minWidth: isCompact ? 300 : 200 },
+        itemProps: { gap: "xs", minWidth: isCompact ? 300 : 180 },
     }, props.smartGridProps)
 
     /** 
@@ -59,8 +68,6 @@ export const StationGrid = (props: StationGridProps) => {
         items: smartGridProps.items,
         itemProps: smartGridProps.itemProps,
     })
-
-    const navigate = useNavigate()
 
     const hasHiddenStations = () => grid.hasHiddenItems()
 
@@ -98,12 +105,6 @@ export const StationGrid = (props: StationGridProps) => {
         </SmartGridItem>
     ))
 
-    const showAll = (
-        <Button size="small" onClick={() => navigate(goTo)}>
-            Show all
-        </Button>
-    )
-
     const render = (contentCards: JSX.Element[], loadingCards: JSX.Element[]) => {
         if (loading) {
             return smartGridProps.enableInfiniteGrid ? [...contentCards, ...loadingCards] : loadingCards
@@ -111,11 +112,25 @@ export const StationGrid = (props: StationGridProps) => {
         return contentCards
     }
 
+    const showAll = (
+        <Button 
+            size="small" 
+            sx={{ borderRadius: radius("lg") }} 
+            onClick={() => navigate(goTo)}
+        >
+            {t("controls.showAll")}
+        </Button>
+    )
+
     const content = (
         <SmartGrid {...smartGridProps}>
             {render(stationCards, loadingCards)}
         </SmartGrid>
     )
+
+    if (error) {
+        throw new Error("There was something wrong while fetching stations. Please, try again later.")
+    }
 
     return (
         <>

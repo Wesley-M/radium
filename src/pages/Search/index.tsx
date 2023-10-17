@@ -10,11 +10,14 @@ import { TargetType } from "@api/static/station-collections"
 import { useScroll } from "@design-system/hooks/use-scroll"
 import { ErrorIndicator } from "@design-system/components/data-display/error-indicator"
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { useTranslation } from "react-i18next"
 
 type Tab = TargetType
 
 export const Search = () => {
-    const { theme, spacing } = useTheme()
+    const { palette, theme, spacing } = useTheme()
+    const { t } = useTranslation()
+
     const [searchParams] = useSearchParams()
     const searchQuery = searchParams.get("q") || ""
     
@@ -49,9 +52,9 @@ export const Search = () => {
 
     const emptySearch = (
         <ErrorIndicator 
-            icon={<SearchRoundedIcon sx={{ width: "100%", height: "100%", color: "white" }}/>}
-            title={`No results were found for "${searchQuery}"`} 
-            subtitle="Maybe try using some other combination of words ?"  
+            icon={<SearchRoundedIcon sx={{ width: "100%", height: "100%", color: palette("tx-primary") }}/>}
+            title={t("error.noResultsForQuery", { query: searchQuery})} 
+            subtitle={t("info.tryOtherCombinationOfWords")}
         />
     )
     
@@ -60,19 +63,19 @@ export const Search = () => {
             <Stack gap={spacing("st-sm")}>
                 <Tabs
                     items={[
-                        {label: "All", value: "SERVER"},
-                        {label: "Your library", value: "LIBRARY"},
-                        {label: "Recently played", value: "RECENTLY_PLAYED"},
+                        {label: t("search.all"), value: "SERVER"},
+                        {label: t("search.yourLibrary"), value: "LIBRARY"},
+                        {label: t("search.recentlyPlayed"), value: "RECENTLY_PLAYED"},
                     ]}
                     onChange={(v: string) => setTab(v as Tab)}
                 />
 
                 <ChipSelect 
                     items={[
-                        {label: "Name", value: "name"},
-                        {label: "Tag", value: "tagList"},
-                        {label: "Country Code", value: "countryCode"},
-                        {label: "Language", value: "language"},
+                        {label: t("search.tags.name"), value: "name"},
+                        {label: t("search.tags.tag"), value: "tagList"},
+                        {label: t("search.tags.countryCode"), value: "countryCode"},
+                        {label: t("search.tags.language"), value: "language"},
                     ]}
                     onChange={(v: string[]) => setFilters(v as FilterOption[])}
                     multiple

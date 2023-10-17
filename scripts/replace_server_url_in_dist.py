@@ -14,7 +14,7 @@ import random
 import glob
 
 # Stores mirrors to all radio api browsers servers
-RADIO_MIRRORS = "http://all.api.radio-browser.info/json/servers"
+RADIO_MIRRORS = "https://nl1.api.radio-browser.info/json/servers"
 
 # Request mirror servers
 headers = {'Accept': 'application/json'}

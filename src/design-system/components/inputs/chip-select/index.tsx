@@ -55,7 +55,7 @@ export const ChipSelect = (props: ChipSelectProps) => {
                     label={item.label}
                     key={index}
                     sx={{
-                        color: palette("tx-primary"),
+                        color: palette(isSelected(item.value) ? "tx-white" : "tx-primary"),
                         backgroundColor: palette(isSelected(item.value) ? "accent" : "sr-300"),
                         border: `2px solid ${isSelected(item.value) ? "transparent" : palette("sr-400")}`,
                         opacity: 0.8,

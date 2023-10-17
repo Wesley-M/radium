@@ -3,13 +3,14 @@ import { CssSize } from "@design-system/utils"
 import { useState } from "react"
 import { BaseCard, CardProps } from "@design-system/components/surfaces/card/variants/base-card"
 import { SxProps } from "@mui/material"
+import useMeasure from "react-use-measure"
 
 export const DefaultCard = (props: CardProps) => {
     const { 
         borderRadius = "md",
         padding = "sm",
         width = 200,
-        height = 250,
+        height = "fit-content",
         actionProps,
         cardProps,
         contentProps,
@@ -18,18 +19,22 @@ export const DefaultCard = (props: CardProps) => {
     
     const { palette, radius, spacing } = useTheme()
     const [imageHeight, setImageHeight] = useState(0)
+    const [cardRef, cardBounds] = useMeasure()
+    
+    const isNumericHeight = typeof height === "number"
     const paddingInPx = (CssSize.build(spacing(`in-${padding}`)).toPx() || 0)
     
     const imageWidth = width - 2 * paddingInPx
+    const cardHeightInPx = isNumericHeight ? height : cardBounds.height
 
     const actionStyle = {
-        bottom: height - imageHeight - (paddingInPx / 2),
+        bottom: cardHeightInPx - imageHeight - (paddingInPx / 2),
         right: 1.5 * paddingInPx
     }
 
     const cardStyle: SxProps = {
         width,
-        height,
+        height: "fit-content",
         flexDirection: "column",
         position: "relative",
         maxHeight: "100%",
@@ -49,6 +54,7 @@ export const DefaultCard = (props: CardProps) => {
     const contentStyle = {
         marginTop: spacing("st-sm"),
         flex: 1,
+        minHeight: 45
     }
 
     return (
@@ -71,8 +77,10 @@ export const DefaultCard = (props: CardProps) => {
                 ...imageProps,
                 sx: { ...imageStyle, ...contentProps?.sx },
                 width: imageWidth,
+                borderRadius: "md"
             }}
             onImageContainerHeightChange={setImageHeight}
+            innerRef={cardRef}
         />
     )
 }

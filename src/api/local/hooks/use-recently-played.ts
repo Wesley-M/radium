@@ -9,6 +9,7 @@ export const useRecentlyPlayed = () => {
     const queryClient = useQueryClient()
 
     return useLocalCollection('recently_played', {
+        limit: 50,
         onStorageChange: () => {
             queryClient.invalidateQueries({ queryKey: ["all", "recently_played"] })
         }

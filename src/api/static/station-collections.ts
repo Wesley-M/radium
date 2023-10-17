@@ -32,10 +32,6 @@ export type StationId = string
  * query and a content to decide which stations should be retrieved.
 */
 export interface StationCollection {
-    /** The title of the collection */
-    title: string
-    /** A user-friendly and short description for a collection */
-    description?: string
     /** Used to specify the request to be executed */
     query: {
         /** Query's ID */
@@ -57,8 +53,6 @@ export interface StationCollection {
 
 export const stationsMap: Record<string, StationCollection> = {
     "handpicked": {
-        "title": "Featured",
-        "description": "Handpicked stations for you to enjoy",
         "query": {
             "id": "handpicked",
             "target": "SERVER",
@@ -81,8 +75,6 @@ export const stationsMap: Record<string, StationCollection> = {
         "loadingItems": 20
     },
     "relaxation": {
-        "title": "Relaxation",
-        "description": "Take a break and listen",
         "query": {
             "id": "relaxation",
             "target": "SERVER",
@@ -102,8 +94,6 @@ export const stationsMap: Record<string, StationCollection> = {
         "loadingItems": 6
     },
     "news": {
-        "title": "News",
-        "description": "To keep you well informed",
         "query": {
             "id": "news",
             "target": "SERVER",
@@ -127,8 +117,6 @@ export const stationsMap: Record<string, StationCollection> = {
         "loadingItems": 20
     },
     "recently_played": {
-        "title": "Recently played",
-        "description": "Pick up were you left off",
         "query": {
             "id": "recently_played",
             "target": "RECENTLY_PLAYED",
@@ -136,6 +124,14 @@ export const stationsMap: Record<string, StationCollection> = {
             "filters": {
                 "reverse": true
             }
+        },
+        "loadingItems": 20
+    },
+    "library": {
+        "query": {
+            "id": "library",
+            "target": "LIBRARY",
+            "type": "LOCAL_COLLECTION",
         },
         "loadingItems": 20
     }

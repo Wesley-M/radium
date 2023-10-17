@@ -1,4 +1,4 @@
-import { useColorPicker } from "@design-system/hooks/use-color-piker";
+import { useColorPicker } from "@design-system/hooks/use-color-picker";
 import { ReactNode, RefObject, createContext, useState } from "react";
 
 interface DominantColorContextProps {
