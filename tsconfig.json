@@ -27,9 +27,7 @@
     "paths": {
       "@design-system/*": ["./design-system/*"],
       "@components/*": ["./shared/components/*"],
-      "@hooks/*": ["./shared/hooks/*"],
-      "@context/*": ["./shared/context/*"],
-      "@utils/*": ["./shared/utils/*"],
+      "@assets/*": ["./shared/assets/*"],
       "@api/*": ["./api/*"],
       "@i18n/*": ["./i18n/*"],
     }

@@ -9,7 +9,7 @@ const assets = {
             description: "Simplesmente pare e escute",
         },
         news: {
-            title: "Notícias",
+            title: "Notícias do mundo",
             description: "Mantenha-se atualizado",
         },
         recently_played: {
@@ -19,6 +19,10 @@ const assets = {
         library: {
             title: "Biblioteca",
             description: "Suas estações favoritas",
+        },
+        introducing: {
+            title: "Introduzindo {{ name }}",
+            description: "Conheça as estações {{ name }}",
         }
     }
 }
@@ -31,9 +35,11 @@ const error = {
     unknown: "Erro desconhecido",
     somethingWentWrong: "Algo deu errado",
     pageNotFound: "Página não encontrada",
-    playlistNotFound: "Playlist \"{{ name }}\" não foi encontrada",
+    collectionNotFound: "Collection \"{{ name }}\" não foi encontrada",
     noResultsForQuery: "Nenhum resultado para \"{{ query }}\" foi encontrado",
     impossibleToLoadStations: "Não foi possível carregar as estações",
+    streamUnavailable: "Desculpe, mas a estação {{name}} está indisponível no momento.",
+    failedWhileFetchingStations: "Houve algo errado ao buscar as estações. Por favor, tente novamente mais tarde."
 };
 
 const search = {
@@ -48,6 +54,16 @@ const search = {
         language: "Idioma",
     }
 };
+
+const grid = {
+    editorsChoice: "Escolha do editor",
+    automatic: "Automático",
+}
+
+const hero = {
+    title: "Onde o seu gosto faz a diferença.",
+    subtitle: "Descubra milhares de radios abertas"
+}
 
 const info = {
     tryOtherCombinationOfWords: "Talvez tente outra combinação de palavras :(",
@@ -87,6 +103,8 @@ export default {
         assets,
         controls,
         error,
+        grid,
+        hero,
         info,
         search,
         settings,

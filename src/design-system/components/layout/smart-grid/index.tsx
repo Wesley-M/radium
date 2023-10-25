@@ -85,12 +85,26 @@ export const SmartGrid = (props: SmartGridProps) => {
         />
     ) : (
         <StaticItemList
+            variant={grid.variant}
             items={itemsWithDimensions}
             itemWrapperProps={{
                 sx: { gap: grid.itemProps.gap }
             }}
+            virtualListProps={{
+                itemSize: grid.itemProps.width,
+                height: grid.itemProps.height,
+            }}
         />
     )
+
+    const hiddenScrollbarStyle = {
+        overflow: "scroll",
+        "& ::-webkit-scrollbar": {
+            display: "none",
+        },
+        scrollbarWidth: "none",
+        msOverflowStyle: "none"
+    }
 
     return (
         <Grid
@@ -98,12 +112,8 @@ export const SmartGrid = (props: SmartGridProps) => {
             sx={{ 
                 width: "100%", 
                 ...(grid.variant === "overflow-oneline" && {
-                    overflow: "scroll",
-                    "&::-webkit-scrollbar": {
-                        display: "none",
-                    },
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none"
+                    height: 250,
+                    ...hiddenScrollbarStyle
                 }),
             }} 
             ref={grid.smartGridRef} 

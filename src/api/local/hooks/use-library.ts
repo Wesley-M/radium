@@ -3,7 +3,14 @@
 */
 
 import { useLocalCollection } from "@api/local/hooks/use-local-collection";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useLibrary = () => {
-    return useLocalCollection('library')
+    const queryClient = useQueryClient()
+    
+    return useLocalCollection('library', {
+        onStorageChange: () => {
+            queryClient.invalidateQueries({ queryKey: ["all", "library"] })
+        }
+    })
 }

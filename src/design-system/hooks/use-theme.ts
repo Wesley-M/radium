@@ -17,7 +17,7 @@ export const useTheme = () => {
     const getTokenValue = (tokenName: string): string => {
       const tokenValue = tk[tokenName as keyof typeof tk]
       if (!tokenValue) throw new Error(`Token ${tokenName} was not found`)
-      return tokenValue
+      return tokenValue.toString()
     }
   
     /**
@@ -41,15 +41,16 @@ export const useTheme = () => {
     }
   
     /**
-     * Get border radius value from radius
+     * Get border radius value from a size.  In case of sharp UI, the 
+     * radius will always be the smallest ("rd-xxs").
+     * 
     */
-    const radius = (r: Size): string => {
-      // If corners are sharp, use the smallest radius
-      let size = r
-      if (context?.corners === "sharp") size = "xxs"
-  
-      const radiusPrefix = ("rd-" + size) as BorderAlias
-      const tokenName = get(context?.theme.border, alias("border", radiusPrefix))
+    const radius = (size: Size): string => {
+      const getRadiusPrefix = () => {
+        const isSharpUI = context?.corners === "sharp"
+        return isSharpUI ? "rd-xxs" : ("rd-" + size) as BorderAlias
+      }
+      const tokenName = get(context?.theme.border, alias("border", getRadiusPrefix()))      
       return getTokenValue(tokenName)
     }
   

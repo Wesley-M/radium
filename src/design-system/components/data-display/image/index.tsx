@@ -8,7 +8,7 @@ import { ReactNode, RefObject, useEffect, useLayoutEffect, useRef, useState } fr
 import { CssSize } from "../../../utils/size";
 import { Size } from "@design-system/theme/types";
 import { useTheme } from "@design-system/theme";
-import { ReactComponent as Fallback } from "@design-system/assets/image-fallback.svg";
+import Fallback from "@design-system/assets/image-fallback.svg";
 import { useColorPicker } from "@design-system/hooks/use-color-picker";
 
 export interface ImageProps {
@@ -176,11 +176,12 @@ export const Image = (props: ImageProps) => {
   if ((error || !src) && fallback) {
     return (
       <Box sx={containerStyle}>
-        <Fallback 
-          style={{ 
+        <img 
+          src={Fallback}
+          style={{
             width: width, 
             height: height || ratioHeight, 
-            borderRadius: radius(borderRadius) 
+            borderRadius: radius(borderRadius)
           }}
         />
       </Box>

@@ -1,10 +1,11 @@
 import { ActionButton } from "@design-system/components/inputs/action-button"
 import { useTheme } from "@design-system/theme"
-import { Stack } from "@mui/material"
+import { Stack, alpha } from "@mui/material"
 import { ReactNode } from "react"
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { useSidebar } from "@design-system/hooks/use-sidebar"
 import { Logo } from "@design-system/components/data-display/logo"
+import { useIsPageTop } from "@design-system/hooks/use-is-page-top";
 
 export interface BaseSidebarHeaderProps {
     /** Additional options to be rendered on the header */
@@ -20,7 +21,8 @@ export const BaseSidebarHeader = (props: BaseSidebarHeaderProps) => {
   
     const { palette, spacing } = useTheme()
     const { isMini, toggle } = useSidebar()
-
+    const isPageTop = useIsPageTop()
+    
     return (
       <Stack 
         direction="row" 
@@ -29,7 +31,7 @@ export const BaseSidebarHeader = (props: BaseSidebarHeaderProps) => {
         sx={{
           padding: spacing("st-xs"),
           paddingBottom: spacing("st-sm"),
-          backgroundColor: palette("sr-100"),
+          backgroundColor: alpha(palette("sr-100"), isPageTop && isMini ? 0 : 1),
           width: "100%"
         }}
       >

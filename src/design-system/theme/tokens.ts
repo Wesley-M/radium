@@ -165,15 +165,15 @@ export const fontFamily1 = "Open Sans, sans-serif"
 export const fontFamily2 = "Roboto, sans-serif"
 
 // Font Sizes
-export const fontSize100 = "0.8rem"
-export const fontSize200 = "0.875rem"
-export const fontSize300 = "1rem"
-export const fontSize400 = "1.125rem"
-export const fontSize500 = "1.25rem"
-export const fontSize600 = "1.5rem"
-export const fontSize700 = "1.75rem"
-export const fontSize800 = "2rem"
-export const fontSize900 = "2.25rem"
+export const fontSize100 = "clamp(0.8rem, 0.05rem + 0.9vw, 1rem)"
+export const fontSize200 = "clamp(0.8rem, 0.1rem + 0.9vw, 1rem)"
+export const fontSize300 = "clamp(0.95rem, 0.2rem + 0.9vw, 1.5rem)"
+export const fontSize400 = "clamp(1rem, 0.2rem + 1vw, 1.5rem)"
+export const fontSize500 = "clamp(1.2rem, 0.6rem + 1vw, 2rem)"
+export const fontSize600 = "clamp(1.4rem, 0.8rem + 1vw, 2rem)"
+export const fontSize700 = "clamp(2rem, 1rem + 1.6vw, 3rem)"
+export const fontSize800 = "clamp(2rem, 1rem + 1.6vw, 3rem)"
+export const fontSize900 = "clamp(2rem, 1rem + 1.6vw, 3rem)"
 
 // Font Weights
 export const fontWeight100 = "100"
@@ -196,6 +196,17 @@ export const imageSize600 = "4rem"
 export const imageSize700 = "4.5rem"
 export const imageSize800 = "5rem"
 export const imageSize900 = "5.5rem"
+
+// Transparency
+export const transparency100 = 0.1
+export const transparency200 = 0.2
+export const transparency300 = 0.3
+export const transparency400 = 0.4
+export const transparency500 = 0.5
+export const transparency600 = 0.6
+export const transparency700 = 0.7
+export const transparency800 = 0.8
+export const transparency900 = 0.9
 
 // Components
 

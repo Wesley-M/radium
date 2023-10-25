@@ -85,6 +85,9 @@
     "components": {
         "cm-height": "player.compact.height",
         "mn-width": "sidebar.mini.width",
-        "df-width": "sidebar.default.width"
+        "df-width": "sidebar.default.width",
+        "hr-transparency": "hero.transparency",
+        "pl-transparency": "search.placeholder.transparency",
+        "bc-transparency": "search.background.transparency"
     }
 }

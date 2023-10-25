@@ -35,7 +35,7 @@ export interface StationCollection {
     /** Used to specify the request to be executed */
     query: {
         /** Query's ID */
-        id: string | any[],
+        id: string,
         /** Whether the request is for a local collection (LOCAL) or a remote resource (SERVER) */
         target?: TargetType,
         /** The type of query to be executed */
@@ -60,15 +60,16 @@ export const stationsMap: Record<string, StationCollection> = {
             "filters": {
                 "ids": [
                     ["funky_radio", "439fafd7-b35b-4a6c-b22f-d9e4fbd9dfd4"],
+                    ["bossa_beyond", "2553f86a-83db-4f3f-acee-e91dfd026a54"],
+                    ["somafm_the_trip", "960eb52f-0601-11e8-ae97-52543be04c81"],
                     ["hunter_fm_80s", "fb5a24f9-ef55-4f05-8217-35a0293d7d47"],
                     ["nightride_fm_ebsm", "6d6cce52-c2e6-4615-8251-27f5ce62e788"],
+                    ["somafm_boot_liquor", "ffe33802-6417-11e9-a622-52543be04c81"],
                     ["rock_fm", "961c96ef-0601-11e8-ae97-52543be04c81"],
-                    ["dfm_party", "17c8d579-662c-401e-8a28-fdf32d79576f"],
-                    ["hunter_fm_rock", "90b6f21c-6c33-11ea-b1cf-52543be04c81"],
+                    ["pirate_fm", "8306414a-6122-4641-bec6-43ba97c44a2c"],
                     ["rouge_fm_latino", "9632ae87-0601-11e8-ae97-52543be04c81"],
                     ["rouge_fm_suisse", "9625c2cb-0601-11e8-ae97-52543be04c81"],
                     ["outlaw_country", "b011d22e-e725-11e8-a9cc-52543be04c81"],
-                    ["fm_classic_radio_replay", "86b20e25-6719-4017-9592-e7f92de95dea"],
                 ]
             }
         },
@@ -81,11 +82,12 @@ export const stationsMap: Record<string, StationCollection> = {
             "type": "MANUAL",
             "filters": {
                 "ids": [
-                    ["hunter_fm_lofi", "5c35c578-6c34-11ea-b1cf-52543be04c81"],
                     ["house_fusion", "b6d47672-aa01-4363-bd26-32f0e8d9570e"],
+                    ["soma_fm_vapowaves", "0e60a2b4-99de-4507-9931-a23449bcae1d"],
+                    ["hunter_fm_lofi", "5c35c578-6c34-11ea-b1cf-52543be04c81"],
+                    ["yoga_sounds", "0696cc0c-114f-490c-9418-55f1593ddee1"],
                     ["epic_classical", "1665ae4c-74dc-44f0-bd0a-7a0d0291aa8c"],
                     ["ambient_modern", "b1236340-5ec2-4b17-a9e2-81413b7722ed"],
-                    ["soma_fm_vapowaves", "0e60a2b4-99de-4507-9931-a23449bcae1d"],
                     ["chill", "9618f5ba-0601-11e8-ae97-52543be04c81"]
                 ]
             }
@@ -112,6 +114,42 @@ export const stationsMap: Record<string, StationCollection> = {
                     ["abc_news", "506dd5ea-1f85-4ee6-9d94-b1b839f8b8f5"],
                     ["times_radio", "d1b0b82d-aa27-49e5-a98e-716ceff7e2f7"]
                 ]
+            }
+        },
+        "loadingItems": 20
+    },
+    "introducing_nightride": {
+        "query": {
+            "id": "introducing_nightride",
+            "target": "SERVER",
+            "type": "TOP",
+            "filters": {
+                "name": "Nightride",
+                "limit": 20
+            }
+        },
+        "loadingItems": 20
+    },
+    "introducing_0n": {
+        "query": {
+            "id": "introducing_0n",
+            "target": "SERVER",
+            "type": "TOP",
+            "filters": {
+                "name": "- 0 N -",
+                "limit": 20
+            }
+        },
+        "loadingItems": 20
+    },
+    "introducing_radio_art": {
+        "query": {
+            "id": "introducing_radio_art",
+            "target": "SERVER",
+            "type": "TOP",
+            "filters": {
+                "name": "Radio Art",
+                "limit": 20
             }
         },
         "loadingItems": 20

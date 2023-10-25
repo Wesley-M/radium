@@ -9,7 +9,11 @@ const api = new RadioAPI.RadioBrowserApi('radium')
 const SERVER_CACHE_TIME = 1000 * 60 * 60 * 24
 const SERVER_STALE_TIME = 1000 * 60 * 60 * 24
 
-const fetchCollection = async (collection: StationCollection, offset = 0) => {
+export interface FetchCollectionResult extends StationCollection {
+    content: Station[]
+}
+
+const fetchCollection = async (collection: StationCollection, offset = 0): Promise<FetchCollectionResult> => {
     const stations = await fetchStations(collection, offset)
     
     return {
@@ -40,13 +44,14 @@ const fetchServerStations = async (api: any, query: any, offset: number) => {
         case "TOP":
             return await api.searchStations({...query.filters, order: "clickCount", offset}, {}, true)
         case "MANUAL":
-            return await fetchStationsById(query.filters.ids)
+            return await fetchStationsById(query.filters.ids, offset)
         default:
             return await api.searchStations({...query.filters, offset}, {}, true)
     }
 }
 
-const fetchStationsById = async (ids: [string, string][]) => {
+const fetchStationsById = async (ids: [string, string][], offset = 0) => {
+    if (offset > 0) return []
     const onlyIds = ids.map(id => id[1])
     const stations = await api.getStationsById(onlyIds)
     return sortStationsByIdOrder(onlyIds, stations)

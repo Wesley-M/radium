@@ -9,6 +9,7 @@ interface ScrollContextProps {
     unlock: () => void
     scrollTo: (y: number) => void
     locked: boolean
+    scrollRef: RefObject<HTMLDivElement>
 }
 
 export const ScrollContext = createContext<ScrollContextProps | null>(null);
@@ -17,20 +18,30 @@ export const ScrollContext = createContext<ScrollContextProps | null>(null);
 interface ScrollProviderProps {
     scrollRef: RefObject<HTMLDivElement>
     children: ReactNode
+    direction: "x" | "y" | "both"
 }
 
 export const ScrollProvider = (props: ScrollProviderProps) => {
-    const { children, scrollRef } = props
+    const { children, scrollRef, direction } = props
 
     const [ locked, setLocked ] = useState(false)
+    
+    const _getOverflow = () => {
+        let overflow = "overflow"
+        if (direction === "x") overflow = "overflow-x"
+        if (direction === "y") overflow = "overflow-y"
+        return overflow
+    }
 
     const lock = () => {
-        scrollRef.current?.style.setProperty("overflow", "hidden")
+        if (!scrollRef.current) return
+        scrollRef.current?.style.setProperty(_getOverflow(), "hidden")
         setLocked(true)
     }
 
     const unlock = () => {
-        scrollRef.current?.style.setProperty("overflow", "auto")
+        if (!scrollRef.current) return
+        scrollRef.current?.style.setProperty(_getOverflow(), "auto")
         setLocked(false)
     }
 
@@ -39,14 +50,16 @@ export const ScrollProvider = (props: ScrollProviderProps) => {
         scrollRef.current.scrollTop = y
     }
 
+    /** 
+     * Propagate locked state to any scrollRef
+    */
     useEffect(() => {
         if (locked) {
-            scrollRef.current?.style.setProperty("overflow", "hidden")
+            scrollRef.current?.style.setProperty(_getOverflow(), "hidden")
         } else {
-            scrollRef.current?.style.setProperty("overflow", "auto")
+            scrollRef.current?.style.setProperty(_getOverflow(), "auto")
         }
     }, [scrollRef])
-    
 
     return (
         <ScrollContext.Provider 
@@ -55,6 +68,7 @@ export const ScrollProvider = (props: ScrollProviderProps) => {
                 unlock, 
                 scrollTo,
                 locked,
+                scrollRef
             }}
         >
             {children}

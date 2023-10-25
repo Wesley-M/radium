@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
 import { ColorScheme, CornerType, Theme, ThemeMode } from "../types";
-import { getStoredProperty, getThemeByModeAndScheme, getUserPreferredMode } from "@design-system/theme/utils";
+import { getStoredProperty, getThemeByModeAndScheme } from "@design-system/theme/utils";
 
 interface ThemeContextProps {
   mode: ThemeMode
@@ -18,7 +18,7 @@ interface ThemeProviderProps {
 export const ThemeProvider = (props: ThemeProviderProps) => {
   const { children } = props
 
-  const savedMode = getStoredProperty("mode", getUserPreferredMode()) as ThemeMode
+  const savedMode = getStoredProperty("mode", "dark") as ThemeMode
   const savedCorners = getStoredProperty("corners", "rounded")
   const savedColorScheme = getStoredProperty("colorScheme", "default") as ColorScheme
   

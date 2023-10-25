@@ -1,5 +1,5 @@
-import { Sidebar } from '@design-system/components/navigation/sidebar'
-import { Player } from '@design-system/components/player'
+import { Sidebar } from '@components/sidebar'
+import { Player } from '@components/player'
 import { Outlet } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
@@ -8,6 +8,7 @@ import { useTheme } from '@design-system/theme'
 import { useIsMobile } from '@design-system/hooks/use-is-mobile'
 import { useRef } from 'react';
 import { ScrollProvider } from '@design-system/context/scroll-context';
+import 'simplebar-react/dist/simplebar.min.css';
 
 export function App() { 
   const { palette, spacing, theme } = useTheme()
@@ -25,14 +26,15 @@ export function App() {
         sx={{ 
           width: "100%", 
           height: "100%",
-          backgroundColor: palette("sr-100") 
+          backgroundColor: palette("bc-body")
         }}
       >
-        <ScrollProvider scrollRef={ref}>
+        <ScrollProvider direction="y" scrollRef={ref}>
           <Stack
-            sx={{
+            style={{
               width: "100%",
               height: isMobile ? "100%" : `calc(100% - ${theme("components.player.compact.height")})`,
+              overflowX: "hidden",
             }}
             ref={ref}
           >

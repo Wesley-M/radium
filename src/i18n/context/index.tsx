@@ -12,15 +12,13 @@ interface LanguageContextType {
 
 export const LanguageContext = createContext<LanguageContextType | null>(null);
 
-const DEFAULT_LANG: Language = 'en'
-
 export const LanguageProvider = (props: PropsWithChildren) => {
   const { children } = props
   const { i18n } = useTranslation()
 
   const [language, setLanguage] = useState(() => {
     const storedLang = localStorage.getItem('language')
-    return storedLang ?? DEFAULT_LANG
+    return storedLang || "en"
   })
 
   /**

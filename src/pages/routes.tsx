@@ -12,7 +12,8 @@ export const routes = [
         children: [
             {index: true, element: <Home/>},
             {path: '/search', element: <Search/>},
-            {path: '/:collectionId', element: <ShowAll/>}
+            {path: '/collections/:id', element: <ShowAll/>},
+            {path: '/discover/:name', element: <ShowAll mode="auto"/>}
         ]
     }
 ]

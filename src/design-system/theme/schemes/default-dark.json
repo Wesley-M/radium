@@ -129,6 +129,17 @@
             "default": {
                 "width": "sidebarDefaultWidth"
             }
+        },
+        "hero": {
+            "transparency": "transparency600"
+        },
+        "search": {
+            "placeholder": {
+                "transparency": "transparency500"
+            },
+            "background": {
+                "transparency": "transparency200"
+            }
         }
     }
 }

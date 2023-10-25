@@ -29,7 +29,7 @@ import useMeasure from "react-use-measure"
 * - all: Shows the all elements, each line follows the same rules as the oneline 
 * variant. Except the last line will be filled with the remaining elements.
 * 
-* - pretty: If there is only one line, it will fill it with items. If it is not
+* - rect: If there is only one line, it will fill it with items. If it is not
 * possible, it will show the items in multiple lines, each line follows the same 
 * rules as the oneline. Except the last line will not be shown if it is not filled.
 */
@@ -102,7 +102,7 @@ export const useSmartGrid = <I>(options: GridOptions<I>): GridReturn<I> => {
 
     /** 
      * Variants can change depending on the screen size, so we 
-     * need to compute it:
+     * need to compute it.
     */
     const computeVariant = () => {
         if (variant === "oneline" && isMobile) return "overflow-oneline"

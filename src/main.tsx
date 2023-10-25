@@ -7,12 +7,13 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import { routes } from './pages/routes.tsx'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { HotToaster } from '@design-system/components/data-display/hot-toaster/index.tsx'
-import { PlayerProvider } from '@design-system/components/player/context/player-context.tsx'
-import { PlaylistProvider } from '@design-system/components/player/context/playlist-context.tsx'
-import { GlobalStyle } from './GlobalStyle.tsx'
-import './i18n';
+import { HotToaster } from '@components/hot-toaster/index.tsx'
+import { PlayerProvider } from '@components/player/context/player-context.tsx'
+import { PlaylistProvider } from '@components/player/context/playlist-context.tsx'
+import { ScrollStyle } from './shared/utils/ScrollStyle.tsx'
+import './i18n'
 import { LanguageProvider } from './i18n/context'
+import './main.css'
 
 const queryClient = new QueryClient()
 
@@ -33,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <LanguageProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <GlobalStyle/>
+          <ScrollStyle/>
           <DominantColorProvider>
             <PlaylistProvider>
               <PlayerProvider>

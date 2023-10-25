@@ -9,16 +9,20 @@ const assets = {
             description: "Take a break and listen",
         },
         news: {
-            title: "News",
+            title: "Global News",
             description: "To keep you well informed",
         },
         recently_played: {
-            title: "Recently played",
+            title: "Recently Played",
             description: "Pick up where you left off",
         },
         library: {
             title: "Library",
             description: "Your favorite stations",
+        },
+        introducing: {
+            title: "Introducing {{ name }}",
+            description: "Dive into {{ name }} stations",
         }
     }
 }
@@ -31,10 +35,22 @@ const error = {
     unknown: "Unknown error",
     somethingWentWrong: "Something went wrong",
     pageNotFound: "Page not found",
-    playlistNotFound: "Playlist \"{{ name }}\" was not found",
+    collectionNotFound: "Collection \"{{ name }}\" was not found",
     noResultsForQuery: "No results were found for \"{{ query }}\"",
     impossibleToLoadStations: "It was impossible to load the stations",
+    streamUnavailable: "Sorry, the stream {{name}} is unavailable right now.",
+    failedWhileFetchingStations: "There was something wrong while fetching stations. Please, try again later."
 };
+
+const grid = {
+    editorsChoice: "Editor's choice",
+    automatic: "Automatic",
+}
+
+const hero = {
+    title: "Where your taste sets the tone.",
+    subtitle: "Discover thousands of open radio streams"
+}
 
 const info = {
     tryOtherCombinationOfWords: "Maybe, try other combination of words :(",
@@ -87,6 +103,8 @@ export default {
         assets,
         controls,
         error,
+        grid,
+        hero,
         info,
         search,
         settings,

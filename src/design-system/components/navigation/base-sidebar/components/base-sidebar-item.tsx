@@ -4,6 +4,7 @@ import { ComponentType } from "react";
 import { Text } from "@design-system/components/data-display/text";
 import { useNavigate } from "react-router-dom";
 import { useSidebar } from "@design-system/hooks/use-sidebar";
+import { Tooltip } from "@design-system/components/data-display/tooltip";
 
 interface BaseSidebarItemProps {
   /** Icon to be used when the item is inactive */
@@ -54,32 +55,36 @@ export const BaseSidebarItem = (props: BaseSidebarItemProps) => {
   )
 
   return (
-    <Stack 
-      direction="row" 
-      alignItems="center" 
-      justifyContent={ isMini ? "center" : "flex-start" }
-      gap={spacing("in-xxs")}
-      paddingY={spacing("in-xs")}
-      sx={{
-        opacity: isActive ? 1 : 0.7,
-        transition: "opacity 300ms ease-in-out",
-        "&:hover": {
-          cursor: "pointer",
-          opacity: 1
-        }
-      }}
-      onClick={() => to && navigate(to)}
-      title={title}
-    >
-      {SelectedIcon && (
-        <SelectedIcon
-          sx={{ 
-            fontSize: "2rem", 
-            color: palette("tx-primary") 
-          }} 
-        />
-      )}
-      {text}
-    </Stack>
+      <Stack 
+        direction="row" 
+        alignItems="center" 
+        justifyContent={ isMini ? "center" : "flex-start" }
+        gap={spacing("in-xxs")}
+        paddingY={spacing("in-xs")}
+        sx={{
+          opacity: isActive ? 1 : 0.7,
+          transition: "opacity 300ms ease-in-out",
+          "&:hover": {
+            cursor: "pointer",
+            opacity: 1
+          }
+        }}
+        onClick={() => to && navigate(to)}
+      >
+        {SelectedIcon && (
+          <Tooltip
+            enable={isMini}
+            title={title}
+          >
+            <SelectedIcon
+              sx={{ 
+                fontSize: "2rem", 
+                color: palette("tx-primary") 
+              }} 
+            />
+          </Tooltip>
+        )}
+        {text}
+      </Stack>
   )
 }

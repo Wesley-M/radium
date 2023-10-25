@@ -1,11 +1,12 @@
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import { useTheme } from '@design-system/theme';
-import { Stack } from '@mui/material';
+import { Stack, alpha } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { useIsMobile } from '@design-system/hooks/use-is-mobile';
 import { useOnResize } from '@design-system/hooks/use-on-resize';
 import { SidebarProvider } from '@design-system/components/navigation/base-sidebar/context';
+import { useIsPageTop } from '@design-system/hooks/use-is-page-top';
 
 export interface BaseSidebarProps {
   /** Content of the main section */
@@ -23,13 +24,22 @@ const MINI_WIDTH = 100
 export function BaseSidebar(props: BaseSidebarProps) {
   const { children, header, content } = props;
 
+  /**
+   * Determines if the sidebar should be in mini mode. The default
+   * in desktop is true, in mobile there is no mini mode.
+  */
+  const getInitialMiniMode = () => {
+    const mini = localStorage.getItem("mini")
+    return !isMobile && (!mini ? true : mini === "true")
+  }
+
   const { palette, theme } = useTheme()
   const isMobile = useIsMobile("md")
-  const inMiniMode = !isMobile && localStorage.getItem("mini") === "true"
-
+  const isPageTop = useIsPageTop()
+  
   const [open, setOpen] = useState(false)
-  const [miniMode, setMiniMode] = useState(inMiniMode)
-  const [width, setWidth] = useState(inMiniMode ? MINI_WIDTH : DEFAULT_WIDTH)
+  const [miniMode, setMiniMode] = useState(getInitialMiniMode())
+  const [width, setWidth] = useState(getInitialMiniMode() ? MINI_WIDTH : DEFAULT_WIDTH)
 
   /** 
    * Toggles the sidebar between mini and default mode
@@ -112,11 +122,11 @@ export function BaseSidebar(props: BaseSidebarProps) {
               display: { xs: 'none', md: 'flex' },
               '& .MuiDrawer-paper': { 
                 boxSizing: 'border-box', 
-                backgroundColor: palette("sr-100"), 
+                backgroundColor: alpha(palette("sr-100"), isPageTop && miniMode ? 0 : 1), 
                 width,
                 overflow: "hidden",
                 height: `calc(100% - ${theme("components.player.compact.height")})`,
-                borderRight: `2px solid ${palette("sr-300")}`
+                borderRight: `2px solid ${alpha(palette("sr-300"), isPageTop && miniMode ? 0 : 1)}`
               }
             }}
             open={open}

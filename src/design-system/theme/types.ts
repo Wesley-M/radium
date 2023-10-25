@@ -109,6 +109,17 @@ export interface Theme {
             default: {
                 width: string
             }
+        },
+        hero: {
+            transparency: string
+        },
+        search: {
+            placeholder: {
+                transparency: string
+            },
+            background: {
+                transparency: string
+            }
         }
     }
 }

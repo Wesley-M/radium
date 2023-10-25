@@ -34,7 +34,7 @@ export const InfiniteItemList = (props: InfiniteItemListProps) => {
     } = props
 
     // Number of items
-    const itemCount = items.length
+    const itemCount = items.length;
 
     // Load more items or do nothing if loading
     const loadMoreItems = loading ? (() => {}) : loadMore
@@ -56,7 +56,7 @@ export const InfiniteItemList = (props: InfiniteItemListProps) => {
                     itemCount={itemCount}
                     itemSize={listProps?.itemSize || 88}
                     onItemsRendered={onItemsRendered}
-                    overscanCount={listProps?.overscanCount || 20}
+                    overscanCount={listProps?.overscanCount || 10}
                     style={{ overflowX: "hidden" }}
                     ref={ref}
                     {...listProps}

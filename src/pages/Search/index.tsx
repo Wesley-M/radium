@@ -5,25 +5,27 @@ import { Tabs } from "@design-system/components/navigation/tabs"
 import { useEffect, useState } from "react"
 import { ChipSelect } from "@design-system/components/inputs/chip-select"
 import { FilterOption, useSearch } from "../../api/remote/hooks/use-search"
-import { StationGrid } from "@design-system/components/layout/station-grid"
+import { StationGrid } from "@components/station-grid"
 import { TargetType } from "@api/static/station-collections"
 import { useScroll } from "@design-system/hooks/use-scroll"
 import { ErrorIndicator } from "@design-system/components/data-display/error-indicator"
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useTranslation } from "react-i18next"
+import { useAvailableHeight } from "@design-system/hooks"
 
 type Tab = TargetType
 
 export const Search = () => {
-    const { palette, theme, spacing } = useTheme()
+    const { palette, spacing } = useTheme()
     const { t } = useTranslation()
 
     const [searchParams] = useSearchParams()
     const searchQuery = searchParams.get("q") || ""
-    
+    const searchMaxHeight = useAvailableHeight(250)
+
     const [tab, setTab] = useState<Tab>("SERVER")
     const [filters, setFilters] = useState<FilterOption[]>(["name"])
-
+    
     const isLocalSearch = tab !== "SERVER"
 
     const search = useSearch({
@@ -31,12 +33,6 @@ export const Search = () => {
         by: filters,
         localCollection: isLocalSearch ? tab : undefined
     })
-
-    const getMaxHeight = () => {
-        const playerHeight = parseInt(theme("components.player.compact.height"))
-        const endY = window.innerHeight - playerHeight
-        return (endY - 250)
-    }
 
     /** 
      * Lock scroll when component mounts and unlock 
@@ -97,7 +93,7 @@ export const Search = () => {
             ) : (
                 <StationGrid
                     data={search.data} 
-                    loading={search.req.isLoading || search.req.isFetching}
+                    loading={search.req.isFetching}
                     goTo={"/" + search.metadata.query?.id}
                     cardProps={{
                         hideWhileEmpty: false
@@ -110,7 +106,7 @@ export const Search = () => {
                             hasMore: search.req.hasNextPage,
                             loading: search.req.isFetching,
                             listProps: {
-                                height: getMaxHeight()
+                                height: searchMaxHeight
                             }
                         },
                         enableInfiniteGrid: true

@@ -7,15 +7,6 @@ import monokaiLight from "../schemes/monokai-light.json";
 import monokaiDark from "../schemes/monokai-dark.json";
 
 /**
- * Get user preferred mode (light or dark)
-*/
-export const getUserPreferredMode = () => {
-    const darkQuery = window.matchMedia("(prefers-color-scheme: dark)")
-    if (darkQuery.matches) return "dark"
-    return "light"
-}
-
-/**
  * Get a theme by mode and color scheme
  */
 export const getThemeByModeAndScheme = (mode: ThemeMode, colorScheme: ColorScheme = "default") => {
